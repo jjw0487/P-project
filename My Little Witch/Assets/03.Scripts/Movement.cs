@@ -1,9 +1,13 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
 {
+
+    public TMPro.TMP_Text state;
+
     new Rigidbody rigidbody;
     public Animator curAnim;
 
@@ -20,6 +24,7 @@ public class Movement : MonoBehaviour
     void Start()
     {
         rigidbody = this.GetComponent<Rigidbody>();
+        //state.text = "Idle";
     }
 
     // Update is called once per frame
@@ -29,6 +34,7 @@ public class Movement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.LeftShift) && totalDist > 0.0f)
         {
+            StateNotice();
             run = true;
             Running();
         }
@@ -39,7 +45,23 @@ public class Movement : MonoBehaviour
         }
 
 
+        
+
     }
+
+    void StateNotice()
+    {
+        if (curAnim.GetBool("IsWalking"))
+        {
+            state.text = "Walk";
+        }
+        
+        if (curAnim.GetBool("IsRunning"))
+        {
+            state.text = "Run";
+        }
+    }
+
 
     void CharacterMovement()
     {
@@ -52,10 +74,12 @@ public class Movement : MonoBehaviour
         if (totalDist > 0.0f)
         {
             curAnim.SetBool("IsWalking", true);
+            StateNotice();
         }
         if (totalDist <= 0.0f)
         {
             curAnim.SetBool("IsWalking", false);
+            state.text = "Idle";
         }
 
         
@@ -84,5 +108,6 @@ public class Movement : MonoBehaviour
     {
         curAnim.SetBool("IsRunning", true);
         rigidbody.MovePosition(this.gameObject.transform.position + dir * dashSpeed * Time.deltaTime);
+        StateNotice();
     }
 }
