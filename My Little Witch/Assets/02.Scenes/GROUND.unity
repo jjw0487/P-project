@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4482447, g: 0.4982717, b: 0.57558084, a: 1}
+  m_IndirectSpecularColor: {r: 0.4482453, g: 0.49827206, b: 0.5755818, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -512,6 +512,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1058516961}
+  - component: {fileID: 1058516963}
   - component: {fileID: 1058516962}
   m_Layer: 5
   m_Name: StaminaBar
@@ -588,12 +589,26 @@ MonoBehaviour:
   m_HandleRect: {fileID: 534722014}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1058516963
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1058516960}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1690ecf858cced34b809bd05fec29407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  staminaBar: {fileID: 1058516962}
+  Player: {fileID: 1741157800}
 --- !u!1 &1178770584
 GameObject:
   m_ObjectHideFlags: 0
@@ -817,7 +832,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9056604, g: 0.7576921, b: 0.14097545, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1082,13 +1097,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7ddb446bcb1a5744b6a5e1ad1251ce7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: {fileID: 1178770586}
   curAnim: {fileID: 1741157798}
-  mySkill: {fileID: 1741157803}
   Speed: 4
   dashSpeed: 9
   rotSpeed: 10
   run: 0
+  canRun: 0
+  state: {fileID: 1178770586}
+  myStamina: {fileID: 1058516963}
+  myStminaSlider: {fileID: 1058516962}
+  mySkill: {fileID: 1741157803}
 --- !u!136 &1741157801
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1113,7 +1131,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -1146,7 +1164,7 @@ GameObject:
   - component: {fileID: 1921090082}
   - component: {fileID: 1921090081}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: CharacterUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
