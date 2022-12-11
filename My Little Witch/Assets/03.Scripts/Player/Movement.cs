@@ -7,10 +7,9 @@ using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
+    private Rigidbody rigidbody;
 
     [Header("Movement")]
-
-    private Rigidbody rigidbody;
     public Animator curAnim;
     public float Speed = 4f;
     public float dashSpeed = 7f;
@@ -29,10 +28,13 @@ public class Movement : MonoBehaviour
     [Header("Skill")]
     public Skill mySkill;
 
+    public Transform AttackMark;
+
     void Start()
     {
         rigidbody = this.GetComponent<Rigidbody>();
         state.text = "Idle";
+        canRun = true; //시작할 때 바로 뛸 수 있도록
     }
 
     void Update()
@@ -47,16 +49,16 @@ public class Movement : MonoBehaviour
 
     void Running()
     {
-        if (run) // 달리기
+        /*if (run) // 달리기
         {
             rigidbody.MovePosition(this.gameObject.transform.position + dir * dashSpeed * Time.deltaTime);
-        }
+        }*/
 
         if (Mathf.Approximately(myStaminaSlider.value, 0f))
         //스태미너 바의 밸류가 0에 근사치에 닿을 때
         {
             canRun = false;
-            if (totalDist > 0.0f) // 캐릭터의 움직임이 없다면
+            if (totalDist > 0.0f)
             {
                 curAnim.SetBool("IsWalking", true);
             }
@@ -71,11 +73,13 @@ public class Movement : MonoBehaviour
         }
         else
         {
+            //canRun= true;
             if (Input.GetKey(KeyCode.LeftShift) && totalDist > 0.0f && canRun)
             // 시프트를 눌렀고, 이동거리가 있으며 canRun 이 false가 아닐 때
             {
                 run = true;
                 curAnim.SetBool("IsRunning", true);
+                rigidbody.MovePosition(this.gameObject.transform.position + dir * dashSpeed * Time.deltaTime);
             }
             else // 이동거리값이 0보다 작을 때 shift로 달리기 발동 안할 수 있도록
             {
@@ -107,6 +111,7 @@ public class Movement : MonoBehaviour
 
     void CharacterMovement()
     {
+        if (curAnim.GetParameter())
         dir.x = Input.GetAxisRaw("Horizontal");
         dir.z = Input.GetAxisRaw("Vertical");
         totalDist = dir.magnitude;
