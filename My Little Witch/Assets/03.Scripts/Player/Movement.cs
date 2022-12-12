@@ -24,6 +24,7 @@ public class Movement : MonoBehaviour
     public TMPro.TMP_Text state;
     public StaminaBar myStamina;
     public Slider myStaminaSlider;
+    public HPBar myHPBar;
 
     [Header("Skill")]
     public Skill mySkill;
@@ -47,7 +48,10 @@ public class Movement : MonoBehaviour
         }
 
     }
-
+    public void OnDmg(float dmg)
+    {
+        myHPBar.HandleHP(dmg);
+    }
     void Running()
     {
         /*if (run) // ´Þ¸®±â

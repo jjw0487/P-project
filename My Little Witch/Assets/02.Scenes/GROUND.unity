@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4482447, g: 0.4982717, b: 0.57558084, a: 1}
+  m_IndirectSpecularColor: {r: 0.4482453, g: 0.49827206, b: 0.5755818, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -527,8 +527,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myTarget: {fileID: 1998264322}
   lerpspeed: 1
-  ZoomRange: {x: 2.7, y: 7}
-  ZoomSpeed: 0
+  ZoomRange: {x: 6, y: 11}
+  ZoomSpeed: 11
 --- !u!1 &795715892
 GameObject:
   m_ObjectHideFlags: 0
@@ -1574,11 +1574,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1293420719}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a96bc87e03e8c547920f3ba103824ec, type: 3}
+  m_Script: {fileID: 11500000, guid: f6b08cb2292aa7940b3173f8764ea794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MagicBar: {fileID: 1293420721}
-  Skill: {fileID: 1741157803}
+  HPbar: {fileID: 1293420721}
 --- !u!1 &1325295304
 GameObject:
   m_ObjectHideFlags: 0
@@ -2017,6 +2016,7 @@ MonoBehaviour:
   state: {fileID: 1178770586}
   myStamina: {fileID: 1058516963}
   myStaminaSlider: {fileID: 1058516962}
+  myHPBar: {fileID: 1293420722}
   mySkill: {fileID: 1741157803}
   AttackMark: {fileID: 437980925}
 --- !u!136 &1741157801
@@ -9901,7 +9901,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8227385955506260437}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -16.72, y: 0.2, z: 9.4}
+  m_LocalPosition: {x: -6.13, y: 0.2, z: 9.4}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9951,10 +9951,11 @@ MonoBehaviour:
   myEnemy: {fileID: 1741157800}
   myNeck: {fileID: 490509873}
   myArrowStand: {fileID: 1855268141}
-  orgArrow: {fileID: 1785748078202832889, guid: 43cf632321c0b9c4b884e2487045b0f5, type: 3}
+  orgArrow: {fileID: 6256726023380226262, guid: 43cf632321c0b9c4b884e2487045b0f5, type: 3}
   enemyMask:
     serializedVersion: 2
     m_Bits: 8
+  myTarget: {fileID: 437980925}
 --- !u!1 &8749140838329333884
 GameObject:
   m_ObjectHideFlags: 0

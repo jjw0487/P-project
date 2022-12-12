@@ -14,10 +14,7 @@ public class MagicGageBar : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            HandleMP(20f);
-        }
+        
         HandleMP(0f);
     }
 

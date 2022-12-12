@@ -29,7 +29,7 @@ public class Skill : MonoBehaviour
             myPlayer.curAnim.SetTrigger("MagicSplash");
             GameObject obj = Instantiate(Resources.Load("Effect/Circle"), this.transform.position + Vector3.up, Quaternion.identity) as GameObject;
             myMagicGage.HandleMP(40f);
-            StartCoroutine(Chill(2.2f, obj));
+            StartCoroutine(Chill(2.8f, obj));
         }
     }
 

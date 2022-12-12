@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using static UnityEngine.GraphicsBuffer;
 
 public class Tower : MonoBehaviour
@@ -12,6 +13,7 @@ public class Tower : MonoBehaviour
     public GameObject orgArrow;
     //public Collider mySensor;
     public LayerMask enemyMask;
+    public Transform myTarget;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -20,7 +22,7 @@ public class Tower : MonoBehaviour
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
             StartCoroutine(Targetting());
-            StartCoroutine(Attacking(2f,3f));
+            StartCoroutine(Attacking(2f, 3f));
         }
 
         //StartCoroutine(Targetting());
@@ -53,12 +55,16 @@ public class Tower : MonoBehaviour
 
     IEnumerator Attacking(float cool, float attackSpeed)
     {
+        while (cool > 0.0f)
+        {
+            cool -= Time.deltaTime;
+            yield return null;
+        }
+
         while (myEnemy != null)
         {
             GameObject obj = Instantiate(orgArrow, myArrowStand.position, myArrowStand.rotation);
-            
-            obj.GetComponent<Arrow>().Attacking(myEnemy);
-
+            obj.GetComponent<Arrow>().OnFire(myEnemy, enemyMask);
             yield return new WaitForSeconds(attackSpeed);
            
         }
