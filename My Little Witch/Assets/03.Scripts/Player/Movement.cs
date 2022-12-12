@@ -28,6 +28,7 @@ public class Movement : MonoBehaviour
     [Header("Skill")]
     public Skill mySkill;
 
+    [Header("Game Setting")]
     public Transform AttackMark;
 
     void Start()
@@ -111,7 +112,7 @@ public class Movement : MonoBehaviour
 
     void CharacterMovement()
     {
-        if (curAnim.GetParameter())
+       
         dir.x = Input.GetAxisRaw("Horizontal");
         dir.z = Input.GetAxisRaw("Vertical");
         totalDist = dir.magnitude;

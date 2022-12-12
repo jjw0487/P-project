@@ -10,7 +10,7 @@ public class Tower : MonoBehaviour
     public Transform myNeck;
     public Transform myArrowStand;
     public GameObject orgArrow;
-    public Collider mySensor;
+    //public Collider mySensor;
     public LayerMask enemyMask;
 
     private void OnTriggerEnter(Collider other)
@@ -20,6 +20,7 @@ public class Tower : MonoBehaviour
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
             StartCoroutine(Targetting());
+            StartCoroutine(Attacking(2f,3f));
         }
 
         //StartCoroutine(Targetting());
@@ -34,7 +35,6 @@ public class Tower : MonoBehaviour
     {
         myEnemy = null;
         StopAllCoroutines();
-        Attacking();
     }
 
 
@@ -43,24 +43,24 @@ public class Tower : MonoBehaviour
         
         while (myEnemy != null)
         {
-           
             // 3차원 회전을 간단하게 처리하는 방법
-            Quaternion rot = Quaternion.LookRotation((myEnemy.AttackMark.position - myNeck.position).normalized);
+            Quaternion rot = Quaternion.LookRotation((myEnemy.AttackMark.position - myArrowStand.position).normalized);
             myNeck.rotation = Quaternion.Slerp(myNeck.rotation, rot, Time.deltaTime * 10f);
 
             yield return null;
         }
     }
 
-    IEnumerator Attacking()
+    IEnumerator Attacking(float cool, float attackSpeed)
     {
         while (myEnemy != null)
         {
-            GameObject obj = Instantiate(orgArrow, myArrowStand.position, Quaternion.identity);
-            //obj.GetComponent<Projectile>().OnFire(myEnemy, enemyMask, myStat.AttackPoint);
+            GameObject obj = Instantiate(orgArrow, myArrowStand.position, myArrowStand.rotation);
             
-            yield return new WaitForSeconds(1f); // 업그레이드로 바뀌었을 때 전달받을 수 있도록
-            Destroy(obj);
+            obj.GetComponent<Arrow>().Attacking(myEnemy);
+
+            yield return new WaitForSeconds(attackSpeed);
+           
         }
     }
 }
