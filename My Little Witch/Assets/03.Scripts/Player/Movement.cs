@@ -18,6 +18,7 @@ public class Movement : MonoBehaviour
     private float totalDist;
     public bool run;
     public bool canRun = true;
+    public bool stun = false;
 
 
     [Header("UI")]
@@ -41,16 +42,17 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        if(mySkill.canMove)
+        if(mySkill.canMove && !stun)
         {
             CharacterMovement(); //상시실행
             Running();
         }
-
     }
     public void OnDmg(float dmg)
     {
         myHPBar.HandleHP(dmg);
+        StartCoroutine(Stunned(0.7f));
+        curAnim.SetTrigger("IsHit");
     }
     void Running()
     {
@@ -59,7 +61,7 @@ public class Movement : MonoBehaviour
             rigidbody.MovePosition(this.gameObject.transform.position + dir * dashSpeed * Time.deltaTime);
         }*/
 
-        if (Mathf.Approximately(myStaminaSlider.value, 1f))
+        if (Mathf.Approximately(myStaminaSlider.value, 0.0f))
         //스태미너 바의 밸류가 0에 근사치에 닿을 때
         {
             canRun = false;
@@ -152,10 +154,22 @@ public class Movement : MonoBehaviour
             transform.forward = Vector3.Lerp(transform.forward, dir, rotSpeed * Time.deltaTime);
             // Slerp를 쓸지 Lerp를 쓸지 상의를 해봐야 할 것 같아용 
             // 캐릭터의 앞방향은 dir 키보드를 누른 방향으로 캐릭터 회전
-            //Lerp를 쓰면 원하는 방향까지 서서히 회전
+            // Lerp를 쓰면 원하는 방향까지 서서히 회전
         }
     }
 
-    
+    IEnumerator Stunned(float cool) // 못 움직이게 하는 스킬들
+    {
+        stun = true;
+        while (cool > 0.0f)
+        {
+            state.text = "Stun";
+            cool -= Time.deltaTime;
+            yield return null;
+        }
+        stun = false;
+    }
+
+
 
 }

@@ -441,6 +441,7 @@ GameObject:
   - component: {fileID: 558311089}
   - component: {fileID: 558311092}
   - component: {fileID: 558311093}
+  - component: {fileID: 558311094}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -528,7 +529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myTarget: {fileID: 1998264322}
   lerpspeed: 1
-  ZoomRange: {x: 6, y: 11}
+  ZoomRange: {x: 2, y: 11}
   ZoomSpeed: 11
 --- !u!114 &558311093
 MonoBehaviour:
@@ -563,6 +564,21 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &558311094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 558311088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df7c6ec828271e74fafa06799e3573f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorImg:
+  - {fileID: 2800000, guid: 9b1c4a5e4b5a621418a8980a58d2bddf, type: 3}
+  - {fileID: 2800000, guid: f062507fd5d5c93489a2ac9d007ac5a0, type: 3}
 --- !u!1 &795715892
 GameObject:
   m_ObjectHideFlags: 0
@@ -2068,6 +2084,7 @@ MonoBehaviour:
   rotSpeed: 10
   run: 0
   canRun: 0
+  stun: 0
   state: {fileID: 1178770586}
   myStamina: {fileID: 1058516963}
   myStaminaSlider: {fileID: 1058516962}
@@ -2121,6 +2138,7 @@ MonoBehaviour:
   myMagicCircuit: {fileID: 1246940337}
   canMove: 1
   canSkill: 1
+  myCursor: {fileID: 558311094}
 --- !u!1 &1767378681
 GameObject:
   m_ObjectHideFlags: 0
@@ -9480,15 +9498,15 @@ SkinnedMeshRenderer:
   - {fileID: 2100000, guid: a85ad8f49e787e941a98a6b1e66dcb8d, type: 2}
   - {fileID: 2100000, guid: f0ce47a97f6e33c498cc24c7e6288dcf, type: 2}
   - {fileID: 2100000, guid: e1e187f49b9296d4f9464d62c7f48c00, type: 2}
-  - {fileID: 5014507974528723679, guid: 1df515f189c92f047afc46a0a0b27ce4, type: 3}
-  - {fileID: -8012515985118933627, guid: 1df515f189c92f047afc46a0a0b27ce4, type: 3}
+  - {fileID: 2100000, guid: 6b97af77df43bb84fa59c29c559812b6, type: 2}
+  - {fileID: 2100000, guid: f55f1b548b61a084b8ba04ff720ab342, type: 2}
   - {fileID: 2100000, guid: a4d0066970d99224b9de8ddcf041428c, type: 2}
   - {fileID: 2100000, guid: 860eb1851859e8744957ca08331200ab, type: 2}
   - {fileID: 2100000, guid: 68a451163e2449349956e3a09fa723ef, type: 2}
   - {fileID: 2100000, guid: 13c5181bc08ef6744a98daf395198eb1, type: 2}
-  - {fileID: -7563029173986456327, guid: 1df515f189c92f047afc46a0a0b27ce4, type: 3}
-  - {fileID: 4300191322427300592, guid: 1df515f189c92f047afc46a0a0b27ce4, type: 3}
-  - {fileID: -2367807901837005159, guid: 1df515f189c92f047afc46a0a0b27ce4, type: 3}
+  - {fileID: 2100000, guid: ad74f01447e6c97488340af589b01a20, type: 2}
+  - {fileID: 2100000, guid: d8f844c1ef4080a46b90105c69daa9c0, type: 2}
+  - {fileID: 2100000, guid: 4bf4b955615150a4eae6ccec18014fc6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9510,7 +9528,7 @@ SkinnedMeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   serializedVersion: 2
-  m_Quality: 0
+  m_Quality: 4
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
   m_Mesh: {fileID: 4272382486356179114, guid: 1df515f189c92f047afc46a0a0b27ce4, type: 3}

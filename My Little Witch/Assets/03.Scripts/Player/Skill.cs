@@ -12,6 +12,8 @@ public class Skill : MonoBehaviour
     public bool canMove = true;
     public bool canSkill = true;
 
+    public ChangeCursor myCursor;
+
     void Start()
     {
         
@@ -54,6 +56,7 @@ public class Skill : MonoBehaviour
     {
         canSkill = false;
         canMove = false;
+        Cursor.SetCursor(myCursor.cursorImg[1], Vector2.zero, CursorMode.ForceSoftware);
 
         float coolTime = cool;
         while (cool > 0.0f)
@@ -65,6 +68,7 @@ public class Skill : MonoBehaviour
         Destroy(obj);
         canMove = true; //시간이 끝나면
         canSkill = true;
+        Cursor.SetCursor(myCursor.cursorImg[0], Vector2.zero, CursorMode.ForceSoftware);
     }
 
     IEnumerator Cool(float cool) // 스킬 쿨타임
