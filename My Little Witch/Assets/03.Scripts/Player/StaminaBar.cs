@@ -36,17 +36,15 @@ public class StaminaBar : MonoBehaviour
 
         if (Player.run) // PlayerMovement 스크립트 안에 bool 값을 가져옴
         {
-            curST -= 15 * Time.deltaTime;
+            curST -= 10f * Time.deltaTime;
         }
         else if (!Player.run)
         {
             if (delta == 0.0f)
             {
-                curST += 15 * Time.deltaTime;
+                curST += 10f * Time.deltaTime;
             }
         }
-
-
         //바의 부드러운 감소
         staminaBar.value = Mathf.Lerp(staminaBar.value, curST / maxST * 100f, 10f * Time.deltaTime);
         // a 와 b 사이의 t 만큼의 값을 반환

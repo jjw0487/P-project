@@ -19,6 +19,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Kiki_bag_001_Pbr
+    second: {fileID: 2100000, guid: f55f1b548b61a084b8ba04ff720ab342, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Kiki_dress_001_Pbr
     second: {fileID: 2100000, guid: 13c5181bc08ef6744a98daf395198eb1, type: 2}
   - first:
@@ -49,8 +54,28 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Kiki_ribbon_001_Pbr
+    second: {fileID: 2100000, guid: 6b97af77df43bb84fa59c29c559812b6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Kiki_shoes2_001_Pbr
+    second: {fileID: 2100000, guid: d8f844c1ef4080a46b90105c69daa9c0, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Kiki_shoes3_001_Pbr
+    second: {fileID: 2100000, guid: 4bf4b955615150a4eae6ccec18014fc6, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Kiki_skin_001_Pbr
     second: {fileID: 2100000, guid: 860eb1851859e8744957ca08331200ab, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Satomi_shoes1_001_Pbr
+    second: {fileID: 2100000, guid: ad74f01447e6c97488340af589b01a20, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

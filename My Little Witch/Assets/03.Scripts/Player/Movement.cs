@@ -59,7 +59,7 @@ public class Movement : MonoBehaviour
             rigidbody.MovePosition(this.gameObject.transform.position + dir * dashSpeed * Time.deltaTime);
         }*/
 
-        if (Mathf.Approximately(myStaminaSlider.value, 0f))
+        if (Mathf.Approximately(myStaminaSlider.value, 1f))
         //스태미너 바의 밸류가 0에 근사치에 닿을 때
         {
             canRun = false;
