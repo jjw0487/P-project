@@ -7,7 +7,6 @@ public class BroomMovement : MonoBehaviour
     private Rigidbody rigidbody;
 
     [Header("Movement")]
-    public Animator curAnim;
     public float Speed = 6f;
     public float rotSpeed = 10f;
     private Vector3 dir = Vector3.zero;
