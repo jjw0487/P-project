@@ -17,14 +17,13 @@ public class Arrow : MonoBehaviour
     }
 
 
-    public void OnFire(Movement target, LayerMask mask)
+    public void OnFire(Movement target)
     {
         myTarget = target;
         StartCoroutine(Attacking());
     }
     public IEnumerator Attacking()
     {
-        
         Vector3 target = myTarget.AttackMark.position;
         Vector3 pos = this.transform.position;
         Vector3 dir = target - pos;
