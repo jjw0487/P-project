@@ -3,14 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
     private Rigidbody rigidbody;
 
+    [Header("Character")]
+    public ONWHAT onWhat = ONWHAT.Street;
+    public GameObject KK;
+    public GameObject BR;
+
     [Header("Movement")]
-    public Animator curAnim;
+    public Animator[] curAnim;
     public float Speed = 4f;
     public float dashSpeed = 7f;
     public float rotSpeed = 10f;
@@ -19,6 +25,12 @@ public class Movement : MonoBehaviour
     public bool run;
     public bool canRun = true;
     public bool stun = false;
+
+    [Header("OnTheBroom")]
+    public float B_Speed = 10f;
+    public float B_RotSpeed = 3f;
+    private float B_totalDist;
+    public float B_jumpHeight = 0.2f;
 
 
     [Header("UI")]
@@ -33,8 +45,29 @@ public class Movement : MonoBehaviour
     [Header("Game Setting")]
     public Transform AttackMark;
 
+
+    public enum ONWHAT { Street, Broom }
+
+    public void ChangeState(ONWHAT what)
+    {
+        if (onWhat == what) return;
+        onWhat = what;
+        switch(onWhat)
+        {
+            case ONWHAT.Street:
+                KK.SetActive(true);
+                BR.SetActive(false);
+                break;
+            case ONWHAT.Broom:
+                KK.SetActive(false);
+                BR.SetActive(true);
+                break;
+        }
+    }
+
     void Start()
     {
+        ChangeState(ONWHAT.Street);
         rigidbody = this.GetComponent<Rigidbody>();
         state.text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
@@ -42,39 +75,54 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        if(mySkill.canMove && !stun)
+        if(ONWHAT.Street == onWhat)
         {
-            CharacterMovement(); //상시실행
-            Running();
+            if (mySkill.canMove && !stun)
+            {
+                C_Movement(); //상시실행
+                Running();
+            }
         }
+
+        if(ONWHAT.Broom == onWhat)
+        {
+            B_Movement();
+        }
+
+        if(Input.GetKeyDown(KeyCode.L)&& onWhat == ONWHAT.Street)
+        {
+            ChangeState(ONWHAT.Broom);
+        }
+
+        if (Input.GetKeyDown(KeyCode.L) && onWhat == ONWHAT.Broom)
+        {
+            ChangeState(ONWHAT.Street);
+        }
+
     }
     public void OnDmg(float dmg)
     {
         myHPBar.HandleHP(dmg);
         StartCoroutine(Stunned(0.7f));
-        curAnim.SetTrigger("IsHit");
+        curAnim[0].SetTrigger("IsHit");
+        //curAnim[1].SetTrigger("IsHit");
     }
     void Running()
     {
-        /*if (run) // 달리기
-        {
-            rigidbody.MovePosition(this.gameObject.transform.position + dir * dashSpeed * Time.deltaTime);
-        }*/
-
         if (Mathf.Approximately(myStaminaSlider.value, 0.0f))
         //스태미너 바의 밸류가 0에 근사치에 닿을 때
         {
             canRun = false;
             if (totalDist > 0.0f)
             {
-                curAnim.SetBool("IsWalking", true);
+                curAnim[0].SetBool("IsWalking", true);
             }
             else
             {
-                curAnim.SetBool("IsWalking", false);
+                curAnim[0].SetBool("IsWalking", false);
             }
 
-            curAnim.SetBool("IsRunning", false);
+            curAnim[0].SetBool("IsRunning", false);
 
             run = false;
         }
@@ -85,13 +133,13 @@ public class Movement : MonoBehaviour
             // 시프트를 눌렀고, 이동거리가 있으며 canRun 이 false가 아닐 때
             {
                 run = true;
-                curAnim.SetBool("IsRunning", true);
+                curAnim[0].SetBool("IsRunning", true);
                 rigidbody.MovePosition(this.gameObject.transform.position + dir * dashSpeed * Time.deltaTime);
             }
             else // 이동거리값이 0보다 작을 때 shift로 달리기 발동 안할 수 있도록
             {
                 run = false;
-                curAnim.SetBool("IsRunning", false);
+                curAnim[0].SetBool("IsRunning", false);
             }
         }
 
@@ -104,19 +152,19 @@ public class Movement : MonoBehaviour
 
     void StateNotice()
     {
-        if (curAnim.GetBool("IsWalking"))
+        if (curAnim[0].GetBool("IsWalking"))
         {
             state.text = "Walk";
         }
         
-        if (curAnim.GetBool("IsRunning"))
+        if (curAnim[0].GetBool("IsRunning"))
         {
             state.text = "Run";
         }
     }
 
 
-    void CharacterMovement()
+    void C_Movement()
     {
        
         dir.x = Input.GetAxisRaw("Horizontal");
@@ -127,12 +175,12 @@ public class Movement : MonoBehaviour
 
         if (totalDist > 0.0f)
         {
-            curAnim.SetBool("IsWalking", true);
+            curAnim[0].SetBool("IsWalking", true);
             StateNotice();
         }
         if (totalDist <= 0.0f)
         {
-            curAnim.SetBool("IsWalking", false);
+            curAnim[0].SetBool("IsWalking", false);
             state.text = "Idle";
         }
 
@@ -155,6 +203,21 @@ public class Movement : MonoBehaviour
             // Slerp를 쓸지 Lerp를 쓸지 상의를 해봐야 할 것 같아용 
             // 캐릭터의 앞방향은 dir 키보드를 누른 방향으로 캐릭터 회전
             // Lerp를 쓰면 원하는 방향까지 서서히 회전
+        }
+    }
+    void B_Movement()
+    {
+        dir.x = Input.GetAxisRaw("Horizontal");
+        dir.z = Input.GetAxisRaw("Vertical");
+        totalDist = dir.magnitude;
+
+        GetComponent<Rigidbody>().MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
+        transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.Space))
+        {
+            Vector3 jumpPower = Vector3.up * B_jumpHeight;
+            GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
         }
     }
 

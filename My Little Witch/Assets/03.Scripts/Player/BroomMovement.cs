@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class BroomMovement : MonoBehaviour
 {
-    private Rigidbody rigidbody;
+/*    //private Rigidbody rigidbody;
 
     [Header("Movement")]
     public float Speed = 6f;
     public float rotSpeed = 10f;
     private Vector3 dir = Vector3.zero;
     private float totalDist;
-    public float jumpHeight = 0.1f; //Á¡ÇÁ ³ôÀÌ
+    public float jumpHeight = 0.1f; //ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     [Header("Game Setting")]
     public Movement myCharacter;
@@ -33,17 +33,23 @@ public class BroomMovement : MonoBehaviour
         dir.z = Input.GetAxisRaw("Vertical");
         totalDist = dir.magnitude;
 
-        rigidbody.MovePosition(this.transform.position + dir * Speed * Time.deltaTime);
+        GetComponent<Rigidbody>().MovePosition(this.transform.position + dir * Speed * Time.deltaTime);
         
-        transform.forward = Vector3.Slerp(transform.forward, dir, rotSpeed * Time.deltaTime);
+
+        // ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê°ï¿½ ï¿½Øºï¿½ï¿½ï¿½
+        
+        
+        
         
 
         if (Input.GetKey(KeyCode.Space))
         {
             Vector3 jumpPower = Vector3.up * jumpHeight;
-            rigidbody.AddForce(jumpPower, ForceMode.VelocityChange);
-
-
+            GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
         }
     }
+    private void FixedUpdate()
+    {
+        transform.forward = Vector3.Lerp(transform.forward, dir, rotSpeed * Time.deltaTime);
+    }*/
 }

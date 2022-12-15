@@ -28,7 +28,7 @@ public class Skill : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha1) && canSkill && myMagicCircuit.value > 40f)
         {
-            myPlayer.curAnim.SetTrigger("MagicSplash");
+            myPlayer.curAnim[0].SetTrigger("MagicSplash");
             GameObject obj = Instantiate(Resources.Load("Effect/Circle"), this.transform.position + Vector3.up, Quaternion.identity) as GameObject;
             myMagicGage.HandleMP(40f);
             StartCoroutine(Chill(2.8f, obj));
@@ -56,7 +56,7 @@ public class Skill : MonoBehaviour
     {
         canSkill = false;
         canMove = false;
-        Cursor.SetCursor(myCursor.cursorImg[1], Vector2.zero, CursorMode.ForceSoftware);
+        //Cursor.SetCursor(myCursor.cursorImg[1], Vector2.zero, CursorMode.ForceSoftware);
 
         float coolTime = cool;
         while (cool > 0.0f)
@@ -68,7 +68,7 @@ public class Skill : MonoBehaviour
         Destroy(obj);
         canMove = true; //시간이 끝나면
         canSkill = true;
-        Cursor.SetCursor(myCursor.cursorImg[0], Vector2.zero, CursorMode.ForceSoftware);
+        //Cursor.SetCursor(myCursor.cursorImg[0], Vector2.zero, CursorMode.ForceSoftware);
     }
 
     IEnumerator Cool(float cool) // 스킬 쿨타임

@@ -6,7 +6,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Tower : MonoBehaviour
 {
-    public Movement myEnemy = null;
+    public Movement myEnemy;
 
     public Transform myNeck;
     public Transform myArrowStand;
@@ -17,15 +17,14 @@ public class Tower : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        myEnemy = other.GetComponent<Movement>();
-
+        
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
+            myEnemy = other.transform.parent.GetComponent<Movement>();
             StartCoroutine(Targetting());
             StartCoroutine(Attacking(2f, 3f));
         }
 
-        //StartCoroutine(Targetting());
     }
 
     private void OnTriggerStay(Collider other)
@@ -42,9 +41,10 @@ public class Tower : MonoBehaviour
 
     public IEnumerator Targetting()
     {
-        
         while (myEnemy != null)
         {
+
+            print("Target");
             // 3차원 회전을 간단하게 처리하는 방법
             Quaternion rot = Quaternion.LookRotation((myEnemy.AttackMark.position - myArrowStand.position).normalized);
             myNeck.rotation = Quaternion.Slerp(myNeck.rotation, rot, Time.deltaTime * 10f);
@@ -63,6 +63,8 @@ public class Tower : MonoBehaviour
 
         while (myEnemy != null)
         {
+
+            print("Attack");
             GameObject obj = Instantiate(orgArrow, myArrowStand.position, myArrowStand.rotation);
             obj.GetComponent<Arrow>().OnFire(myEnemy);
             yield return new WaitForSeconds(attackSpeed);

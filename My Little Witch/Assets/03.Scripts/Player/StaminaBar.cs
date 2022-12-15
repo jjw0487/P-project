@@ -29,11 +29,11 @@ public class StaminaBar : MonoBehaviour
             delta = 0.0f;
         }
 
-        if (Player.curAnim.GetBool("IsRunning")) // PlayerMovement 스크립트 안에 bool 값을 가져옴
+        if (Player.curAnim[0].GetBool("IsRunning")) // PlayerMovement 스크립트 안에 bool 값을 가져옴
         {
             curST -= 15 * Time.deltaTime;
         }
-        else if (!Player.curAnim.GetBool("IsRunning"))
+        else if (!Player.curAnim[0].GetBool("IsRunning"))
         {
             if (delta == 0.0f)
             {
