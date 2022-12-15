@@ -5,10 +5,12 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+using static Movement;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Movement : MonoBehaviour
 {
-    private Rigidbody rigidbody;
+    public new Rigidbody rigidbody;
 
     [Header("Character")]
     public ONWHAT onWhat = ONWHAT.Street;
@@ -20,21 +22,26 @@ public class Movement : MonoBehaviour
     public float Speed = 4f;
     public float dashSpeed = 7f;
     public float rotSpeed = 10f;
+    public float JumpHeight = 3f;
     private Vector3 dir = Vector3.zero;
+    public LayerMask layer;
     private float totalDist;
     public bool run;
     public bool canRun = true;
     public bool stun = false;
+    public bool ground = true;
 
-    [Header("OnTheBroom")]
+
+    [Header("BroomMovement")]
     public float B_Speed = 10f;
     public float B_RotSpeed = 3f;
     private float B_totalDist;
-    public float B_jumpHeight = 0.2f;
+    public float B_AddFloatPower = 0.2f;
+    public float restrictedHeight = 20f;
 
 
     [Header("UI")]
-    public TMPro.TMP_Text state;
+    public TMPro.TMP_Text[] state;
     public StaminaBar myStamina;
     public Slider myStaminaSlider;
     public HPBar myHPBar;
@@ -50,17 +57,35 @@ public class Movement : MonoBehaviour
 
     public void ChangeState(ONWHAT what)
     {
-        if (onWhat == what) return;
+        //if (onWhat == what) return;
         onWhat = what;
         switch(onWhat)
         {
             case ONWHAT.Street:
+                
                 KK.SetActive(true);
                 BR.SetActive(false);
                 break;
             case ONWHAT.Broom:
-                KK.SetActive(false);
+                
                 BR.SetActive(true);
+                KK.SetActive(false);
+                break;
+        }
+    }
+    public void StateProcess()
+    {
+        switch (onWhat)
+        {
+            case ONWHAT.Street:
+                if (mySkill.canMove && !stun)
+                {
+                    C_Movement(); //상시실행
+                    Running();
+                }
+                break;
+            case ONWHAT.Broom:
+                B_Movement();
                 break;
         }
     }
@@ -69,13 +94,13 @@ public class Movement : MonoBehaviour
     {
         ChangeState(ONWHAT.Street);
         rigidbody = this.GetComponent<Rigidbody>();
-        state.text = "Idle";
+        state[0].text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
     }
 
     void Update()
     {
-        if(ONWHAT.Street == onWhat)
+        /*if(ONWHAT.Street == onWhat)
         {
             if (mySkill.canMove && !stun)
             {
@@ -87,19 +112,57 @@ public class Movement : MonoBehaviour
         if(ONWHAT.Broom == onWhat)
         {
             B_Movement();
+        }*/
+
+        StateProcess();
+        CheckGround();
+
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            SwitchingCharacter();
         }
 
-        if(Input.GetKeyDown(KeyCode.L)&& onWhat == ONWHAT.Street)
-        {
-            ChangeState(ONWHAT.Broom);
-        }
-
-        if (Input.GetKeyDown(KeyCode.L) && onWhat == ONWHAT.Broom)
-        {
-            ChangeState(ONWHAT.Street);
-        }
+        
 
     }
+
+    public void CheckGround() // 연속점프 방지, 점프를 땅에 있을 때만
+    {
+
+        //피봇 위치가 발끝이기 때문에 캐릭터 발이 땅에 붙어버리면 검출할 수 없기 때문에 (Vector3.up * 0.2f)로 살짝 올려서 레이를 쏨
+        // Vector3.down 아래니까 아래로 쏴야 함
+        // 얼마만큼의 거리에 레이저를 쏠건지 = 0.4f
+        // = 레이저를 쏠건데 캐릭터의 발 끝보다 0.2 만큼 높은 위치에서 아래방향으로 쏠것이고 0.4 만큼만 레이저가 발사 될것이다
+        // 이 길이 안에서 우리가 설정할 레이어가 검출이 되면 그 정보를 out hit 에 담아라
+
+        // 이쪽 프로젝트로 옮기는 과정에서 원래 수치값(0.4f, 0.2f) 와 상이하게 해야하는 문제가 좀 있네요 
+        RaycastHit hit;
+        if (Physics.Raycast(this.transform.localPosition + (Vector3.up * 0.3f), Vector3.down, out hit, 0.4f, layer))
+        {
+            ground = true;
+            state[1].text = "Ground";
+        }
+        else
+        {
+            ground = false;
+            state[1].text = "InAir";
+            //curAnimator.SetBool("InAir", true);
+        }
+    }
+    void SwitchingCharacter()
+    {
+        if(ONWHAT.Broom != onWhat)
+        {
+            onWhat = ONWHAT.Broom;
+            ChangeState(ONWHAT.Broom);
+        }
+        else
+        {
+            onWhat = ONWHAT.Street;
+            ChangeState(ONWHAT.Street);
+        }
+    }
+
     public void OnDmg(float dmg)
     {
         myHPBar.HandleHP(dmg);
@@ -154,19 +217,19 @@ public class Movement : MonoBehaviour
     {
         if (curAnim[0].GetBool("IsWalking"))
         {
-            state.text = "Walk";
+            state[0].text = "Walk";
         }
         
         if (curAnim[0].GetBool("IsRunning"))
         {
-            state.text = "Run";
+            state[0].text = "Run";
         }
     }
 
 
     void C_Movement()
     {
-       
+        rigidbody.drag = 0f;
         dir.x = Input.GetAxisRaw("Horizontal");
         dir.z = Input.GetAxisRaw("Vertical");
         totalDist = dir.magnitude;
@@ -181,7 +244,7 @@ public class Movement : MonoBehaviour
         if (totalDist <= 0.0f)
         {
             curAnim[0].SetBool("IsWalking", false);
-            state.text = "Idle";
+            state[0].text = "Idle";
         }
 
         
@@ -204,21 +267,35 @@ public class Movement : MonoBehaviour
             // 캐릭터의 앞방향은 dir 키보드를 누른 방향으로 캐릭터 회전
             // Lerp를 쓰면 원하는 방향까지 서서히 회전
         }
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            state[0].text = "Jump";
+            curAnim[0].SetTrigger("Jump");
+            StartCoroutine(Jumping(0.6f));
+        }
+
     }
     void B_Movement()
     {
-        dir.x = Input.GetAxisRaw("Horizontal");
-        dir.z = Input.GetAxisRaw("Vertical");
+        rigidbody.drag = 6f;
+        dir.x = Input.GetAxis("Horizontal");
+        dir.z = Input.GetAxis("Vertical");
         totalDist = dir.magnitude;
 
         GetComponent<Rigidbody>().MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
+
         transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
 
-        if (Input.GetKey(KeyCode.Space))
+        if (this.transform.position.y < restrictedHeight) // 높이제한
         {
-            Vector3 jumpPower = Vector3.up * B_jumpHeight;
-            GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
+            if (Input.GetKey(KeyCode.Space))
+            {
+                Vector3 jumpPower = Vector3.up * B_AddFloatPower;
+                GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
+            }
         }
+        
     }
 
     IEnumerator Stunned(float cool) // 못 움직이게 하는 스킬들
@@ -226,11 +303,25 @@ public class Movement : MonoBehaviour
         stun = true;
         while (cool > 0.0f)
         {
-            state.text = "Stun";
+            state[0].text = "Stun";
             cool -= Time.deltaTime;
             yield return null;
         }
         stun = false;
+    }
+
+    IEnumerator Jumping(float cool)
+    {
+        mySkill.canMove = false;
+        while (cool > 0.0f)
+        {
+            state[0].text = "Stun";
+            cool -= Time.deltaTime;
+            yield return null;
+        }
+        mySkill.canMove = true;
+        Vector3 jumpPower = Vector3.up * JumpHeight;
+        GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
     }
 
 

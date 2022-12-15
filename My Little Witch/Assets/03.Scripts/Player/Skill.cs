@@ -61,7 +61,7 @@ public class Skill : MonoBehaviour
         float coolTime = cool;
         while (cool > 0.0f)
         {
-            myPlayer.state.text = "Chill";
+            myPlayer.state[0].text = "Chill";
             cool -= Time.deltaTime;
             yield return null;
         }
