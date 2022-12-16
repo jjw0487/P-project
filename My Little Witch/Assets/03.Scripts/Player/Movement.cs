@@ -62,12 +62,12 @@ public class Movement : MonoBehaviour
         switch(onWhat)
         {
             case ONWHAT.Street:
-                
+                rigidbody.drag = 0f;
                 KK.SetActive(true);
                 BR.SetActive(false);
                 break;
             case ONWHAT.Broom:
-                
+                rigidbody.drag = 6f;
                 BR.SetActive(true);
                 KK.SetActive(false);
                 break;
@@ -90,30 +90,21 @@ public class Movement : MonoBehaviour
         }
     }
 
+    private void Awake()
+    {
+        rigidbody = this.GetComponent<Rigidbody>();
+    }
+
     void Start()
     {
-        ChangeState(ONWHAT.Street);
-        rigidbody = this.GetComponent<Rigidbody>();
+        ChangeState(ONWHAT.Street);        
         state[0].text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
     }
 
     void Update()
     {
-        /*if(ONWHAT.Street == onWhat)
-        {
-            if (mySkill.canMove && !stun)
-            {
-                C_Movement(); //상시실행
-                Running();
-            }
-        }
-
-        if(ONWHAT.Broom == onWhat)
-        {
-            B_Movement();
-        }*/
-
+        
         StateProcess();
         CheckGround();
 
@@ -135,19 +126,36 @@ public class Movement : MonoBehaviour
         // = 레이저를 쏠건데 캐릭터의 발 끝보다 0.2 만큼 높은 위치에서 아래방향으로 쏠것이고 0.4 만큼만 레이저가 발사 될것이다
         // 이 길이 안에서 우리가 설정할 레이어가 검출이 되면 그 정보를 out hit 에 담아라
 
-        // 이쪽 프로젝트로 옮기는 과정에서 원래 수치값(0.4f, 0.2f) 와 상이하게 해야하는 문제가 좀 있네요 
-        RaycastHit hit;
-        if (Physics.Raycast(this.transform.localPosition + (Vector3.up * 0.3f), Vector3.down, out hit, 0.4f, layer))
+        // 이쪽 프로젝트로 옮기는 과정에서 원래 수치값(0.4f, 0.2f) 와 상이하게 해야하는 문제가 좀 있네요
+        if(onWhat == ONWHAT.Street)
         {
-            ground = true;
-            state[1].text = "Ground";
+            RaycastHit hit;
+            if (Physics.Raycast(this.transform.localPosition + (Vector3.up * 0.2f), Vector3.down, out hit, 0.4f, layer))
+            {
+                ground = true;
+                state[1].text = "Ground";
+            }
+            else
+            {
+                ground = false;
+                state[1].text = "InAir";
+            }
         }
         else
         {
-            ground = false;
-            state[1].text = "InAir";
-            //curAnimator.SetBool("InAir", true);
+            RaycastHit hit;
+            if (Physics.Raycast(this.transform.localPosition, Vector3.down, out hit, 0.3f, layer))
+            {
+                ground = true;
+                state[1].text = "Ground";
+            }
+            else
+            {
+                ground = false;
+                state[1].text = "InAir";
+            }
         }
+        
     }
     void SwitchingCharacter()
     {
@@ -229,7 +237,6 @@ public class Movement : MonoBehaviour
 
     void C_Movement()
     {
-        rigidbody.drag = 0f;
         dir.x = Input.GetAxisRaw("Horizontal");
         dir.z = Input.GetAxisRaw("Vertical");
         totalDist = dir.magnitude;
@@ -272,18 +279,18 @@ public class Movement : MonoBehaviour
         {
             state[0].text = "Jump";
             curAnim[0].SetTrigger("Jump");
-            StartCoroutine(Jumping(0.6f));
+            StartCoroutine(Jumping(0.6f, 1.4f));
+            
         }
 
     }
     void B_Movement()
     {
-        rigidbody.drag = 6f;
         dir.x = Input.GetAxis("Horizontal");
         dir.z = Input.GetAxis("Vertical");
         totalDist = dir.magnitude;
 
-        GetComponent<Rigidbody>().MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
+        rigidbody.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
 
         transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
 
@@ -310,18 +317,29 @@ public class Movement : MonoBehaviour
         stun = false;
     }
 
-    IEnumerator Jumping(float cool)
+    IEnumerator Jumping(float cool, float cool2)
     {
         mySkill.canMove = false;
         while (cool > 0.0f)
         {
-            state[0].text = "Stun";
+            state[0].text = "Jump";
             cool -= Time.deltaTime;
             yield return null;
         }
-        mySkill.canMove = true;
         Vector3 jumpPower = Vector3.up * JumpHeight;
         GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
+
+        while (cool2 > 0.0f)
+        {
+            cool2 -= Time.deltaTime;
+
+            dir.x = Input.GetAxis("Horizontal");
+            dir.z = Input.GetAxis("Vertical");
+            rigidbody.MovePosition(this.transform.position + dir * 1f * Time.deltaTime);
+            transform.forward = Vector3.Lerp(transform.forward, dir, 2f * Time.deltaTime);
+            yield return null;
+        }
+        mySkill.canMove = true;
     }
 
 
