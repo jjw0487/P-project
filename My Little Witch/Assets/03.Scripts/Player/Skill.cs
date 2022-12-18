@@ -29,7 +29,7 @@ public class Skill : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1) && canSkill && myMagicCircuit.value > 40f)
         {
             myPlayer.curAnim[0].SetTrigger("MagicSplash");
-            GameObject obj = Instantiate(Resources.Load("Effect/Circle"), this.transform.position + Vector3.up, Quaternion.identity) as GameObject;
+            GameObject obj = Instantiate(Resources.Load("Effect/Circle"), this.transform.position + Vector3.up, Quaternion.Euler(new Vector3(-90f, 0f, 0f))) as GameObject;
             myMagicGage.HandleMP(40f);
             StartCoroutine(Chill(2.8f, obj));
         }

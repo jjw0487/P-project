@@ -35,7 +35,6 @@ public class Movement : MonoBehaviour
     [Header("BroomMovement")]
     public float B_Speed = 10f;
     public float B_RotSpeed = 3f;
-    private float B_totalDist;
     public float B_AddFloatPower = 0.2f;
     public float restrictedHeight = 20f;
 
@@ -62,11 +61,13 @@ public class Movement : MonoBehaviour
         switch(onWhat)
         {
             case ONWHAT.Street:
+                Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
                 rigidbody.drag = 0f;
                 KK.SetActive(true);
                 BR.SetActive(false);
                 break;
             case ONWHAT.Broom:
+                Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
                 rigidbody.drag = 6f;
                 BR.SetActive(true);
                 KK.SetActive(false);
@@ -81,7 +82,6 @@ public class Movement : MonoBehaviour
                 if (mySkill.canMove && !stun)
                 {
                     C_Movement(); //상시실행
-                    Running();
                 }
                 break;
             case ONWHAT.Broom:
@@ -104,33 +104,67 @@ public class Movement : MonoBehaviour
 
     void Update()
     {
-        
         StateProcess();
         CheckGround();
-
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.L) && ground)
         {
             SwitchingCharacter();
         }
+        if (Input.GetKeyDown(KeyCode.Space) && ground)
+        {
+            state[0].text = "Jump";
+            C_Jump();
+        }
+    }
 
-        
+    private void FixedUpdate()
+    {
+        dir.x = Input.GetAxis("Horizontal");
+        dir.z = Input.GetAxis("Vertical");
+        totalDist = dir.magnitude;
 
+        // 움직임 관련해서는 나중에 옮겨주자
+        if (onWhat == ONWHAT.Street)
+        {
+            if (mySkill.canMove && !stun)
+            {
+                rigidbody.MovePosition(this.transform.position + dir * Speed * Time.deltaTime);
+                Running();
+            }
+            
+            if (dir != Vector3.zero) //벡터의 제로가 아니라면 키 입력이 됨
+            {
+                // 앞으로 나아갈 때 + 방향으로 나아가는데 반대방향으로 나가가는 키를 눌렀을 때 -방향으로 회전하면서 생기는 오류를 방지하기위해 (부호가 서로 반대일 경우를 체크해서 살짝만 미리 돌려주는 코드) 어렵네요... 
+                // 지금 바라보는 방향의 부호 != 나아갈 방향 부호
+                if (Mathf.Sign(transform.forward.x) != Mathf.Sign(dir.x) ||
+                    Mathf.Sign(transform.forward.z) != Mathf.Sign(dir.z))
+                {
+                    //우리는 이동할 때 x 와 z 밖에 사용을 안하므로
+                    transform.Rotate(0, 1, 0); // 살짝만 회전
+                                               //정 반대방향을 눌러도 회전안하는 버그 방지
+                                               //미리 회전을 조금 시켜서 정반대인 경우를 제거
+                }
+
+                transform.forward = Vector3.Lerp(transform.forward, dir, rotSpeed * Time.deltaTime);
+                // Slerp를 쓸지 Lerp를 쓸지 상의를 해봐야 할 것 같아용 
+                // 캐릭터의 앞방향은 dir 키보드를 누른 방향으로 캐릭터 회전
+                // Lerp를 쓰면 원하는 방향까지 서서히 회전
+            }
+        }
+        else
+        {
+            rigidbody.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
+            transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
+        }
     }
 
     public void CheckGround() // 연속점프 방지, 점프를 땅에 있을 때만
     {
-
-        //피봇 위치가 발끝이기 때문에 캐릭터 발이 땅에 붙어버리면 검출할 수 없기 때문에 (Vector3.up * 0.2f)로 살짝 올려서 레이를 쏨
-        // Vector3.down 아래니까 아래로 쏴야 함
-        // 얼마만큼의 거리에 레이저를 쏠건지 = 0.4f
-        // = 레이저를 쏠건데 캐릭터의 발 끝보다 0.2 만큼 높은 위치에서 아래방향으로 쏠것이고 0.4 만큼만 레이저가 발사 될것이다
-        // 이 길이 안에서 우리가 설정할 레이어가 검출이 되면 그 정보를 out hit 에 담아라
-
-        // 이쪽 프로젝트로 옮기는 과정에서 원래 수치값(0.4f, 0.2f) 와 상이하게 해야하는 문제가 좀 있네요
         if(onWhat == ONWHAT.Street)
         {
             RaycastHit hit;
             if (Physics.Raycast(this.transform.localPosition + (Vector3.up * 0.2f), Vector3.down, out hit, 0.4f, layer))
+                //발끝에서 0.2만큼 올려서 아랫방향으로 0.4만큼 쏜다
             {
                 ground = true;
                 state[1].text = "Ground";
@@ -178,6 +212,23 @@ public class Movement : MonoBehaviour
         curAnim[0].SetTrigger("IsHit");
         //curAnim[1].SetTrigger("IsHit");
     }
+
+    void StateNotice()
+    {
+        if (curAnim[0].GetBool("IsWalking"))
+        {
+            state[0].text = "Walk";
+        }
+
+        if (curAnim[0].GetBool("IsRunning"))
+        {
+            state[0].text = "Run";
+        }
+    }
+
+    
+   /////////////////////////////////Character/////////////////////////////////////////////////
+    
     void Running()
     {
         if (Mathf.Approximately(myStaminaSlider.value, 0.0f))
@@ -221,27 +272,8 @@ public class Movement : MonoBehaviour
         }
     }
 
-    void StateNotice()
-    {
-        if (curAnim[0].GetBool("IsWalking"))
-        {
-            state[0].text = "Walk";
-        }
-        
-        if (curAnim[0].GetBool("IsRunning"))
-        {
-            state[0].text = "Run";
-        }
-    }
-
-
     void C_Movement()
     {
-        dir.x = Input.GetAxisRaw("Horizontal");
-        dir.z = Input.GetAxisRaw("Vertical");
-        totalDist = dir.magnitude;
-
-        rigidbody.MovePosition(this.transform.position + dir * Speed * Time.deltaTime);
 
         if (totalDist > 0.0f)
         {
@@ -253,58 +285,86 @@ public class Movement : MonoBehaviour
             curAnim[0].SetBool("IsWalking", false);
             state[0].text = "Idle";
         }
+    }
+    void C_Jump()
+    {
 
-        
+        curAnim[0].SetTrigger("Jump");
+        StartCoroutine(Jumping(0.6f, 0.8f, 0.6f));
+    }
 
-        if (dir != Vector3.zero) //벡터의 제로가 아니라면 키 입력이 됨
+    
+    ///////////////////////////////////////////Broom//////////////////////////////////////
+    
+    void B_Movement()
+    {
+
+        B_DashnHeight(); //대시와 높이제한
+
+        if (dir.z < 0)
         {
-            // 앞으로 나아갈 때 + 방향으로 나아가는데 반대방향으로 나가가는 키를 눌렀을 때 -방향으로 회전하면서 생기는 오류를 방지하기위해 (부호가 서로 반대일 경우를 체크해서 살짝만 미리 돌려주는 코드) 어렵네요... 
-            // 지금 바라보는 방향의 부호 != 나아갈 방향 부호
-            if (Mathf.Sign(transform.forward.x) != Mathf.Sign(dir.x) ||
-                Mathf.Sign(transform.forward.z) != Mathf.Sign(dir.z))
+            if (dir.x < 0)//left
             {
-                //우리는 이동할 때 x 와 z 밖에 사용을 안하므로
-                transform.Rotate(0, 1, 0); // 살짝만 회전
-                //정 반대방향을 눌러도 회전안하는 버그 방지
-                //미리 회전을 조금 시켜서 정반대인 경우를 제거
+                print("3");
+                curAnim[1].SetBool("IsTurningRight", true);
+            }
+            if (dir.x > 0) //right
+            {
+                print("4");
+                curAnim[1].SetBool("IsTurningLeft", true);
+
             }
 
-            transform.forward = Vector3.Lerp(transform.forward, dir, rotSpeed * Time.deltaTime);
-            // Slerp를 쓸지 Lerp를 쓸지 상의를 해봐야 할 것 같아용 
-            // 캐릭터의 앞방향은 dir 키보드를 누른 방향으로 캐릭터 회전
-            // Lerp를 쓰면 원하는 방향까지 서서히 회전
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (dir.z > 0)
         {
-            state[0].text = "Jump";
-            curAnim[0].SetTrigger("Jump");
-            StartCoroutine(Jumping(0.6f, 1.4f));
-            
+          
+            if (dir.x < 0)//left
+            {
+                print("1");
+                curAnim[1].SetBool("IsTurningLeft", true);
+            }
+            if (dir.x > 0) //right
+            {
+                print("2");
+                curAnim[1].SetBool("IsTurningRight", true);
+            }
+        }
+
+        if (dir.x == 0)//Idle
+        {
+            print("3");
+            curAnim[1].SetBool("IsTurningLeft", false);
+            curAnim[1].SetBool("IsTurningRight", false);
         }
 
     }
-    void B_Movement()
+
+    void B_DashnHeight()
     {
-        dir.x = Input.GetAxis("Horizontal");
-        dir.z = Input.GetAxis("Vertical");
-        totalDist = dir.magnitude;
 
-        rigidbody.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+        {
+            Vector3 dashPower = this.transform.forward * -Mathf.Log(1 / rigidbody.drag) * 20f;
+            // drag 공기저항값을 역수로 뒤집어서 로그로 바꾸고 - 를 넣어줘서 값을 구한 후 우리가 구한 대시양을 곱해준다 < 자연스러운 대시를 위해(무슨 소리인지 모르겠다.)
+            rigidbody.AddForce(dashPower, ForceMode.VelocityChange);
+        }
 
-        transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
 
         if (this.transform.position.y < restrictedHeight) // 높이제한
         {
             if (Input.GetKey(KeyCode.Space))
             {
                 Vector3 jumpPower = Vector3.up * B_AddFloatPower;
-                GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
+                rigidbody.AddForce(jumpPower, ForceMode.VelocityChange);
             }
         }
-        
     }
 
+
+    /////////////////////////////////////Coroutine//////////////////////////////////////////////////////////
+    
     IEnumerator Stunned(float cool) // 못 움직이게 하는 스킬들
     {
         stun = true;
@@ -317,7 +377,7 @@ public class Movement : MonoBehaviour
         stun = false;
     }
 
-    IEnumerator Jumping(float cool, float cool2)
+    IEnumerator Jumping(float cool, float cool2, float cool3)
     {
         mySkill.canMove = false;
         while (cool > 0.0f)
@@ -330,15 +390,27 @@ public class Movement : MonoBehaviour
         GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
 
         while (cool2 > 0.0f)
-        {
+        {// 점프 중 일정 시간에만 움직임과 로테이션을 따로 설정
             cool2 -= Time.deltaTime;
-
             dir.x = Input.GetAxis("Horizontal");
             dir.z = Input.GetAxis("Vertical");
             rigidbody.MovePosition(this.transform.position + dir * 1f * Time.deltaTime);
             transform.forward = Vector3.Lerp(transform.forward, dir, 2f * Time.deltaTime);
             yield return null;
         }
+
+        while (cool3 > 0.0f)
+        {
+            cool3 -= Time.deltaTime;
+
+            Debug.Log(transform.position.y);
+            /*if (rigidbody.collisionDetectionMode)
+            {
+            }*/
+            yield return null;
+        }
+
+        curAnim[0].SetTrigger("Land");
         mySkill.canMove = true;
     }
 
