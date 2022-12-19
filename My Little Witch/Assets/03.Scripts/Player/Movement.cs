@@ -82,6 +82,7 @@ public class Movement : MonoBehaviour
                 if (mySkill.canMove && !stun)
                 {
                     C_Movement(); //상시실행
+                    C_Movement(); //상시실행
                 }
                 break;
             case ONWHAT.Broom:
@@ -155,6 +156,14 @@ public class Movement : MonoBehaviour
         {
             rigidbody.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
             transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            curAnim[0].SetTrigger("Land");
         }
     }
 
@@ -300,7 +309,7 @@ public class Movement : MonoBehaviour
     {
 
         B_DashnHeight(); //대시와 높이제한
-
+        //Vector3 characterDir = transform.rotation * dir;
         if (dir.z < 0)
         {
             if (dir.x < 0)//left
@@ -316,7 +325,7 @@ public class Movement : MonoBehaviour
             }
 
         }
-
+        
         if (dir.z > 0)
         {
           
@@ -331,7 +340,7 @@ public class Movement : MonoBehaviour
                 curAnim[1].SetBool("IsTurningRight", true);
             }
         }
-
+        
         if (dir.x == 0)//Idle
         {
             print("3");
@@ -396,21 +405,17 @@ public class Movement : MonoBehaviour
             dir.z = Input.GetAxis("Vertical");
             rigidbody.MovePosition(this.transform.position + dir * 1f * Time.deltaTime);
             transform.forward = Vector3.Lerp(transform.forward, dir, 2f * Time.deltaTime);
+            transform.forward = Vector3.Lerp(transform.forward, dir, 2f * Time.deltaTime);
             yield return null;
         }
 
-        while (cool3 > 0.0f)
+       /* while (cool3 > 0.0f)
         {
             cool3 -= Time.deltaTime;
 
-            Debug.Log(transform.position.y);
-            /*if (rigidbody.collisionDetectionMode)
-            {
-            }*/
             yield return null;
         }
-
-        curAnim[0].SetTrigger("Land");
+        */
         mySkill.canMove = true;
     }
 
