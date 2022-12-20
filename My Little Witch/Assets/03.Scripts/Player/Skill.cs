@@ -11,19 +11,12 @@ public class Skill : MonoBehaviour
     public Slider myMagicCircuit;
     public bool canMove = true;
     public bool canSkill = true;
-
     public ChangeCursor myCursor;
-
-    void Start()
-    {
-        
-    }
 
     void Update()
     {
         OnSkill();
     }
-
     public void OnSkill()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1) && canSkill && myMagicCircuit.value > 40f)
@@ -34,8 +27,6 @@ public class Skill : MonoBehaviour
             StartCoroutine(Chill(2.8f, obj));
         }
     }
-
-
     public void Notification(bool can, bool cant)
     {
         if(!can)
@@ -46,12 +37,7 @@ public class Skill : MonoBehaviour
         {
             // .text = " 스킬을 시전중에 있습니다. "
         }
-        
     }
-
-
-
-
     IEnumerator Chill(float cool, GameObject obj) // 못 움직이게 하는 스킬들
     {
         canSkill = false;

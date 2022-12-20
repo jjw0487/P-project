@@ -31,6 +31,10 @@ public class Movement : MonoBehaviour
     public bool stun = false;
     public bool ground = true;
 
+    [Header("Ray")]
+    public Vector3 movePoint; // 이동 위치 저장
+    public Camera mainCamera; // 메인 카메라
+    public Vector3 MoveToRay;
 
     [Header("BroomMovement")]
     public float B_Speed = 10f;
@@ -79,9 +83,9 @@ public class Movement : MonoBehaviour
         switch (onWhat)
         {
             case ONWHAT.Street:
+                C_Ray();
                 if (mySkill.canMove && !stun)
                 {
-                    C_Movement(); //상시실행
                     C_Movement(); //상시실행
                 }
                 break;
@@ -111,12 +115,13 @@ public class Movement : MonoBehaviour
         {
             SwitchingCharacter();
         }
-        if (Input.GetKeyDown(KeyCode.Space) && ground)
-        {
-            state[0].text = "Jump";
-            C_Jump();
-        }
+
+        
+
     }
+
+    
+
 
     private void FixedUpdate()
     {
@@ -127,12 +132,17 @@ public class Movement : MonoBehaviour
         // 움직임 관련해서는 나중에 옮겨주자
         if (onWhat == ONWHAT.Street)
         {
-            if (mySkill.canMove && !stun)
+            // 목적지까지 거리가 0.1f 보다 멀다면
+            if (Vector3.Distance(transform.position, movePoint) > 0.1f)
             {
-                rigidbody.MovePosition(this.transform.position + dir * Speed * Time.deltaTime);
-                Running();
+                MoveToRay = (movePoint - transform.position).normalized * Speed;
+                if (mySkill.canMove && !stun)
+                {
+                    rigidbody.MovePosition(this.transform.position + MoveToRay * Speed * Time.deltaTime);
+                    Running();
+                }
             }
-            
+
             if (dir != Vector3.zero) //벡터의 제로가 아니라면 키 입력이 됨
             {
                 // 앞으로 나아갈 때 + 방향으로 나아가는데 반대방향으로 나가가는 키를 눌렀을 때 -방향으로 회전하면서 생기는 오류를 방지하기위해 (부호가 서로 반대일 경우를 체크해서 살짝만 미리 돌려주는 코드) 어렵네요... 
@@ -235,9 +245,24 @@ public class Movement : MonoBehaviour
         }
     }
 
-    
-   /////////////////////////////////Character/////////////////////////////////////////////////
-    
+
+    /////////////////////////////////Character/////////////////////////////////////////////////
+
+    void C_Ray()
+    {
+        if (Input.GetMouseButtonUp(0))
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
+
+            if (Physics.Raycast(ray, out RaycastHit raycastHit))
+            {
+                movePoint = raycastHit.point;
+                //Debug.Log("movePoint : " + movePoint.ToString());
+                //Debug.Log("맞은 객체 : " + raycastHit.transform.name);
+            }
+        }
+    }
     void Running()
     {
         if (Mathf.Approximately(myStaminaSlider.value, 0.0f))
@@ -265,7 +290,7 @@ public class Movement : MonoBehaviour
             {
                 run = true;
                 curAnim[0].SetBool("IsRunning", true);
-                rigidbody.MovePosition(this.gameObject.transform.position + dir * dashSpeed * Time.deltaTime);
+                rigidbody.MovePosition(this.gameObject.transform.position + MoveToRay * dashSpeed * Time.deltaTime);
             }
             else // 이동거리값이 0보다 작을 때 shift로 달리기 발동 안할 수 있도록
             {
@@ -294,10 +319,15 @@ public class Movement : MonoBehaviour
             curAnim[0].SetBool("IsWalking", false);
             state[0].text = "Idle";
         }
+
+        if (Input.GetKeyDown(KeyCode.Space) && ground)
+        {
+            state[0].text = "Jump";
+            C_Jump();
+        }
     }
     void C_Jump()
     {
-
         curAnim[0].SetTrigger("Jump");
         StartCoroutine(Jumping(0.6f, 0.8f, 0.6f));
     }
@@ -314,29 +344,23 @@ public class Movement : MonoBehaviour
         {
             if (dir.x < 0)//left
             {
-                print("3");
                 curAnim[1].SetBool("IsTurningRight", true);
             }
             if (dir.x > 0) //right
             {
-                print("4");
                 curAnim[1].SetBool("IsTurningLeft", true);
 
             }
-
         }
-        
         if (dir.z > 0)
         {
           
             if (dir.x < 0)//left
             {
-                print("1");
                 curAnim[1].SetBool("IsTurningLeft", true);
             }
             if (dir.x > 0) //right
             {
-                print("2");
                 curAnim[1].SetBool("IsTurningRight", true);
             }
         }

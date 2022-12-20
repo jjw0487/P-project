@@ -7,9 +7,6 @@ public class Arrow : MonoBehaviour
 {
     public float speed;
     Movement myTarget = null;
-
-
-
     private void OnTriggerEnter(Collider other)
     {
         myTarget.OnDmg(20f);

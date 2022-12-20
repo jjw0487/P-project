@@ -24,7 +24,6 @@ public class Tower : MonoBehaviour
             StartCoroutine(Targetting());
             StartCoroutine(Attacking(2f, 3f));
         }
-
     }
 
     private void OnTriggerStay(Collider other)
