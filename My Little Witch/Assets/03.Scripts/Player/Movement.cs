@@ -7,6 +7,8 @@ using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using static Movement;
 using static UnityEditor.Experimental.GraphView.GraphView;
+using static UnityEditor.PlayerSettings;
+using static UnityEngine.GraphicsBuffer;
 
 public class Movement : MonoBehaviour
 {
@@ -34,7 +36,7 @@ public class Movement : MonoBehaviour
     [Header("Ray")]
     public Vector3 movePoint; // 이동 위치 저장
     public Camera mainCamera; // 메인 카메라
-    public Vector3 MoveToRay;
+    public float totalRayDist;
 
     [Header("BroomMovement")]
     public float B_Speed = 10f;
@@ -83,10 +85,12 @@ public class Movement : MonoBehaviour
         switch (onWhat)
         {
             case ONWHAT.Street:
-                C_Ray();
+                
                 if (mySkill.canMove && !stun)
                 {
                     C_Movement(); //상시실행
+                    C_Ray();
+                    Running();
                 }
                 break;
             case ONWHAT.Broom:
@@ -98,11 +102,12 @@ public class Movement : MonoBehaviour
     private void Awake()
     {
         rigidbody = this.GetComponent<Rigidbody>();
+        mainCamera = Camera.main;
     }
 
     void Start()
     {
-        ChangeState(ONWHAT.Street);        
+        ChangeState(ONWHAT.Street);
         state[0].text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
     }
@@ -116,7 +121,6 @@ public class Movement : MonoBehaviour
             SwitchingCharacter();
         }
 
-        
 
     }
 
@@ -125,42 +129,15 @@ public class Movement : MonoBehaviour
 
     private void FixedUpdate()
     {
+       
         dir.x = Input.GetAxis("Horizontal");
         dir.z = Input.GetAxis("Vertical");
-        totalDist = dir.magnitude;
+        //totalDist = dir.magnitude;
 
         // 움직임 관련해서는 나중에 옮겨주자
         if (onWhat == ONWHAT.Street)
         {
-            // 목적지까지 거리가 0.1f 보다 멀다면
-            if (Vector3.Distance(transform.position, movePoint) > 0.1f)
-            {
-                MoveToRay = (movePoint - transform.position).normalized * Speed;
-                if (mySkill.canMove && !stun)
-                {
-                    rigidbody.MovePosition(this.transform.position + MoveToRay * Speed * Time.deltaTime);
-                    Running();
-                }
-            }
-
-            if (dir != Vector3.zero) //벡터의 제로가 아니라면 키 입력이 됨
-            {
-                // 앞으로 나아갈 때 + 방향으로 나아가는데 반대방향으로 나가가는 키를 눌렀을 때 -방향으로 회전하면서 생기는 오류를 방지하기위해 (부호가 서로 반대일 경우를 체크해서 살짝만 미리 돌려주는 코드) 어렵네요... 
-                // 지금 바라보는 방향의 부호 != 나아갈 방향 부호
-                if (Mathf.Sign(transform.forward.x) != Mathf.Sign(dir.x) ||
-                    Mathf.Sign(transform.forward.z) != Mathf.Sign(dir.z))
-                {
-                    //우리는 이동할 때 x 와 z 밖에 사용을 안하므로
-                    transform.Rotate(0, 1, 0); // 살짝만 회전
-                                               //정 반대방향을 눌러도 회전안하는 버그 방지
-                                               //미리 회전을 조금 시켜서 정반대인 경우를 제거
-                }
-
-                transform.forward = Vector3.Lerp(transform.forward, dir, rotSpeed * Time.deltaTime);
-                // Slerp를 쓸지 Lerp를 쓸지 상의를 해봐야 할 것 같아용 
-                // 캐릭터의 앞방향은 dir 키보드를 누른 방향으로 캐릭터 회전
-                // Lerp를 쓰면 원하는 방향까지 서서히 회전
-            }
+           
         }
         else
         {
@@ -250,19 +227,60 @@ public class Movement : MonoBehaviour
 
     void C_Ray()
     {
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonDown(0))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
-
-            if (Physics.Raycast(ray, out RaycastHit raycastHit))
+            RaycastHit hitData;
+            if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Ground")))
             {
-                movePoint = raycastHit.point;
-                //Debug.Log("movePoint : " + movePoint.ToString());
-                //Debug.Log("맞은 객체 : " + raycastHit.transform.name);
+                movePoint = hitData.point;
             }
         }
+
+        totalRayDist = Vector3.Distance(transform.position, movePoint);
+        Vector3 dir = movePoint - transform.position;  
+        Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
+        Quaternion targetRot = Quaternion.LookRotation(dirXZ);
+
+        if (totalRayDist > 0.02f)
+        {
+            if (mySkill.canMove && !stun)
+            {
+                //rigidbody.MovePosition(this.transform.position + MoveToRay * Speed * Time.deltaTime);
+                rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, Speed * Time.deltaTime);
+                curAnim[0].SetBool("IsWalking", true);
+                StateNotice();
+                rigidbody.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, rotSpeed);
+            }
+        }
+        else
+        {
+            curAnim[0].SetBool("IsWalking", false);
+        }
+
     }
+
+    void C_Movement()
+    {
+
+        /*if (totalDist > 0.1f)
+        {
+            
+        }
+        if (totalDist <= 0.1f)
+        {
+            curAnim[0].SetBool("IsWalking", false);
+            state[0].text = "Idle";
+        }*/
+
+        if (Input.GetKeyDown(KeyCode.Space) && ground)
+        {
+            state[0].text = "Jump";
+            C_Jump();
+        }
+    }
+
     void Running()
     {
         if (Mathf.Approximately(myStaminaSlider.value, 0.0f))
@@ -285,12 +303,12 @@ public class Movement : MonoBehaviour
         else
         {
             //canRun= true;
-            if (Input.GetKey(KeyCode.LeftShift) && totalDist > 0.0f && canRun)
+            if (Input.GetKey(KeyCode.LeftShift) && totalRayDist > 0.02f && canRun)
             // 시프트를 눌렀고, 이동거리가 있으며 canRun 이 false가 아닐 때
             {
                 run = true;
                 curAnim[0].SetBool("IsRunning", true);
-                rigidbody.MovePosition(this.gameObject.transform.position + MoveToRay * dashSpeed * Time.deltaTime);
+                rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, dashSpeed * Time.deltaTime);
             }
             else // 이동거리값이 0보다 작을 때 shift로 달리기 발동 안할 수 있도록
             {
@@ -306,26 +324,7 @@ public class Movement : MonoBehaviour
         }
     }
 
-    void C_Movement()
-    {
-
-        if (totalDist > 0.0f)
-        {
-            curAnim[0].SetBool("IsWalking", true);
-            StateNotice();
-        }
-        if (totalDist <= 0.0f)
-        {
-            curAnim[0].SetBool("IsWalking", false);
-            state[0].text = "Idle";
-        }
-
-        if (Input.GetKeyDown(KeyCode.Space) && ground)
-        {
-            state[0].text = "Jump";
-            C_Jump();
-        }
-    }
+    
     void C_Jump()
     {
         curAnim[0].SetTrigger("Jump");
@@ -367,7 +366,6 @@ public class Movement : MonoBehaviour
         
         if (dir.x == 0)//Idle
         {
-            print("3");
             curAnim[1].SetBool("IsTurningLeft", false);
             curAnim[1].SetBool("IsTurningRight", false);
         }
