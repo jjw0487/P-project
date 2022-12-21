@@ -88,12 +88,21 @@ public class Movement : MonoBehaviour
         switch (onWhat)
         {
             case ONWHAT.Street:
-                
                 if (mySkill.canMove && !stun)
                 {
                     C_Movement(); //상시실행
                     C_Ray();
                     Running();
+                }
+
+                if(!mySkill.canMove || stun) //스킬이나 스턴이 걸리면 움직임 정지
+                {
+                    navAgent.SetDestination(transform.position);
+                }
+
+                if(Input.GetKeyDown(KeyCode.S)) // S키를 눌러 정지
+                {
+                    navAgent.SetDestination(transform.position);
                 }
                 break;
             case ONWHAT.Broom:

@@ -31,7 +31,7 @@ public class StaminaBar : MonoBehaviour
 
         if (Player.curAnim[0].GetBool("IsRunning")) // PlayerMovement 스크립트 안에 bool 값을 가져옴
         {
-            curST -= 15 * Time.deltaTime;
+            curST -= 5 * Time.deltaTime;
         }
         else if (!Player.curAnim[0].GetBool("IsRunning"))
         {
