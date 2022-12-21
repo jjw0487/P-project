@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
+using UnityEngine.AI;
 using static Movement;
 using static UnityEditor.Experimental.GraphView.GraphView;
 using static UnityEditor.PlayerSettings;
@@ -12,6 +13,7 @@ using static UnityEngine.GraphicsBuffer;
 
 public class Movement : MonoBehaviour
 {
+    NavMeshAgent navAgent;
     public new Rigidbody rigidbody;
 
     [Header("Character")]
@@ -19,30 +21,31 @@ public class Movement : MonoBehaviour
     public GameObject KK;
     public GameObject BR;
 
+
+    [Header("Ray")]
+    public Vector3 movePoint; // 이동 위치 저장
+    public Camera mainCamera; // 메인 카메라
+
+
     [Header("Movement")]
     public Animator[] curAnim;
-    public float Speed = 4f;
-    public float dashSpeed = 7f;
-    public float rotSpeed = 10f;
-    public float JumpHeight = 3f;
-    private Vector3 dir = Vector3.zero;
+    public float C_speed = 4f;
+    public float C_dashSpeed = 7f;
+    public float C_rotSpeed = 10f;
+    public float C_JumpHeight = 3f;
     public LayerMask layer;
-    private float totalDist;
     public bool run;
     public bool canRun = true;
     public bool stun = false;
     public bool ground = true;
 
-    [Header("Ray")]
-    public Vector3 movePoint; // 이동 위치 저장
-    public Camera mainCamera; // 메인 카메라
-    public float totalRayDist;
 
     [Header("BroomMovement")]
+    private Vector3 dir = Vector3.zero;
     public float B_Speed = 10f;
     public float B_RotSpeed = 3f;
     public float B_AddFloatPower = 0.2f;
-    public float restrictedHeight = 20f;
+    public float B_restrictedHeight = 20f;
 
 
     [Header("UI")]
@@ -101,6 +104,7 @@ public class Movement : MonoBehaviour
 
     private void Awake()
     {
+        navAgent = GetComponent<NavMeshAgent>();
         rigidbody = this.GetComponent<Rigidbody>();
         mainCamera = Camera.main;
     }
@@ -235,24 +239,25 @@ public class Movement : MonoBehaviour
             if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Ground")))
             {
                 movePoint = hitData.point;
+                if (mySkill.canMove && !stun)
+                {
+                    navAgent.SetDestination(movePoint);
+                }
             }
         }
 
-        totalRayDist = Vector3.Distance(transform.position, movePoint);
-        Vector3 dir = movePoint - transform.position;  
-        Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
-        Quaternion targetRot = Quaternion.LookRotation(dirXZ);
+        /*rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, Speed * Time.deltaTime);
+        rigidbody.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, rotSpeed);*/
 
-        if (totalRayDist > 0.02f)
+        /*totalRayDist = Vector3.Distance(transform.position, movePoint);
+        Vector3 dir = movePoint - transform.position;
+        Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
+        Quaternion targetRot = Quaternion.LookRotation(dirXZ);*/
+
+        if (navAgent.remainingDistance > 0.1f)
         {
-            if (mySkill.canMove && !stun)
-            {
-                //rigidbody.MovePosition(this.transform.position + MoveToRay * Speed * Time.deltaTime);
-                rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, Speed * Time.deltaTime);
-                curAnim[0].SetBool("IsWalking", true);
-                StateNotice();
-                rigidbody.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, rotSpeed);
-            }
+            curAnim[0].SetBool("IsWalking", true);
+            StateNotice();
         }
         else
         {
@@ -263,17 +268,6 @@ public class Movement : MonoBehaviour
 
     void C_Movement()
     {
-
-        /*if (totalDist > 0.1f)
-        {
-            
-        }
-        if (totalDist <= 0.1f)
-        {
-            curAnim[0].SetBool("IsWalking", false);
-            state[0].text = "Idle";
-        }*/
-
         if (Input.GetKeyDown(KeyCode.Space) && ground)
         {
             state[0].text = "Jump";
@@ -287,7 +281,7 @@ public class Movement : MonoBehaviour
         //스태미너 바의 밸류가 0에 근사치에 닿을 때
         {
             canRun = false;
-            if (totalDist > 0.0f)
+            if (navAgent.remainingDistance > 0.1f)
             {
                 curAnim[0].SetBool("IsWalking", true);
             }
@@ -295,7 +289,7 @@ public class Movement : MonoBehaviour
             {
                 curAnim[0].SetBool("IsWalking", false);
             }
-
+            navAgent.speed = C_speed;
             curAnim[0].SetBool("IsRunning", false);
 
             run = false;
@@ -303,16 +297,18 @@ public class Movement : MonoBehaviour
         else
         {
             //canRun= true;
-            if (Input.GetKey(KeyCode.LeftShift) && totalRayDist > 0.02f && canRun)
+            if (Input.GetKey(KeyCode.LeftShift) && navAgent.remainingDistance > 0.1f && canRun)
             // 시프트를 눌렀고, 이동거리가 있으며 canRun 이 false가 아닐 때
             {
                 run = true;
+                navAgent.speed = C_dashSpeed;
                 curAnim[0].SetBool("IsRunning", true);
-                rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, dashSpeed * Time.deltaTime);
+                //rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, dashSpeed * Time.deltaTime);
             }
             else // 이동거리값이 0보다 작을 때 shift로 달리기 발동 안할 수 있도록
             {
                 run = false;
+                navAgent.speed = C_speed;
                 curAnim[0].SetBool("IsRunning", false);
             }
         }
@@ -321,6 +317,7 @@ public class Movement : MonoBehaviour
         // 시프트 키를 떼었고, canRun 이 false일 때
         {
             canRun = true;
+            navAgent.speed = C_speed;
         }
     }
 
@@ -383,12 +380,13 @@ public class Movement : MonoBehaviour
         }
 
 
-        if (this.transform.position.y < restrictedHeight) // 높이제한
+        if (this.transform.position.y < B_restrictedHeight) // 높이제한
         {
             if (Input.GetKey(KeyCode.Space))
             {
                 Vector3 jumpPower = Vector3.up * B_AddFloatPower;
                 rigidbody.AddForce(jumpPower, ForceMode.VelocityChange);
+               
             }
         }
     }
@@ -417,7 +415,7 @@ public class Movement : MonoBehaviour
             cool -= Time.deltaTime;
             yield return null;
         }
-        Vector3 jumpPower = Vector3.up * JumpHeight;
+        Vector3 jumpPower = Vector3.up * C_JumpHeight;
         GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
 
         while (cool2 > 0.0f)
