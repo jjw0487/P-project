@@ -255,7 +255,7 @@ public class Movement : MonoBehaviour
                 movePoint = hitData.point;
                 if (mySkill.canMove && !stun)
                 {
-                    navAgent.SetDestination(movePoint);
+                   navAgent.SetDestination(movePoint);
                 }
             }
         }

@@ -103,14 +103,14 @@ Material:
     - _GlossinessSource: 0
     - _GlossyReflections: 1
     - _IndirectLightMultiplier: 1
-    - _IsFace: 1
+    - _IsFace: 0
     - _MainLightIgnoreCelShade: 0
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionRemapEnd: 1
     - _OcclusionRemapStart: 0
     - _OcclusionStrength: 1
-    - _OutlineWidth: 1.55
+    - _OutlineWidth: 1.1
     - _OutlineZOffset: 0.0001
     - _OutlineZOffsetMaskRemapEnd: 1
     - _OutlineZOffsetMaskRemapStart: 0
