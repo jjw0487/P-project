@@ -45,7 +45,7 @@ public class Movement : MonoBehaviour
     public float B_Speed = 10f;
     public float B_RotSpeed = 3f;
     public float B_AddFloatPower = 0.2f;
-    public float B_restrictedHeight = 20f;
+    public float B_restrictedHeight = 1000f;
 
 
     [Header("UI")]
@@ -70,14 +70,21 @@ public class Movement : MonoBehaviour
         switch(onWhat)
         {
             case ONWHAT.Street:
+                navAgent.enabled = true;
                 Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
                 rigidbody.drag = 0f;
+                rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+
                 KK.SetActive(true);
                 BR.SetActive(false);
                 break;
             case ONWHAT.Broom:
+                navAgent.SetDestination(transform.position);
+                navAgent.enabled = false;
                 Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
                 rigidbody.drag = 6f;
+                rigidbody.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+                
                 BR.SetActive(true);
                 KK.SetActive(false);
                 break;
@@ -107,6 +114,7 @@ public class Movement : MonoBehaviour
                 break;
             case ONWHAT.Broom:
                 B_Movement();
+                B_DashnHeight(); //대시와 높이제한
                 break;
         }
     }
@@ -115,12 +123,12 @@ public class Movement : MonoBehaviour
     {
         navAgent = GetComponent<NavMeshAgent>();
         rigidbody = this.GetComponent<Rigidbody>();
+        ChangeState(ONWHAT.Street);
         mainCamera = Camera.main;
     }
 
     void Start()
     {
-        ChangeState(ONWHAT.Street);
         state[0].text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
     }
@@ -148,24 +156,21 @@ public class Movement : MonoBehaviour
         //totalDist = dir.magnitude;
 
         // 움직임 관련해서는 나중에 옮겨주자
-        if (onWhat == ONWHAT.Street)
-        {
-           
-        }
-        else
+        if (onWhat == ONWHAT.Broom)
         {
             rigidbody.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
             transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
         }
+       
     }
 
-    private void OnCollisionEnter(Collision collision)
+    /*private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
         {
             curAnim[0].SetTrigger("Land");
         }
-    }
+    }*/
 
     public void CheckGround() // 연속점프 방지, 점프를 땅에 있을 때만
     {
@@ -343,7 +348,8 @@ public class Movement : MonoBehaviour
     void B_Movement()
     {
 
-        B_DashnHeight(); //대시와 높이제한
+        
+
         //Vector3 characterDir = transform.rotation * dir;
         if (dir.z < 0)
         {
