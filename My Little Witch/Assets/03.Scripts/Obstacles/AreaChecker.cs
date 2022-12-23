@@ -6,6 +6,7 @@ public class AreaChecker : MonoBehaviour
 {
     public LayerMask enemyMask;
     public Obstacles myStones;
+    BoxCollider myBox;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,6 +16,9 @@ public class AreaChecker : MonoBehaviour
             myStones.DropStones();
             print("³«ÇÏ");
         }
+
+        myBox = this.GetComponent<BoxCollider>();
+        myBox.enabled = false;
     }
 
 }
