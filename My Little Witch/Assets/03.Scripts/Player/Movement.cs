@@ -253,6 +253,7 @@ public class Movement : MonoBehaviour
             if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Ground")))
             {
                 movePoint = hitData.point;
+                print(movePoint);
                 if (mySkill.canMove && !stun)
                 {
                    navAgent.SetDestination(movePoint);
