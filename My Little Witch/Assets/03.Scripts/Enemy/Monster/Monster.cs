@@ -48,8 +48,10 @@ public class Monster : MonoBehaviour
                 StopAllCoroutines();
                 break;
             case MonsterState.Attack:
+                
                 StopAllCoroutines();
                 monAgent.SetDestination(transform.position);
+                print(transform.position);
                 myAnim.SetTrigger("Attack");
                 StartCoroutine(Attacking(3f));
                 break;
@@ -165,7 +167,7 @@ public class Monster : MonoBehaviour
     {
         yield return new WaitForSeconds(chill);
         ChangeState(MonsterState.Idle);
-        
+     
     }
 
 

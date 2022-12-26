@@ -141,12 +141,7 @@ public class Movement : MonoBehaviour
         {
             SwitchingCharacter();
         }
-
-
     }
-
-    
-
 
     private void FixedUpdate()
     {
@@ -257,6 +252,7 @@ public class Movement : MonoBehaviour
                 if (mySkill.canMove && !stun)
                 {
                    navAgent.SetDestination(movePoint);
+                   
                 }
             }
         }
