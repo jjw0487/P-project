@@ -43,7 +43,6 @@ public class Tower : MonoBehaviour
         while (myEnemy != null)
         {
 
-            print("Target");
             // 3차원 회전을 간단하게 처리하는 방법
             Quaternion rot = Quaternion.LookRotation((myEnemy.AttackMark.position - myArrowStand.position).normalized);
             myNeck.rotation = Quaternion.Slerp(myNeck.rotation, rot, Time.deltaTime * 10f);

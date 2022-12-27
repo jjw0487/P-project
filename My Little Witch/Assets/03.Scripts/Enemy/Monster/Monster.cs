@@ -36,7 +36,7 @@ public class Monster : CharacterProperty
 
     public void ChangeState(MonsterState what)
     {
-        //if (state == what) return;
+        if (state == what) return;
         state = what;
         switch(state)
         {

@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c46ec19d5aeeb541a618dde8868cd01, type: 3}
   m_Name: Player
   m_EditorClassIdentifier: 
+  HP: 100
+  MP: 100
+  AT: 10
+  agentSpeed: 0
