@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CharacterProperty : MonoBehaviour
 {
@@ -27,6 +28,19 @@ public class CharacterProperty : MonoBehaviour
                 _rigid = GetComponent<Rigidbody>();
             }
             return _rigid;
+        }
+    }
+
+    NavMeshAgent _NavAgent = null;
+    protected NavMeshAgent myAgent
+    {
+        get
+        {
+            if (_NavAgent == null)
+            {
+                _NavAgent = GetComponent<NavMeshAgent>();
+            }
+            return _NavAgent;
         }
     }
 

@@ -11,16 +11,22 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.GraphicsBuffer;
 
-public class Movement : MonoBehaviour
+[Serializable]
+public struct PlayerStat
 {
-    NavMeshAgent navAgent;
-    public new Rigidbody rigidbody;
+    public PlayerData orgData;
+    public float curHP;
+    public float curMP;
+}
 
+
+public class Movement : CharacterProperty
+{
     [Header("Character")]
     public ONWHAT onWhat = ONWHAT.Street;
     public GameObject KK;
     public GameObject BR;
-
+    public PlayerStat charStat;
 
     [Header("Ray")]
     public Vector3 movePoint; // 이동 위치 저장
@@ -70,20 +76,20 @@ public class Movement : MonoBehaviour
         switch(onWhat)
         {
             case ONWHAT.Street:
-                navAgent.enabled = true;
+                myAgent.enabled = true;
                 Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
-                rigidbody.drag = 0f;
-                rigidbody.constraints = RigidbodyConstraints.FreezeAll;
+                myRigid.drag = 0f;
+                myRigid.constraints = RigidbodyConstraints.FreezeAll;
 
                 KK.SetActive(true);
                 BR.SetActive(false);
                 break;
             case ONWHAT.Broom:
-                navAgent.SetDestination(transform.position);
-                navAgent.enabled = false;
+                myAgent.SetDestination(transform.position);
+                myAgent.enabled = false;
                 Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
-                rigidbody.drag = 6f;
-                rigidbody.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
+                myRigid.drag = 6f;
+                myRigid.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
                 
                 BR.SetActive(true);
                 KK.SetActive(false);
@@ -104,12 +110,12 @@ public class Movement : MonoBehaviour
 
                 if(!mySkill.canMove || stun) //스킬이나 스턴이 걸리면 움직임 정지
                 {
-                    navAgent.SetDestination(transform.position);
+                    myAgent.SetDestination(transform.position);
                 }
 
                 if(Input.GetKeyDown(KeyCode.S)) // S키를 눌러 정지
                 {
-                    navAgent.SetDestination(transform.position);
+                    myAgent.SetDestination(transform.position);
                 }
                 break;
             case ONWHAT.Broom:
@@ -121,8 +127,6 @@ public class Movement : MonoBehaviour
 
     private void Awake()
     {
-        navAgent = GetComponent<NavMeshAgent>();
-        rigidbody = this.GetComponent<Rigidbody>();
         ChangeState(ONWHAT.Street);
         mainCamera = Camera.main;
     }
@@ -153,7 +157,7 @@ public class Movement : MonoBehaviour
         // 움직임 관련해서는 나중에 옮겨주자
         if (onWhat == ONWHAT.Broom)
         {
-            rigidbody.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
+            myRigid.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
             transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
         }
        
@@ -251,7 +255,7 @@ public class Movement : MonoBehaviour
                 //print(movePoint);
                 if (mySkill.canMove && !stun)
                 {
-                   navAgent.SetDestination(movePoint);
+                    myAgent.SetDestination(movePoint);
                    
                 }
             }
@@ -265,7 +269,7 @@ public class Movement : MonoBehaviour
         Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
         Quaternion targetRot = Quaternion.LookRotation(dirXZ);*/
 
-        if (navAgent.remainingDistance > 0.1f)
+        if (myAgent.remainingDistance > 0.1f)
         {
             curAnim[0].SetBool("IsWalking", true);
             StateNotice();
@@ -292,7 +296,7 @@ public class Movement : MonoBehaviour
         //스태미너 바의 밸류가 0에 근사치에 닿을 때
         {
             canRun = false;
-            if (navAgent.remainingDistance > 0.1f)
+            if (myAgent.remainingDistance > 0.1f)
             {
                 curAnim[0].SetBool("IsWalking", true);
             }
@@ -300,7 +304,7 @@ public class Movement : MonoBehaviour
             {
                 curAnim[0].SetBool("IsWalking", false);
             }
-            navAgent.speed = C_speed;
+            myAgent.speed = C_speed;
             curAnim[0].SetBool("IsRunning", false);
 
             run = false;
@@ -308,18 +312,18 @@ public class Movement : MonoBehaviour
         else
         {
             //canRun= true;
-            if (Input.GetKey(KeyCode.LeftShift) && navAgent.remainingDistance > 0.1f && canRun)
+            if (Input.GetKey(KeyCode.LeftShift) && myAgent.remainingDistance > 0.1f && canRun)
             // 시프트를 눌렀고, 이동거리가 있으며 canRun 이 false가 아닐 때
             {
                 run = true;
-                navAgent.speed = C_dashSpeed;
+                myAgent.speed = C_dashSpeed;
                 curAnim[0].SetBool("IsRunning", true);
                 //rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, dashSpeed * Time.deltaTime);
             }
             else // 이동거리값이 0보다 작을 때 shift로 달리기 발동 안할 수 있도록
             {
                 run = false;
-                navAgent.speed = C_speed;
+                myAgent.speed = C_speed;
                 curAnim[0].SetBool("IsRunning", false);
             }
         }
@@ -328,7 +332,7 @@ public class Movement : MonoBehaviour
         // 시프트 키를 떼었고, canRun 이 false일 때
         {
             canRun = true;
-            navAgent.speed = C_speed;
+            myAgent.speed = C_speed;
         }
     }
 
@@ -386,9 +390,9 @@ public class Movement : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            Vector3 dashPower = this.transform.forward * -Mathf.Log(1 / rigidbody.drag) * 20f;
+            Vector3 dashPower = this.transform.forward * -Mathf.Log(1 / myRigid.drag) * 20f;
             // drag 공기저항값을 역수로 뒤집어서 로그로 바꾸고 - 를 넣어줘서 값을 구한 후 우리가 구한 대시양을 곱해준다 < 자연스러운 대시를 위해(무슨 소리인지 모르겠다.)
-            rigidbody.AddForce(dashPower, ForceMode.VelocityChange);
+            myRigid.AddForce(dashPower, ForceMode.VelocityChange);
         }
 
 
@@ -397,7 +401,7 @@ public class Movement : MonoBehaviour
             if (Input.GetKey(KeyCode.Space))
             {
                 Vector3 jumpPower = Vector3.up * B_AddFloatPower;
-                rigidbody.AddForce(jumpPower, ForceMode.VelocityChange);
+                myRigid.AddForce(jumpPower, ForceMode.VelocityChange);
                
             }
         }
@@ -435,7 +439,7 @@ public class Movement : MonoBehaviour
             cool2 -= Time.deltaTime;
             dir.x = Input.GetAxis("Horizontal");
             dir.z = Input.GetAxis("Vertical");
-            rigidbody.MovePosition(this.transform.position + dir * 1f * Time.deltaTime);
+            myRigid.MovePosition(this.transform.position + dir * 1f * Time.deltaTime);
             transform.forward = Vector3.Lerp(transform.forward, dir, 2f * Time.deltaTime);
             transform.forward = Vector3.Lerp(transform.forward, dir, 2f * Time.deltaTime);
             yield return null;

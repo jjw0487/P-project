@@ -1,13 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AnimEvent : MonoBehaviour
 {
-    public Transform myAttackPoint;
+    Monster monster;
+
+    private void Awake()
+    {
+        monster = GetComponent<Monster>();   
+    }
 
     public void OnMonAttack()
     {
-        
+        monster.MonAttack();
     }
 }

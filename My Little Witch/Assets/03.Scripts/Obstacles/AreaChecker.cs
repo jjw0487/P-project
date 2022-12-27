@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AreaChecker : MonoBehaviour
-{
+{ // µ¹ ¶³¾îÆ®¸®±â
     public LayerMask enemyMask;
     public Obstacles myStones;
     BoxCollider myBox;
@@ -14,7 +14,6 @@ public class AreaChecker : MonoBehaviour
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
             myStones.DropStones();
-            print("³«ÇÏ");
         }
 
         myBox = this.GetComponent<BoxCollider>();

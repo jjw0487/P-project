@@ -12,5 +12,11 @@ public class MonData : ScriptableObject
         get;
         private set;
     }
-    public float moveSpeed;
+    [field: SerializeField]
+    public float AT
+    {
+        get; private set;
+    }
+    public float agentSpeed;
+    public float attackRadius;
 }
