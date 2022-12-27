@@ -6,22 +6,24 @@ using UnityEngine;
 using UnityEngine.AI;
 using static Movement;
 
-public class Monster : MonoBehaviour
+public class Monster : CharacterProperty
 {
     public enum MonsterState
     {
         Create, Idle, Roam, Target, Attack, Dead
     }
-
     public MonsterState state = MonsterState.Create;
+
     public Transform target;
-    Movement myEnemy;
     public LayerMask enemyMask;
-    Vector3 targetDir;
-    Animator myAnim;
-    NavMeshAgent monAgent;
-    Vector3 roamPos;
-    Vector3 IdlePos;
+
+    protected Movement myEnemy;
+    protected Vector3 targetDir;
+    protected AttackArea myAttackArea;
+
+    protected NavMeshAgent monAgent;
+    protected Vector3 roamPos;
+    protected Vector3 IdlePos;
     public void ChangeState(MonsterState what)
     {
         //if (state == what) return;
@@ -48,10 +50,9 @@ public class Monster : MonoBehaviour
                 StopAllCoroutines();
                 break;
             case MonsterState.Attack:
-                
                 StopAllCoroutines();
+                myAttackArea.StopAllCoroutines();
                 monAgent.SetDestination(transform.position);
-                print(transform.position);
                 myAnim.SetTrigger("Attack");
                 StartCoroutine(Attacking(3f));
                 break;
@@ -117,11 +118,14 @@ public class Monster : MonoBehaviour
                 break;
         }
     }
+    private void Awake()
+    {
+        myAttackArea = GetComponentInChildren<AttackArea>(); 
+    }
     private void Start()
     {
         monAgent = this.GetComponent<NavMeshAgent>();
         ChangeState(MonsterState.Idle);
-        myAnim = this.GetComponent<Animator>();
         IdlePos = this.transform.position;
     }
 
@@ -148,6 +152,10 @@ public class Monster : MonoBehaviour
         ChangeState(MonsterState.Idle);
     }
 
+    public void MonAttack()
+    {
+        myEnemy.OnDmg(10f);
+    }
 
     IEnumerator Attacking(float chill)
     {
@@ -167,7 +175,6 @@ public class Monster : MonoBehaviour
     {
         yield return new WaitForSeconds(chill);
         ChangeState(MonsterState.Idle);
-     
     }
 
 
