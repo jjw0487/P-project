@@ -6,7 +6,7 @@ public class AnimEvent : MonoBehaviour
 
     private void Awake()
     {
-        monster = GetComponent<Monster>();   
+        monster = GetComponent<Monster>();
     }
 
     public void OnMonAttack()

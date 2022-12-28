@@ -45,13 +45,14 @@ public class Monster : CharacterProperty
             case MonsterState.Idle:
                 monStat.curHP = monStat.orgData.HP;
                 myAgent.speed = monStat.orgData.agentSpeed;
-                StartCoroutine(DelayRoaming(3f));
+                myAgent.stoppingDistance = monStat.orgData.agentStopDist;
                 myAgent.SetDestination(IdlePos);
+                StartCoroutine(DelayRoaming(3f));
                 break;
             case MonsterState.Roam:
                 Vector3 rndPos = Vector3.zero;
-                rndPos.x = UnityEngine.Random.Range(-1.5f, 1.5f);
-                rndPos.z = UnityEngine.Random.Range(-1.5f, 1.5f);
+                rndPos.x = UnityEngine.Random.Range(-2.5f, 2.5f);
+                rndPos.z = UnityEngine.Random.Range(-2.5f, 2.5f);
                 roamPos = transform.position + rndPos;
                 myAgent.SetDestination(roamPos);
                 StartCoroutine(DelayIdle(3f));
@@ -62,10 +63,7 @@ public class Monster : CharacterProperty
             case MonsterState.Attack:
                 StopAllCoroutines();
                 myAttackArea.StopAllCoroutines();
-                myAgent.SetDestination(transform.position);
-                this.transform.rotation = Quaternion.LookRotation((target.position - transform.position).normalized);
-                myAnim.SetTrigger("Attack");
-                StartCoroutine(Attacking(3f));
+                StartCoroutine(Attacking(monStat.orgData.attackSpeed));
                 break;
             case MonsterState.Dead:
                 StopAllCoroutines();
@@ -129,10 +127,12 @@ public class Monster : CharacterProperty
                 break;
         }
     }
+
     private void Awake()
     {
         myAttackArea = GetComponentInChildren<AttackArea>(); 
     }
+
     private void Start()
     {
         ChangeState(MonsterState.Idle);
@@ -190,8 +190,12 @@ public class Monster : CharacterProperty
 
     IEnumerator Attacking(float chill)
     {
-        yield return new WaitForSeconds(chill);
+        myAgent.SetDestination(transform.position);
+        this.transform.rotation = Quaternion.LookRotation((target.position - transform.position).normalized);
         myAnim.SetTrigger("Attack");
+
+        yield return new WaitForSeconds(chill);
+
         StartCoroutine(Attacking(chill));
 
     }

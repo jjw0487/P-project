@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Knight
   m_EditorClassIdentifier: 
   <HP>k__BackingField: 100
-  <AT>k__BackingField: 10
+  AT: 10
   agentSpeed: 2
+  agentStopDist: 0.5
   attackRadius: 0.5
+  attackSpeed: 4

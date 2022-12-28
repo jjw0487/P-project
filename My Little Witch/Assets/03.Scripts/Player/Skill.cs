@@ -69,4 +69,6 @@ public class Skill : MonoBehaviour
         //시간이 끝나면
         canSkill = true;
     }
+
+
 }

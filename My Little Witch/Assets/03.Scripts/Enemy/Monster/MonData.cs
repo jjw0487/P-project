@@ -6,17 +6,10 @@ using UnityEngine;
 
 public class MonData : ScriptableObject
 {
-    [field: SerializeField]
-    public float HP
-    {
-        get;
-        private set;
-    }
-    [field: SerializeField]
-    public float AT
-    {
-        get; private set;
-    }
+    [field:SerializeField]public float HP { get; private set; }
+    public float AT;
     public float agentSpeed;
+    public float agentStopDist;
     public float attackRadius;
+    public float attackSpeed;
 }
