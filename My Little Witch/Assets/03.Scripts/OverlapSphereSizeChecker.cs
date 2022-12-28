@@ -22,14 +22,14 @@ public class OverlapSphereSizeChecker : MonoBehaviour
 
     void Update()
     {
-        Collider[] colliders =
+        /*Collider[] colliders =
                     Physics.OverlapSphere(this.transform.position, radius);
 
         foreach (Collider col in colliders)
         {
-            if (col.name == "Sphere" /* 자기 자신은 제외 */) continue;
+            if (col.name == "Sphere" *//* 자기 자신은 제외 *//*) continue;
 
             changeMaterial(col.gameObject, detectedMat);
-        }
+        }*/
     }
 }

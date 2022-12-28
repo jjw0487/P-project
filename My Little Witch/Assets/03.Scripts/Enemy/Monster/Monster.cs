@@ -197,7 +197,6 @@ public class Monster : CharacterProperty
         yield return new WaitForSeconds(chill);
 
         StartCoroutine(Attacking(chill));
-
     }
 
     IEnumerator DelayRoaming(float chill)
@@ -211,8 +210,5 @@ public class Monster : CharacterProperty
         yield return new WaitForSeconds(chill);
         ChangeState(MonsterState.Idle);
     }
-
-
-
 
 }

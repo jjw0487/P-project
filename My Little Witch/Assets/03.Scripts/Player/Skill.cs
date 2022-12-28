@@ -6,12 +6,19 @@ using UnityEngine.UI;
 
 public class Skill : MonoBehaviour
 {
+    [Header("Player")]
+    public GameObject myCharacter;
     public Movement myPlayer;
     public MagicGageBar myMagicGage;
     public Slider myMagicCircuit;
     public bool canMove = true;
     public bool canSkill = true;
+
+    [Header("Cursor")]
     public ChangeCursor myCursor;
+
+    [Header("SkillSet")]
+    public SkillSet[] skillSetArray;
 
     void Update()
     {
@@ -22,9 +29,11 @@ public class Skill : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1) && canSkill && myMagicCircuit.value > 40f)
         {
             myPlayer.curAnim[0].SetTrigger("MagicSplash");
-            GameObject obj = Instantiate(Resources.Load("Effect/Circle"), this.transform.position + Vector3.up, Quaternion.Euler(new Vector3(-90f, 0f, 0f))) as GameObject;
+            GameObject obj = Instantiate(Resources.Load("Effect/Circle"), myCharacter.transform.position + Vector3.up, Quaternion.Euler(new Vector3(-90f, 0f, 0f))) as GameObject;
             myMagicGage.HandleMP(40f);
             StartCoroutine(Chill(2.8f, obj));
+
+            skillSetArray[0].Skill();
         }
     }
     public void Notification(bool can, bool cant)
