@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd82bf677f49214890f04b0625e101d, type: 3}
   m_Name: Circle
   m_EditorClassIdentifier: 
+  Type: 0
+  performPos: {x: 0, y: 1, z: 0}
   Effect: {fileID: 1325642784598610, guid: 1f5bb2d1da1b02547b4adcfbc087ef23, type: 3}
   overlapRadius: 1.2
-  remainTime: 0
+  remainTime: 2
   dmg: 0
+  consumeMP: 40
+  triggerName: MagicSplash

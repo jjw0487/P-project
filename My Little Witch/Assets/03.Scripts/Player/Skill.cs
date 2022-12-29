@@ -9,10 +9,11 @@ public class Skill : MonoBehaviour
     [Header("Player")]
     public GameObject myCharacter;
     public Movement myPlayer;
-    public MagicGageBar myMagicGage;
-    public Slider myMagicCircuit;
     public bool canMove = true;
     public bool canSkill = true;
+
+    public MagicGageBar myMagicGage;
+    public Slider myMagicCircuit;
 
     [Header("Cursor")]
     public ChangeCursor myCursor;
@@ -26,14 +27,24 @@ public class Skill : MonoBehaviour
     }
     public void OnSkill()
     {
-        if (Input.GetKeyDown(KeyCode.Alpha1) && canSkill && myMagicCircuit.value > 40f)
+        if (Input.GetKeyDown(KeyCode.Alpha1) && canSkill)
         {
-            myPlayer.curAnim[0].SetTrigger("MagicSplash");
-            GameObject obj = Instantiate(Resources.Load("Effect/Circle"), myCharacter.transform.position + Vector3.up, Quaternion.Euler(new Vector3(-90f, 0f, 0f))) as GameObject;
-            myMagicGage.HandleMP(40f);
-            StartCoroutine(Chill(2.8f, obj));
+            skillSetArray[0].PerformSkill();
+        }
 
-            skillSetArray[0].Skill();
+        if (Input.GetKeyDown(KeyCode.Alpha2) && canSkill)
+        {
+            skillSetArray[1].PerformSkill();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3) && canSkill)
+        {
+            skillSetArray[2].PerformSkill();
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4) && canSkill)
+        {
+            skillSetArray[3].PerformSkill();
         }
     }
     public void Notification(bool can, bool cant)
@@ -47,13 +58,11 @@ public class Skill : MonoBehaviour
             // .text = " 스킬을 시전중에 있습니다. "
         }
     }
-    IEnumerator Chill(float cool, GameObject obj) // 못 움직이게 하는 스킬들
+    public IEnumerator Chill(float cool, GameObject obj) // 못 움직이게 하는 스킬들
     {
         canSkill = false;
         canMove = false;
         //Cursor.SetCursor(myCursor.cursorImg[1], Vector2.zero, CursorMode.ForceSoftware);
-
-        float coolTime = cool;
         while (cool > 0.0f)
         {
             myPlayer.state[0].text = "Chill";
@@ -66,10 +75,9 @@ public class Skill : MonoBehaviour
         //Cursor.SetCursor(myCursor.cursorImg[0], Vector2.zero, CursorMode.ForceSoftware);
     }
 
-    IEnumerator Cool(float cool) // 스킬 쿨타임
+    public IEnumerator Cool(float cool) // 스킬 쿨타임
     {
         canSkill = false;
-        float coolTime = cool;
         while (cool > 0.0f)
         {
             cool -= Time.deltaTime;
