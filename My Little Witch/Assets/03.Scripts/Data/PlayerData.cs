@@ -7,6 +7,5 @@ public class PlayerData : ScriptableObject
 {
     public float HP;
     public float MP;
-    public float AT;    
-    public float agentSpeed;
+    public float AT;
 }

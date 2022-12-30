@@ -13,8 +13,6 @@ public class Skill : MonoBehaviour
     public GameObject SkillLimit;
     public bool canMove = true;
     public bool canSkill = true;
-
-
     public MagicGageBar myMagicGage;
     public Slider myMagicCircuit;
 
@@ -23,6 +21,7 @@ public class Skill : MonoBehaviour
 
     [Header("SkillSet")]
     public SkillSet[] skillSetArray;
+
 
     void Update()
     {

@@ -26,10 +26,11 @@ public class Monster : CharacterProperty
     protected Vector3 roamPos;
     protected Vector3 IdlePos;
     protected AttackArea myAttackArea;
-    
+    public bool isDead;
+
 
     [Header("Target")]
-    public Transform target;
+    public Transform mytarget = null;
     public LayerMask enemyMask;
     protected Movement myEnemy;
     protected Vector3 targetDir;
@@ -67,7 +68,7 @@ public class Monster : CharacterProperty
                 break;
             case MonsterState.Dead:
                 StopAllCoroutines();
-                myAnim.SetTrigger("Death");
+                StartCoroutine(DelayDead(4f));
                 break;
         }
     }
@@ -99,9 +100,9 @@ public class Monster : CharacterProperty
                 }
                 break;
             case MonsterState.Target:
-                if (myEnemy != null)
+                if (myEnemy != null && myAttackArea.DontTarget)
                 {
-                    targetDir = target.transform.position;
+                    targetDir = mytarget.transform.position;
                     myAgent.SetDestination(targetDir);
                 }
                 if (myAgent.remainingDistance > 0.1f)
@@ -130,18 +131,23 @@ public class Monster : CharacterProperty
 
     private void Awake()
     {
-        myAttackArea = GetComponentInChildren<AttackArea>(); 
+        myAttackArea = GetComponentInChildren<AttackArea>();
     }
 
     private void Start()
     {
         ChangeState(MonsterState.Idle);
         IdlePos = this.transform.position;
+        isDead = false;
     }
 
     private void Update()
     {
-        StateProcess();
+        if(!isDead)
+        { 
+            StateProcess();
+        }
+        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -149,6 +155,7 @@ public class Monster : CharacterProperty
         //behaviorstate -> exit ÇÒ ¶§ 
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
+            mytarget = other.transform.parent.GetComponent<Transform>();
             myEnemy = other.transform.parent.GetComponent<Movement>();
             ChangeState(MonsterState.Target);
         }
@@ -157,7 +164,10 @@ public class Monster : CharacterProperty
     private void OnTriggerExit(Collider other)
     {
         myEnemy = null;
-        ChangeState(MonsterState.Idle);
+        if(!isDead)
+        {
+            ChangeState(MonsterState.Idle);
+        }
     }
 
     public void MonAttack()
@@ -182,25 +192,32 @@ public class Monster : CharacterProperty
     public void OnDamage(float dmg)
     {
         monStat.curHP -= dmg;
+        myAgent.SetDestination(transform.position);
+        myAnim.SetTrigger("IsHit");
         if (monStat.curHP <= Mathf.Epsilon)
         {
-           // OnDead();
+            ChangeState(MonsterState.Dead);
         }
+    }
+
+    public void OnDead()
+    {
+        
     }
 
     IEnumerator Attacking(float chill)
     {
         myAgent.SetDestination(transform.position);
-        this.transform.rotation = Quaternion.LookRotation((target.position - transform.position).normalized);
+        this.transform.rotation = Quaternion.LookRotation((mytarget.position - transform.position).normalized);
         myAnim.SetTrigger("Attack");
 
         yield return new WaitForSeconds(chill);
 
         StartCoroutine(Attacking(chill));
     }
-
     IEnumerator DelayRoaming(float chill)
     {
+        
         yield return new WaitForSeconds(chill);
         ChangeState(MonsterState.Roam);
     }
@@ -210,5 +227,18 @@ public class Monster : CharacterProperty
         yield return new WaitForSeconds(chill);
         ChangeState(MonsterState.Idle);
     }
+    IEnumerator DelayDead(float chill)
+    {
+        myAgent.SetDestination(transform.position);
+        myAnim.SetTrigger("Death");
+        isDead = true;
+        while (chill > 0.0f)
+        {
+            chill -= Time.deltaTime;
+            yield return null;
+        }
+        Destroy(gameObject);
+    }
+
 
 }

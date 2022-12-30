@@ -6,6 +6,7 @@ using static Monster;
 public class AttackArea : MonoBehaviour
 {
     Monster monster;
+    public bool DontTarget = false;
 
     private void Awake()
     {
@@ -14,15 +15,28 @@ public class AttackArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if ((monster.enemyMask & 1 << other.gameObject.layer) != 0)
+        if(!monster.isDead)
         {
-            monster.ChangeState(MonsterState.Attack);
+            if ((monster.enemyMask & 1 << other.gameObject.layer) != 0)
+            {
+                monster.ChangeState(MonsterState.Attack);
+            }
         }
+        
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        DontTarget = true;
     }
 
     private void OnTriggerExit(Collider other)
     {
-        StartCoroutine(ChasingAfterAttack(1f));
+        DontTarget = false;
+        if (!monster.isDead)
+        {
+            StartCoroutine(ChasingAfterAttack(1f));
+        }
     }
 
     IEnumerator ChasingAfterAttack(float chill)

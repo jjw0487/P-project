@@ -14,14 +14,14 @@ public struct SkillStat
 
 public class SkillSet : MonoBehaviour
 {
+    [Header("Information")]
     public SkillStat skillStat;
-    public Skill fromSkill;
     public Image img;
 
-    public Transform myCharacter;
-    
-    public ScriptableObject mySkill;
 
+    [Header("Object")]
+    public Skill fromSkill;
+    public Transform myCharacter;
     Camera mainCamera;
     Vector3 SkillHitPoint;
 
@@ -81,20 +81,24 @@ public class SkillSet : MonoBehaviour
 
     public void SkillAttack()
     {
-        fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName);
 
         fromSkill.myMagicGage.HandleMP(skillStat.orgData.consumeMP);
-
         GameObject obj = Instantiate(skillStat.orgData.Effect, SkillHitPoint, Quaternion.identity);
         StartCoroutine(fromSkill.Chill(skillStat.orgData.remainTime, obj));
-        //SkillOverlapCol(); // 어택
+        SkillOverlapCol(); // 어택
     }
     public void SkillOverlapCol()
     {
-        Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, skillStat.orgData.overlapRadius);
+        Collider[] hitColliders = Physics.OverlapSphere(SkillHitPoint, skillStat.orgData.overlapRadius);
         foreach (Collider col in hitColliders)
         {
-          //////
+          if(col.gameObject.layer == LayerMask.NameToLayer("Monster"))
+            {
+                if(!col.GetComponentInParent<Monster>().isDead)
+                {
+                    col.GetComponentInParent<Monster>().OnDamage(skillStat.orgData.dmg);
+                }
+            }
         }
     }
     
@@ -102,9 +106,7 @@ public class SkillSet : MonoBehaviour
     {
         fromSkill.canMove = false;
         fromSkill.canSkill = false;
-
         fromSkill.myPlayer.curAnim[0].SetTrigger("WaitForPos");
-
         fromSkill.SkillLimit.SetActive(true);
         fromSkill.rangeOfSkills.localScale = new Vector3 (skillStat.orgData.rangeOfSkill, 0.01f, skillStat.orgData.rangeOfSkill);
         
@@ -117,6 +119,7 @@ public class SkillSet : MonoBehaviour
                 RaycastHit hitData;
                 if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("SkillLimit")))
                 {
+                    fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName);
                     SkillHitPoint = skillStat.orgData.performPos + hitData.point;
                     myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized);
                     SkillAttack();
@@ -125,7 +128,17 @@ public class SkillSet : MonoBehaviour
                 }
             }
 
-            if(fromSkill.myPlayer.stun) // 얻어 맞으면
+            if (Input.GetMouseButtonDown(1))
+            {
+                //취소
+                fromSkill.SkillLimit.SetActive(false);
+                fromSkill.canMove = true; 
+                fromSkill.canSkill = true;
+                fromSkill.myPlayer.curAnim[0].SetTrigger("Idle");
+                yield break;
+            }
+
+            if (fromSkill.myPlayer.stun) // 얻어 맞으면
             {
                 fromSkill.SkillLimit.SetActive(false);
                 fromSkill.canMove = true; 
