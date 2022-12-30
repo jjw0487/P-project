@@ -222,8 +222,10 @@ public class Movement : CharacterProperty
     {
         myHPBar.HandleHP(dmg);
         StartCoroutine(Stunned(0.7f));
+        mySkill.StopSkillCoroutine();
         curAnim[0].SetTrigger("IsHit");
         //curAnim[1].SetTrigger("IsHit");
+
     }
 
     void StateNotice()

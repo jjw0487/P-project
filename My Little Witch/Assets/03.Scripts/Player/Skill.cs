@@ -9,8 +9,11 @@ public class Skill : MonoBehaviour
     [Header("Player")]
     public GameObject myCharacter;
     public Movement myPlayer;
+    public Transform rangeOfSkills;
+    public GameObject SkillLimit;
     public bool canMove = true;
     public bool canSkill = true;
+
 
     public MagicGageBar myMagicGage;
     public Slider myMagicCircuit;
@@ -85,6 +88,11 @@ public class Skill : MonoBehaviour
         }
         //시간이 끝나면
         canSkill = true;
+    }
+
+    public void StopSkillCoroutine()
+    {
+        StopAllCoroutines();
     }
 
 

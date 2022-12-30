@@ -10,14 +10,13 @@ public class AreaChecker : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
             myStones.DropStones();
+            myBox = this.GetComponent<BoxCollider>();
+            myBox.enabled = false;
         }
 
-        myBox = this.GetComponent<BoxCollider>();
-        myBox.enabled = false;
     }
 
 }
