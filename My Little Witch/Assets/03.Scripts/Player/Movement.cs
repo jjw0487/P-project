@@ -111,11 +111,13 @@ public class Movement : CharacterProperty
 
                 if(!mySkill.canMove || stun) //스킬이나 스턴이 걸리면 움직임 정지
                 {
+                    curAnim[0].SetBool("IsWalking", false);
                     myAgent.SetDestination(transform.position);
                 }
 
                 if(Input.GetKeyDown(KeyCode.S)) // S키를 눌러 정지
                 {
+                    curAnim[0].SetBool("IsWalking", false);
                     myAgent.SetDestination(transform.position);
                 }
                 break;
@@ -134,6 +136,7 @@ public class Movement : CharacterProperty
 
     void Start()
     {
+        myAgent.updateRotation= false; // 네비메시 로테이션을 막자
         state[0].text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
     }
@@ -247,22 +250,6 @@ public class Movement : CharacterProperty
 
     void C_Ray()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
-            RaycastHit hitData;
-            if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Ground")))
-            {
-                movePoint = hitData.point;
-                //print(movePoint);
-                if (mySkill.canMove && !stun)
-                {
-                    myAgent.SetDestination(movePoint);
-                   
-                }
-            }
-        }
 
         /*rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, Speed * Time.deltaTime);
         rigidbody.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, rotSpeed);*/
@@ -272,7 +259,39 @@ public class Movement : CharacterProperty
         Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
         Quaternion targetRot = Quaternion.LookRotation(dirXZ);*/
 
-        if (myAgent.remainingDistance > 0.1f)
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
+            RaycastHit hitData;
+            if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Ground")))
+            {
+                movePoint = hitData.point;
+                if (mySkill.canMove && !stun)
+                {
+                    myAgent.SetDestination(movePoint);
+                   
+                }
+            }
+        }
+
+        if(myAgent.velocity.sqrMagnitude >= 0.1f * 0.1f && myAgent.remainingDistance <= 0.1f)
+        {
+            curAnim[0].SetBool("IsWalking", false);
+        }
+        else if(myAgent.desiredVelocity.sqrMagnitude >= 0.1f *0.1f)
+        {
+            curAnim[0].SetBool("IsWalking", true);
+            Vector3 direction = myAgent.desiredVelocity; // 에이전트의 이동방향
+            Quaternion targetAngle = Quaternion.LookRotation(direction); //회전각도
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * 8.0f);
+        }
+
+
+
+
+
+       /* if (myAgent.remainingDistance > 0.1f)
         {
             curAnim[0].SetBool("IsWalking", true);
             StateNotice();
@@ -281,7 +300,7 @@ public class Movement : CharacterProperty
         {
             curAnim[0].SetBool("IsWalking", false);
         }
-
+*/
     }
 
     void C_Movement()
@@ -299,14 +318,28 @@ public class Movement : CharacterProperty
         //스태미너 바의 밸류가 0에 근사치에 닿을 때
         {
             canRun = false;
-            if (myAgent.remainingDistance > 0.1f)
+            /*if (myAgent.remainingDistance > 0.1f)
             {
                 curAnim[0].SetBool("IsWalking", true);
             }
             else
             {
                 curAnim[0].SetBool("IsWalking", false);
+            }*/
+
+            if (myAgent.velocity.sqrMagnitude >= 0.1f * 0.1f && myAgent.remainingDistance <= 0.1f)
+            {
+                curAnim[0].SetBool("IsWalking", false);
             }
+            else if (myAgent.desiredVelocity.sqrMagnitude >= 0.1f * 0.1f)
+            {
+                curAnim[0].SetBool("IsWalking", true);
+                Vector3 direction = myAgent.desiredVelocity; // 에이전트의 이동방향
+                Quaternion targetAngle = Quaternion.LookRotation(direction); //회전각도
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * 8.0f);
+            }
+
+
             myAgent.speed = C_speed;
             curAnim[0].SetBool("IsRunning", false);
 
@@ -351,9 +384,6 @@ public class Movement : CharacterProperty
     
     void B_Movement()
     {
-
-        
-
         //Vector3 characterDir = transform.rotation * dir;
         if (dir.z < 0)
         {

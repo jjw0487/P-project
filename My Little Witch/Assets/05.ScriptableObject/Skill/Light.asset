@@ -17,7 +17,7 @@ MonoBehaviour:
   performPos: {x: 0, y: 0.5, z: 0}
   Effect: {fileID: 1325642784598610, guid: 071da6eee8fda477791955dbe7e2b171, type: 3}
   overlapRadius: 2
-  remainTime: 1.2
+  remainTime: 0.5
   dmg: 50
   consumeMP: 20
   rangeOfSkill: 10

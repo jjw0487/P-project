@@ -4850,6 +4850,7 @@ GameObject:
   - component: {fileID: 199317234387275066}
   - component: {fileID: 108176094184806404}
   - component: {fileID: 2456289824974646853}
+  - component: {fileID: 8894573463273640334}
   m_Layer: 0
   m_Name: Dash
   m_TagString: Untagged
@@ -9806,6 +9807,18 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
+--- !u!114 &8894573463273640334
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519322442116508}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fdc8bd2f16e7854f869a601adc09621, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1702276184313894
 GameObject:
   m_ObjectHideFlags: 0
@@ -9833,7 +9846,7 @@ Transform:
   m_GameObject: {fileID: 1702276184313894}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 0.3}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4903523721451584}

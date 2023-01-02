@@ -191,7 +191,7 @@ public class Monster : CharacterProperty
 
     public void OnDamage(float dmg)
     {
-        monStat.curHP -= dmg;
+        monStat.curHP -= dmg - monStat.orgData.DP;
         myAgent.SetDestination(transform.position);
         myAnim.SetTrigger("IsHit");
         if (monStat.curHP <= Mathf.Epsilon)
