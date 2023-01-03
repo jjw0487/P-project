@@ -98,7 +98,7 @@ public class SkillSet : MonoBehaviour
 
     public void Buff()
     {
-        GameObject obj = Instantiate(skillStat.orgData.Effect, fromSkill.myCharacter.transform.position + skillStat.orgData.performPos, Quaternion.identity);
+        GameObject obj = Instantiate(skillStat.orgData.Effect, SkillHitPoint, Quaternion.identity);
         fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName);
         fromSkill.myMagicGage.HandleMP(skillStat.orgData.consumeMP);
         StartCoroutine(fromSkill.Chill(skillStat.orgData.remainTime, obj));

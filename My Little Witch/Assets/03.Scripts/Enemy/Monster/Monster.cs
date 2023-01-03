@@ -40,16 +40,13 @@ public class Monster : CharacterProperty
 
     public void ChangeState(MonsterState what)
     {
-        if (state == what) return;
+        //if (state == what) return;
         state = what;
         switch(state)
         {
             case MonsterState.Create:
                 break;
             case MonsterState.Idle:
-                monStat.curHP = monStat.orgData.HP;
-                myAgent.speed = monStat.orgData.agentSpeed;
-                myAgent.stoppingDistance = monStat.orgData.agentStopDist;
                 myAgent.SetDestination(IdlePos);
                 StartCoroutine(DelayRoaming(3f));
                 break;
@@ -106,13 +103,16 @@ public class Monster : CharacterProperty
                 break;
             case MonsterState.Target:
 
+                targetDir = myTarget.transform.position - this.transform.position;
+                targetDist = targetDir.magnitude;
+                targetPos = myTarget.transform.position;
+
                 if (myEnemy != null)
                 {
-                    targetPos = myTarget.transform.position;
                     myAgent.SetDestination(targetPos);
                 }
 
-                if(myAgent.remainingDistance <= monStat.orgData.strikingDist)
+                if(targetDist <= monStat.orgData.strikingDist)
                 {
                     ChangeState(MonsterState.Attack);
                 }
@@ -144,6 +144,10 @@ public class Monster : CharacterProperty
         ChangeState(MonsterState.Idle);
         IdlePos = this.transform.position;
         isDead = false;
+
+        monStat.curHP = monStat.orgData.HP;
+        myAgent.speed = monStat.orgData.agentSpeed;
+        myAgent.stoppingDistance = monStat.orgData.agentStopDist;
     }
 
     private void Update()
@@ -213,11 +217,6 @@ public class Monster : CharacterProperty
         StartCoroutine(Debuff(time, percents));
     }
 
-    public void OnDead()
-    {
-        
-    }
-
     IEnumerator Attacking(float chill)
     {
         print("Co_Attack");
@@ -235,9 +234,9 @@ public class Monster : CharacterProperty
         while(myEnemy != null)
         {
             print("EnemyCheck");
-            targetDir = this.transform.position - myTarget.transform.position;
+            targetDir = myTarget.transform.position - this.transform.position;
             targetDist = targetDir.magnitude;
-            if (targetDist > monStat.orgData.strikingDist + 0.2f)
+            if (targetDist > monStat.orgData.strikingDist)
             {
                 ChangeState(MonsterState.Target);
                 yield break;
@@ -245,8 +244,6 @@ public class Monster : CharacterProperty
             yield return null;
         }
     }
-
-
 
     IEnumerator DelayRoaming(float chill)
     {
