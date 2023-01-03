@@ -30,10 +30,13 @@ public class Monster : CharacterProperty
 
 
     [Header("Target")]
-    public Transform mytarget = null;
+    public Transform myTarget = null;
     public LayerMask enemyMask;
     protected Movement myEnemy;
+    
+    protected Vector3 targetPos;
     protected Vector3 targetDir;
+    protected float targetDist;
 
     public void ChangeState(MonsterState what)
     {
@@ -60,11 +63,13 @@ public class Monster : CharacterProperty
                 break;
             case MonsterState.Target:
                 StopAllCoroutines();
+                print("T");
                 break;
             case MonsterState.Attack:
-                StopAllCoroutines();
-                myAttackArea.StopAllCoroutines();
+                myAgent.SetDestination(transform.position);
+                print("A");
                 StartCoroutine(Attacking(monStat.orgData.attackSpeed));
+                StartCoroutine(EnemyCheck());
                 break;
             case MonsterState.Dead:
                 StopAllCoroutines();
@@ -100,11 +105,19 @@ public class Monster : CharacterProperty
                 }
                 break;
             case MonsterState.Target:
-                if (myEnemy != null && myAttackArea.DontTarget)
+
+                if (myEnemy != null)
                 {
-                    targetDir = mytarget.transform.position;
-                    myAgent.SetDestination(targetDir);
+                    targetPos = myTarget.transform.position;
+                    myAgent.SetDestination(targetPos);
                 }
+
+                if(myAgent.remainingDistance <= monStat.orgData.strikingDist)
+                {
+                    ChangeState(MonsterState.Attack);
+                }
+
+
                 if (myAgent.remainingDistance > 0.1f)
                 {
                     myAnim.SetBool("IsRunning", true);
@@ -114,15 +127,7 @@ public class Monster : CharacterProperty
                     myAnim.SetBool("IsRunning", false);
                 }
                 break;
-            case MonsterState.Attack:
-                if (myAgent.remainingDistance > 0.1f)
-                {
-                    myAnim.SetBool("IsRunning", true);
-                }
-                else
-                {
-                    myAnim.SetBool("IsRunning", false);
-                }
+            case MonsterState.Attack:                
                 break;
             case MonsterState.Dead:
                 break;
@@ -152,10 +157,11 @@ public class Monster : CharacterProperty
 
     private void OnTriggerEnter(Collider other)
     {
+        print("Enter");
         //behaviorstate -> exit ÇÒ ¶§ 
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
-            mytarget = other.transform.parent.GetComponent<Transform>();
+            myTarget = other.transform.parent.GetComponent<Transform>();
             myEnemy = other.transform.parent.GetComponent<Movement>();
             ChangeState(MonsterState.Target);
         }
@@ -163,6 +169,8 @@ public class Monster : CharacterProperty
 
     private void OnTriggerExit(Collider other)
     {
+        print("Exit");
+        myTarget = null;
         myEnemy = null;
         if(!isDead)
         {
@@ -200,6 +208,11 @@ public class Monster : CharacterProperty
         }
     }
 
+    public void OnDebuff(float time, float percents)
+    {
+        StartCoroutine(Debuff(time, percents));
+    }
+
     public void OnDead()
     {
         
@@ -207,14 +220,34 @@ public class Monster : CharacterProperty
 
     IEnumerator Attacking(float chill)
     {
+        print("Co_Attack");
         myAgent.SetDestination(transform.position);
-        this.transform.rotation = Quaternion.LookRotation((mytarget.position - transform.position).normalized);
+        this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
         myAnim.SetTrigger("Attack");
 
         yield return new WaitForSeconds(chill);
 
         StartCoroutine(Attacking(chill));
     }
+
+    IEnumerator EnemyCheck()
+    {
+        while(myEnemy != null)
+        {
+            print("EnemyCheck");
+            targetDir = this.transform.position - myTarget.transform.position;
+            targetDist = targetDir.magnitude;
+            if (targetDist > monStat.orgData.strikingDist + 0.2f)
+            {
+                ChangeState(MonsterState.Target);
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
+
+
     IEnumerator DelayRoaming(float chill)
     {
         
@@ -240,5 +273,9 @@ public class Monster : CharacterProperty
         Destroy(gameObject);
     }
 
+    IEnumerator Debuff(float chill, float percents)
+    {
+        yield return null;
+    }
 
 }

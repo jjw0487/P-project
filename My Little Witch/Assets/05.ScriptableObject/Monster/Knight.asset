@@ -15,6 +15,7 @@ MonoBehaviour:
   <HP>k__BackingField: 100
   AT: 10
   DP: 2
+  strikingDist: 1
   agentSpeed: 2
   agentStopDist: 0.5
   attackRadius: 0.5

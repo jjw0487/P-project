@@ -18,8 +18,6 @@ public struct PlayerStat
     public float curHP;
     public float curMP;
 }
-
-
 public class Movement : CharacterProperty
 {
     [Header("Character")]
@@ -31,7 +29,6 @@ public class Movement : CharacterProperty
     [Header("Ray")]
     public Vector3 movePoint; // 이동 위치 저장
     public Camera mainCamera; // 메인 카메라
-
 
     [Header("Movement")]
     public Animator[] curAnim;
@@ -269,8 +266,7 @@ public class Movement : CharacterProperty
                 movePoint = hitData.point;
                 if (mySkill.canMove && !stun)
                 {
-                    myAgent.SetDestination(movePoint);
-                   
+                    myAgent.SetDestination(movePoint);  
                 }
             }
         }
@@ -287,20 +283,6 @@ public class Movement : CharacterProperty
             transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * 8.0f);
         }
 
-
-
-
-
-       /* if (myAgent.remainingDistance > 0.1f)
-        {
-            curAnim[0].SetBool("IsWalking", true);
-            StateNotice();
-        }
-        else
-        {
-            curAnim[0].SetBool("IsWalking", false);
-        }
-*/
     }
 
     void C_Movement()
@@ -488,7 +470,4 @@ public class Movement : CharacterProperty
         */
         mySkill.canMove = true;
     }
-
-
-
 }

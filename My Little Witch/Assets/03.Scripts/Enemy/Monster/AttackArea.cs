@@ -5,7 +5,7 @@ using static Monster;
 
 public class AttackArea : MonoBehaviour
 {
-    Monster monster;
+  /*  Monster monster;
     public bool DontTarget = false;
 
     private void Awake()
@@ -15,6 +15,7 @@ public class AttackArea : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        print("Enter");
         if(!monster.isDead)
         {
             if ((monster.enemyMask & 1 << other.gameObject.layer) != 0)
@@ -32,6 +33,7 @@ public class AttackArea : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        print("Exit");
         DontTarget = false;
         if (!monster.isDead)
         {
@@ -44,5 +46,5 @@ public class AttackArea : MonoBehaviour
         yield return new WaitForSeconds(chill);
         monster.ChangeState(MonsterState.Target);
     }
-
+*/
 }

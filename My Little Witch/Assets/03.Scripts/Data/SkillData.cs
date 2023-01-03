@@ -8,16 +8,28 @@ using UnityEngine.UI;
 
 public class SkillData : ScriptableObject
 {
+    
     public enum SkillType { Buff, Attck, Debuff, AttackNDebuff }
-    public SkillType Type;
-    public Sprite sprite;
+    public enum ActionType { WaitBeforeAction, None }
 
+    [Header("Type")]
+    public SkillType Type;
+    public ActionType Action;
+
+    [Header("Mutual Information")]
+    public Sprite sprite;
     public Vector3 performPos;
     public GameObject Effect;
-    public float overlapRadius;
     public float remainTime;
-    public float dmg;
     public float consumeMP;
-    public float rangeOfSkill;
     public string triggerName;
+
+    [Header("Selective")]
+    public float dmg;
+    public float rangeOfSkill;
+    public float overlapRadius;
+    [Header("Selective::Debuff")]
+    public float percentage;
+    public float debuffTime;
+
 }

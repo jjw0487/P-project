@@ -9,6 +9,7 @@ public class MonData : ScriptableObject
     [field:SerializeField]public float HP { get; private set; }
     public float AT;
     public float DP;
+    public float strikingDist;
     public float agentSpeed;
     public float agentStopDist;
     public float attackRadius;

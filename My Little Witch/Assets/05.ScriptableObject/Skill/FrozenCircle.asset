@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd82bf677f49214890f04b0625e101d, type: 3}
   m_Name: FrozenCircle
   m_EditorClassIdentifier: 
-  Type: 1
+  Type: 3
+  Action: 0
   sprite: {fileID: 21300000, guid: 6becf50c5d862904cacebdac87f15502, type: 3}
   performPos: {x: 0, y: 0.8, z: 0}
   Effect: {fileID: 5318118474938795680, guid: ad86381ed1f161744b26b1784616bb5b, type: 3}
-  overlapRadius: 2
   remainTime: 0.5
-  dmg: 20
   consumeMP: 20
-  rangeOfSkill: 7
   triggerName: FrozenCircle
+  dmg: 20
+  rangeOfSkill: 7
+  overlapRadius: 2
+  percentage: 0.2
+  debuffTime: 5
