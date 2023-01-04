@@ -43,7 +43,6 @@ public class ProjectileMover : MonoBehaviour
         }
 	}
 
-    //https ://docs.unity3d.com/ScriptReference/Rigidbody.OnCollisionEnter.html
     void OnCollisionEnter(Collision collision)
     {
         //Lock all axes movement and rotation

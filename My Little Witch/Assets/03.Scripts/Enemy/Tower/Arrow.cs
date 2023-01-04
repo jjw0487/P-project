@@ -12,8 +12,6 @@ public class Arrow : MonoBehaviour
         myTarget.OnDmg(20f);
         Destroy(gameObject);
     }
-
-
     public void OnFire(Movement target)
     {
         myTarget = target;
@@ -28,7 +26,6 @@ public class Arrow : MonoBehaviour
         dir.Normalize();
         while(totalDist > 0f)
         {
-            print("fire");
             float delta = speed * Time.deltaTime;
             if(totalDist < delta)
             {

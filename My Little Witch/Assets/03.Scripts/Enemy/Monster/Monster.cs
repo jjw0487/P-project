@@ -60,11 +60,9 @@ public class Monster : CharacterProperty
                 break;
             case MonsterState.Target:
                 StopAllCoroutines();
-                print("T");
                 break;
             case MonsterState.Attack:
                 myAgent.SetDestination(transform.position);
-                print("A");
                 StartCoroutine(Attacking(monStat.orgData.attackSpeed));
                 StartCoroutine(EnemyCheck());
                 break;
@@ -161,7 +159,6 @@ public class Monster : CharacterProperty
 
     private void OnTriggerEnter(Collider other)
     {
-        print("Enter");
         //behaviorstate -> exit ÇÒ ¶§ 
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
@@ -173,13 +170,16 @@ public class Monster : CharacterProperty
 
     private void OnTriggerExit(Collider other)
     {
-        print("Exit");
-        myTarget = null;
-        myEnemy = null;
-        if(!isDead)
+        if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
-            ChangeState(MonsterState.Idle);
+            myTarget = null;
+            myEnemy = null;
+            if (!isDead)
+            {
+                ChangeState(MonsterState.Idle);
+            }
         }
+        
     }
 
     public void MonAttack()
@@ -219,7 +219,6 @@ public class Monster : CharacterProperty
 
     IEnumerator Attacking(float chill)
     {
-        print("Co_Attack");
         myAgent.SetDestination(transform.position);
         this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
         myAnim.SetTrigger("Attack");
@@ -233,7 +232,6 @@ public class Monster : CharacterProperty
     {
         while(myEnemy != null)
         {
-            print("EnemyCheck");
             targetDir = myTarget.transform.position - this.transform.position;
             targetDist = targetDir.magnitude;
             if (targetDist > monStat.orgData.strikingDist)

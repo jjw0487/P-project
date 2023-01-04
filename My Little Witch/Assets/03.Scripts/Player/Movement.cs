@@ -60,6 +60,8 @@ public class Movement : CharacterProperty
 
     [Header("Skill")]
     public Skill mySkill;
+    public GameObject normAtk;
+    public SkillData normAtkData;
 
     [Header("Game Setting")]
     public Transform AttackMark;
@@ -78,7 +80,6 @@ public class Movement : CharacterProperty
                 Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
                 myRigid.drag = 0f;
                 myRigid.constraints = RigidbodyConstraints.FreezeAll;
-
                 KK.SetActive(true);
                 BR.SetActive(false);
                 break;
@@ -88,7 +89,6 @@ public class Movement : CharacterProperty
                 Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
                 myRigid.drag = 6f;
                 myRigid.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
-                
                 BR.SetActive(true);
                 KK.SetActive(false);
                 break;
@@ -261,12 +261,27 @@ public class Movement : CharacterProperty
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
             RaycastHit hitData;
-            if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Ground")))
+            if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")))
             {
+                StopCoroutine(SteppingBeforNormAtk(hitData));
+                if ((hitData.transform.position - transform.position).magnitude > 5f)
+                {
+                    StartCoroutine(SteppingBeforNormAtk(hitData));
+                    // 코루틴 실행하고 다음번 피킹때는 그 코루틴을 스탑하자 
+                }
+                else
+                {
+                    print("Mon_Attack");
+                    C_normAtk(hitData);
+                }
+            }
+            else if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Ground")))
+            {
+                print("Ground");
                 movePoint = hitData.point;
                 if (mySkill.canMove && !stun)
                 {
-                    myAgent.SetDestination(movePoint);  
+                    myAgent.SetDestination(movePoint);
                 }
             }
         }
@@ -285,13 +300,20 @@ public class Movement : CharacterProperty
 
     }
 
+    void C_normAtk(RaycastHit hitPoint)
+    {
+        myAgent.SetDestination(transform.position);
+        curAnim[0].SetBool("IsWalking", false);
+        GameObject obj = Instantiate(normAtk, transform.position + normAtkData.performPos, this.transform.rotation);
+        
+    }
     void C_Movement()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && ground)
+        /*if (Input.GetKeyDown(KeyCode.Space) && ground)
         {
             state[0].text = "Jump";
-            C_Jump();
-        }
+            //C_Jump();
+        }*/
     }
 
     void Running()
@@ -355,11 +377,11 @@ public class Movement : CharacterProperty
     }
 
     
-    void C_Jump()
+    /*void C_Jump()
     {
         curAnim[0].SetTrigger("Jump");
         StartCoroutine(Jumping(0.6f, 0.8f, 0.6f));
-    }
+    }*/
 
     
     ///////////////////////////////////////////Broom//////////////////////////////////////
@@ -425,7 +447,36 @@ public class Movement : CharacterProperty
 
 
     /////////////////////////////////////Coroutine//////////////////////////////////////////////////////////
-    
+
+    IEnumerator SteppingBeforNormAtk(RaycastHit hitData)
+    {
+        print("Mon_move");
+        movePoint = hitData.point;
+        if (mySkill.canMove && !stun)
+        {
+            myAgent.SetDestination(movePoint);
+
+        }
+
+        while(myAgent.pathPending)
+        {
+            yield return null;
+        }
+
+        while (myAgent.remainingDistance > 0.1f)
+        {
+            print("Stepping");
+            if ((hitData.transform.position - transform.position).magnitude < 5.0f)
+            {
+               
+                C_normAtk(hitData);
+                yield break;
+            }
+            yield return null;
+        }
+    }
+
+
     IEnumerator Stunned(float cool) // 못 움직이게 하는 스킬들
     {
         stun = true;
