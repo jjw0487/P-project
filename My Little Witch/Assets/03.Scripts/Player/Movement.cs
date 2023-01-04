@@ -61,6 +61,7 @@ public class Movement : CharacterProperty
     [Header("Skill")]
     public Skill mySkill;
     public GameObject normAtk;
+    public Transform myRightHand;
     public SkillData normAtkData;
 
     [Header("Game Setting")]
@@ -263,10 +264,10 @@ public class Movement : CharacterProperty
             RaycastHit hitData;
             if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")))
             {
-                StopCoroutine(SteppingBeforNormAtk(hitData));
+                StopCoroutine(SteppingBeforeNormAtk(hitData));
                 if ((hitData.transform.position - transform.position).magnitude > 5f)
                 {
-                    StartCoroutine(SteppingBeforNormAtk(hitData));
+                    StartCoroutine(SteppingBeforeNormAtk(hitData));
                     // 코루틴 실행하고 다음번 피킹때는 그 코루틴을 스탑하자 
                 }
                 else
@@ -303,10 +304,19 @@ public class Movement : CharacterProperty
     void C_normAtk(RaycastHit hitPoint)
     {
         myAgent.SetDestination(transform.position);
+        Quaternion target = Quaternion.LookRotation((hitPoint.point - transform.position).normalized);
+        transform.rotation = Quaternion.Slerp(transform.rotation, target, 1f);
         curAnim[0].SetBool("IsWalking", false);
-        GameObject obj = Instantiate(normAtk, transform.position + normAtkData.performPos, this.transform.rotation);
+        curAnim[0].SetTrigger("NormAtk");
         
     }
+
+    public void C_OnNormAtk()
+    {
+        GameObject obj = Instantiate(normAtk, myRightHand.position, transform.rotation);
+        //normAtkData.performPos
+    }
+
     void C_Movement()
     {
         /*if (Input.GetKeyDown(KeyCode.Space) && ground)
@@ -421,7 +431,6 @@ public class Movement : CharacterProperty
         }
 
     }
-
     void B_DashnHeight()
     {
 
@@ -433,42 +442,32 @@ public class Movement : CharacterProperty
             Instantiate(orgDashEffect, this.transform.position, this.transform.rotation);
         }
 
-
         if (this.transform.position.y < B_restrictedHeight) // 높이제한
         {
             if (Input.GetKey(KeyCode.Space))
             {
                 Vector3 jumpPower = Vector3.up * B_AddFloatPower;
                 myRigid.AddForce(jumpPower, ForceMode.VelocityChange);
-               
             }
         }
     }
 
-
     /////////////////////////////////////Coroutine//////////////////////////////////////////////////////////
-
-    IEnumerator SteppingBeforNormAtk(RaycastHit hitData)
+    IEnumerator SteppingBeforeNormAtk(RaycastHit hitData)
     {
         print("Mon_move");
         movePoint = hitData.point;
-        if (mySkill.canMove && !stun)
-        {
-            myAgent.SetDestination(movePoint);
-
-        }
-
+        myAgent.SetDestination(movePoint);
+        
         while(myAgent.pathPending)
         {
             yield return null;
         }
-
         while (myAgent.remainingDistance > 0.1f)
         {
             print("Stepping");
             if ((hitData.transform.position - transform.position).magnitude < 5.0f)
             {
-               
                 C_normAtk(hitData);
                 yield break;
             }

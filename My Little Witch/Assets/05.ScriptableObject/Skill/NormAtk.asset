@@ -15,13 +15,13 @@ MonoBehaviour:
   Type: 0
   Action: 0
   sprite: {fileID: 0}
-  performPos: {x: 0, y: 0.6, z: 1}
-  Effect: {fileID: 1519322442116508, guid: fa331b8213914f44cab65156c1ba366e, type: 3}
+  performPos: {x: 0, y: 0.6, z: 2}
+  Effect: {fileID: 1519322442116508, guid: 35d289ba121cb8c459226e898b17232c, type: 3}
   remainTime: 0
   consumeMP: 0
   triggerName: 
   dmg: 10
-  rangeOfSkill: 0
-  overlapRadius: 0
+  rangeOfSkill: 5
+  overlapRadius: 0.7
   percentage: 0
   debuffTime: 0
