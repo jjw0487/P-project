@@ -22,34 +22,34 @@ public class Movement : CharacterProperty
 {
     [Header("Character")]
     public ONWHAT onWhat = ONWHAT.Street;
-    public GameObject KK;
-    public GameObject BR;
+    [SerializeField] private GameObject KK;
+    [SerializeField] private GameObject BR;
     public PlayerStat charStat;
 
     [Header("Ray")]
-    public Vector3 movePoint; // 이동 위치 저장
+    private Vector3 movePoint; // 이동 위치 저장
     public Camera mainCamera; // 메인 카메라
 
     [Header("Movement")]
     public Animator[] curAnim;
-    public float C_speed = 4f;
-    public float C_dashSpeed = 7f;
-    public float C_rotSpeed = 10f;
-    public float C_JumpHeight = 3f;
-    public LayerMask layer;
-    public bool run;
-    public bool canRun = true;
-    public bool stun = false;
-    public bool ground = true;
+    [SerializeField] private float C_speed = 4f;
+    [SerializeField] private float C_dashSpeed = 7f;
+    [SerializeField] private float C_rotSpeed = 10f;
+    [SerializeField] private float C_JumpHeight = 3f;
+    [SerializeField] private LayerMask layer;
+    private bool run;
+    private bool canRun = true;
+    public bool stun = false; // refer to
+    public bool ground = true; //refer to 
 
 
     [Header("BroomMovement")]
     private Vector3 dir = Vector3.zero;
-    public float B_Speed = 10f;
-    public float B_RotSpeed = 3f;
-    public float B_AddFloatPower = 0.2f;
-    public float B_restrictedHeight = 1000f;
-    public GameObject orgDashEffect;
+    [SerializeField] private float B_Speed = 10f;
+    [SerializeField] private float B_RotSpeed = 3f;
+    [SerializeField] private float B_AddFloatPower = 0.2f;
+    [SerializeField] private float B_restrictedHeight = 1000f;
+    [SerializeField] private GameObject orgDashEffect;
 
 
     [Header("UI")]
@@ -60,7 +60,6 @@ public class Movement : CharacterProperty
 
     [Header("Skill")]
     public Skill mySkill;
-    public GameObject normAtk;
     public Transform myRightHand;
     public SkillData normAtkData;
 
@@ -284,14 +283,17 @@ public class Movement : CharacterProperty
                 {
                     myAgent.SetDestination(movePoint);
                 }
+
+                
+
             }
         }
 
-        if(myAgent.velocity.sqrMagnitude >= 0.1f * 0.1f && myAgent.remainingDistance <= 0.1f)
+        if (myAgent.velocity.sqrMagnitude >= 0.1f * 0.1f && myAgent.remainingDistance <= 0.1f)
         {
             curAnim[0].SetBool("IsWalking", false);
         }
-        else if(myAgent.desiredVelocity.sqrMagnitude >= 0.1f *0.1f)
+        else if (myAgent.desiredVelocity.sqrMagnitude >= 0.1f * 0.1f)
         {
             curAnim[0].SetBool("IsWalking", true);
             Vector3 direction = myAgent.desiredVelocity; // 에이전트의 이동방향
@@ -303,18 +305,21 @@ public class Movement : CharacterProperty
 
     void C_normAtk(RaycastHit hitPoint)
     {
-        myAgent.SetDestination(transform.position);
-        Quaternion target = Quaternion.LookRotation((hitPoint.point - transform.position).normalized);
-        transform.rotation = Quaternion.Slerp(transform.rotation, target, 1f);
+        Vector3 dir = hitPoint.point - transform.position;
+        dir.y = 0;
+        if (!Mathf.Approximately(dir.magnitude, 0.0f))
+        {
+            myAgent.SetDestination(transform.position);
+            Quaternion target = Quaternion.LookRotation(dir.normalized);
+            transform.rotation = target;
+        }
         curAnim[0].SetBool("IsWalking", false);
         curAnim[0].SetTrigger("NormAtk");
-        
     }
 
     public void C_OnNormAtk()
     {
-        GameObject obj = Instantiate(normAtk, myRightHand.position, transform.rotation);
-        //normAtkData.performPos
+        GameObject obj = Instantiate(normAtkData.Effect, myRightHand.position, transform.rotation);
     }
 
     void C_Movement()
@@ -352,11 +357,9 @@ public class Movement : CharacterProperty
                 Quaternion targetAngle = Quaternion.LookRotation(direction); //회전각도
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * 8.0f);
             }
-
-
             myAgent.speed = C_speed;
             curAnim[0].SetBool("IsRunning", false);
-
+            
             run = false;
         }
         else

@@ -32,21 +32,25 @@ public class Skill : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Alpha1) && canSkill)
         {
             skillSetArray[0].PerformSkill();
+            myPlayer.curAnim[0].SetInteger("SkillNum", 0);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2) && canSkill)
         {
             skillSetArray[1].PerformSkill();
+            myPlayer.curAnim[0].SetInteger("SkillNum", 1);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3) && canSkill)
         {
             skillSetArray[2].PerformSkill();
+            myPlayer.curAnim[0].SetInteger("SkillNum", 2);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4) && canSkill)
         {
             skillSetArray[3].PerformSkill();
+            myPlayer.curAnim[0].SetInteger("SkillNum", 3);
         }
     }
     public void Notification(bool can, bool cant)
@@ -60,18 +64,21 @@ public class Skill : MonoBehaviour
             // .text = " 스킬을 시전중에 있습니다. "
         }
     }
-    public IEnumerator Chill(float cool, GameObject obj) // 못 움직이게 하는 스킬들
+    public IEnumerator Chill(float cool) // 못 움직이게 하는 스킬들
     {
         canSkill = false;
         canMove = false;
         //Cursor.SetCursor(myCursor.cursorImg[1], Vector2.zero, CursorMode.ForceSoftware);
+
         while (cool > 0.0f)
         {
             myPlayer.state[0].text = "Chill";
             cool -= Time.deltaTime;
             yield return null;
         }
-        Destroy(obj);
+
+        //Destroy(obj); // 그냥 이펙트에 스크립트 달아서 시간 지나면 사라지게 만들거임 ㅅㄱ
+
         canMove = true; //시간이 끝나면
         canSkill = true;
         //Cursor.SetCursor(myCursor.cursorImg[0], Vector2.zero, CursorMode.ForceSoftware);

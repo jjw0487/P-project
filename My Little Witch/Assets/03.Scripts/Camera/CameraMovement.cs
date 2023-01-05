@@ -4,7 +4,7 @@ public class CameraMovement : MonoBehaviour
 {
     [SerializeField] private Transform myTarget;
     [SerializeField] private float lerpspeed;
-    [SerializeField] private Vector2 ZoomRange = new Vector2(5.7f, 11.0f);
+    [SerializeField] private Vector2 ZoomRange = new Vector2(2.0f, 11.0f);
     [SerializeField] private float ZoomSpeed;
 
     Vector3 myDir = Vector3.zero;
