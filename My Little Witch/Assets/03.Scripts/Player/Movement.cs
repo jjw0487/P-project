@@ -62,6 +62,7 @@ public class Movement : CharacterProperty
     public Skill mySkill;
     public Transform myRightHand;
     public SkillData normAtkData;
+    private int coolStacks;
 
     [Header("Game Setting")]
     public Transform AttackMark;
@@ -133,6 +134,8 @@ public class Movement : CharacterProperty
 
     void Start()
     {
+        coolStacks = 0;
+        StartCoroutine(StackingCoolStacks(5f));
         myAgent.updateRotation= false; // 네비메시 로테이션을 막자
         state[0].text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
@@ -261,7 +264,7 @@ public class Movement : CharacterProperty
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
             RaycastHit hitData;
-            if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")))
+            if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")) && coolStacks > 0)
             {
                 StopCoroutine(SteppingBeforeNormAtk(hitData));
                 if ((hitData.transform.position - transform.position).magnitude > 5f)
@@ -305,6 +308,12 @@ public class Movement : CharacterProperty
 
     void C_normAtk(RaycastHit hitPoint)
     {
+        coolStacks--;
+        if (coolStacks == 4)
+        {
+            StartCoroutine(StackingCoolStacks(5f));
+        }
+        print($"--{coolStacks}");
         Vector3 dir = hitPoint.point - transform.position;
         dir.y = 0;
         if (!Mathf.Approximately(dir.magnitude, 0.0f))
@@ -522,5 +531,23 @@ public class Movement : CharacterProperty
         }
         */
         mySkill.canMove = true;
+    }
+
+    IEnumerator StackingCoolStacks(float cool)
+    {
+        float cooltime = cool;
+        while (coolStacks < 5)
+        {
+            cool -= Time.deltaTime;
+            if (cool <= 0.0f && coolStacks <= 5)
+            {
+                coolStacks++;
+                print($"++{coolStacks}");
+                cool = cooltime;
+            }
+            yield return null;
+        }
+        print($"full{coolStacks}");
+
     }
 }

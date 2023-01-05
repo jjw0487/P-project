@@ -16,7 +16,7 @@ MonoBehaviour:
   Action: 0
   sprite: {fileID: 0}
   performPos: {x: 0, y: 0.6, z: 2}
-  Effect: {fileID: 1519322442116508, guid: 35d289ba121cb8c459226e898b17232c, type: 3}
+  Effect: {fileID: 1698648575761504, guid: cf263124cbe15f448b6a2ec0ef11bd54, type: 3}
   remainTime: 0
   consumeMP: 0
   triggerName: 
