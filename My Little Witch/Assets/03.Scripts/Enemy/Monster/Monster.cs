@@ -23,10 +23,12 @@ public class Monster : CharacterProperty
         Create, Idle, Roam, Target, Attack, Dead
     }
     public MonsterState state = MonsterState.Create;
+    public bool isDead;
     protected Vector3 roamPos;
     protected Vector3 IdlePos;
     protected AttackArea myAttackArea;
-    public bool isDead;
+    //public Renderer myMaterial;
+    Camera mainCamera;
 
 
     [Header("Target")]
@@ -135,6 +137,7 @@ public class Monster : CharacterProperty
     private void Awake()
     {
         myAttackArea = GetComponentInChildren<AttackArea>();
+        mainCamera = Camera.main;
     }
 
     private void Start()
@@ -142,10 +145,10 @@ public class Monster : CharacterProperty
         ChangeState(MonsterState.Idle);
         IdlePos = this.transform.position;
         isDead = false;
-
         monStat.curHP = monStat.orgData.HP;
         myAgent.speed = monStat.orgData.agentSpeed;
         myAgent.stoppingDistance = monStat.orgData.agentStopDist;
+        GetComponentInChildren<Renderer>().material.enableInstancing = false;
     }
 
     private void Update()
@@ -154,7 +157,17 @@ public class Monster : CharacterProperty
         { 
             StateProcess();
         }
+
         
+
+    }
+    public void OnMouseHover()
+    {
+        GetComponentInChildren<Renderer>().material.SetFloat("_UseEmission", 1.0f);
+    }
+    public void OnMouseHoverExit()
+    {
+        GetComponentInChildren<Renderer>().material.SetFloat("_UseEmission", 0.0f);
     }
 
     private void OnTriggerEnter(Collider other)

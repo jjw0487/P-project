@@ -4834,6 +4834,7 @@ MonoBehaviour:
   hit: {fileID: 1012929371636226, guid: 7e59152fc3be99d4aa2760fb61212ce2, type: 3}
   flash: {fileID: 1179295499806372, guid: a18abcc036ab57445b15bc526991da46, type: 3}
   Detached: []
+  skillData: {fileID: 11400000, guid: fad1c0b38e8752a47982cc2f201e45e1, type: 2}
 --- !u!199 &199286290415937754
 ParticleSystemRenderer:
   serializedVersion: 6

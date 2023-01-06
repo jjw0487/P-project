@@ -10,6 +10,8 @@ using static Movement;
 using static UnityEditor.Experimental.GraphView.GraphView;
 using static UnityEditor.PlayerSettings;
 using static UnityEngine.GraphicsBuffer;
+using UnityEngine.UIElements;
+using UnityEngine.EventSystems;
 
 [Serializable]
 public struct PlayerStat
@@ -55,7 +57,7 @@ public class Movement : CharacterProperty
     [Header("UI")]
     public TMPro.TMP_Text[] state;
     public StaminaBar myStamina;
-    public Slider myStaminaSlider;
+    public UnityEngine.UI.Slider myStaminaSlider;
     public HPBar myHPBar;
 
     [Header("Skill")]
@@ -175,6 +177,7 @@ public class Movement : CharacterProperty
         }
     }*/
 
+
     public void CheckGround() // 연속점프 방지, 점프를 땅에 있을 때만
     {
         if(onWhat == ONWHAT.Street)
@@ -250,6 +253,17 @@ public class Movement : CharacterProperty
 
     void C_Ray()
     {
+        Ray monCheck = mainCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hitMonData;
+        if (Physics.Raycast(monCheck, out hitMonData, 100f, 1 << LayerMask.NameToLayer("Monster")))
+        {
+            //if (hitMonData.transform.parent == transform)
+            hitMonData.transform.GetComponentInParent<Monster>().OnMouseHover();
+        }
+        else
+        {
+            hitMonData.transform.GetComponentInParent<Monster>().OnMouseHoverExit();
+        }
 
         /*rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, Speed * Time.deltaTime);
         rigidbody.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, rotSpeed);*/
@@ -262,7 +276,7 @@ public class Movement : CharacterProperty
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
+            //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);            
             RaycastHit hitData;
             if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")) && coolStacks > 0)
             {
@@ -278,6 +292,11 @@ public class Movement : CharacterProperty
                     C_normAtk(hitData);
                 }
             }
+            else if(Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")) && coolStacks == 0)
+            {
+                curAnim[0].SetBool("IsWalking", false);
+                myAgent.SetDestination(transform.position);
+            }
             else if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Ground")))
             {
                 print("Ground");
@@ -286,9 +305,6 @@ public class Movement : CharacterProperty
                 {
                     myAgent.SetDestination(movePoint);
                 }
-
-                
-
             }
         }
 

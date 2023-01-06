@@ -13,6 +13,9 @@ public class ProjectileMover : MonoBehaviour
     private Rigidbody rb;
     public GameObject[] Detached;
 
+    private Monster mon;
+    public SkillData skillData;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -48,6 +51,26 @@ public class ProjectileMover : MonoBehaviour
         //Lock all axes movement and rotation
         rb.constraints = RigidbodyConstraints.FreezeAll;
         speed = 0;
+
+        /////////////
+        
+        Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, skillData.overlapRadius);
+        foreach (Collider col in hitColliders)
+        {
+            if (col.gameObject.layer == LayerMask.NameToLayer("Monster"))
+            {
+                /*Monster mon = col.GetComponentInParent<Monster>();
+                if (mon == null) continue;*/   //나중에 nullref 나오면 예외처리 해줘야함.
+                if (!col.GetComponentInParent<Monster>().isDead)
+                {
+                    col.GetComponentInParent<Monster>().OnDamage(skillData.dmg);
+                }
+            }
+        }
+
+        ///////////////
+
+
 
         ContactPoint contact = collision.contacts[0];
         Quaternion rot = Quaternion.FromToRotation(Vector3.up, contact.normal);
