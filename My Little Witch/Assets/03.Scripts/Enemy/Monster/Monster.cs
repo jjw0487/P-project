@@ -27,8 +27,6 @@ public class Monster : CharacterProperty
     protected Vector3 roamPos;
     protected Vector3 IdlePos;
     protected AttackArea myAttackArea;
-    //public Renderer myMaterial;
-    Camera mainCamera;
 
 
     [Header("Target")]
@@ -40,9 +38,13 @@ public class Monster : CharacterProperty
     protected Vector3 targetDir;
     protected float targetDist;
 
+    Coroutine c = null;
+    Coroutine idle = null;
+    Coroutine attack = null;
+
     public void ChangeState(MonsterState what)
     {
-        //if (state == what) return;
+        if (state == what) return;
         state = what;
         switch(state)
         {
@@ -50,7 +52,6 @@ public class Monster : CharacterProperty
                 break;
             case MonsterState.Idle:
                 myAgent.SetDestination(IdlePos);
-                StartCoroutine(DelayRoaming(3f));
                 break;
             case MonsterState.Roam:
                 Vector3 rndPos = Vector3.zero;
@@ -58,14 +59,15 @@ public class Monster : CharacterProperty
                 rndPos.z = UnityEngine.Random.Range(-2.5f, 2.5f);
                 roamPos = transform.position + rndPos;
                 myAgent.SetDestination(roamPos);
-                StartCoroutine(DelayIdle(3f));
+                idle = StartCoroutine(DelayIdle(3f));
                 break;
             case MonsterState.Target:
-                StopAllCoroutines();
+                if(idle != null) { StopCoroutine(idle);}
+                if(attack != null) { StopCoroutine(attack);}
                 break;
             case MonsterState.Attack:
                 myAgent.SetDestination(transform.position);
-                StartCoroutine(Attacking(monStat.orgData.attackSpeed));
+                attack = StartCoroutine(Attacking(monStat.orgData.attackSpeed));
                 StartCoroutine(EnemyCheck());
                 break;
             case MonsterState.Dead:
@@ -137,18 +139,18 @@ public class Monster : CharacterProperty
     private void Awake()
     {
         myAttackArea = GetComponentInChildren<AttackArea>();
-        mainCamera = Camera.main;
     }
 
     private void Start()
     {
+        
         ChangeState(MonsterState.Idle);
         IdlePos = this.transform.position;
         isDead = false;
         monStat.curHP = monStat.orgData.HP;
         myAgent.speed = monStat.orgData.agentSpeed;
         myAgent.stoppingDistance = monStat.orgData.agentStopDist;
-        GetComponentInChildren<Renderer>().material.enableInstancing = false;
+        //GetComponentInChildren<Renderer>().material.enableInstancing = false;
     }
 
     private void Update()
@@ -157,9 +159,6 @@ public class Monster : CharacterProperty
         { 
             StateProcess();
         }
-
-        
-
     }
     public void OnMouseHover()
     {
@@ -227,7 +226,13 @@ public class Monster : CharacterProperty
 
     public void OnDebuff(float time, float percents)
     {
-        StartCoroutine(Debuff(time, percents));
+        if (c != null) 
+        {
+            StopCoroutine(c);
+            c = null;
+        }
+        c = StartCoroutine(Debuff(time, percents));
+        // °­»ç´Ô²² ¿©Âåº¸ÀÚ !
     }
 
     IEnumerator Attacking(float chill)
@@ -235,7 +240,6 @@ public class Monster : CharacterProperty
         myAgent.SetDestination(transform.position);
         this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
         myAnim.SetTrigger("Attack");
-
         yield return new WaitForSeconds(chill);
 
         StartCoroutine(Attacking(chill));
@@ -243,7 +247,8 @@ public class Monster : CharacterProperty
 
     IEnumerator EnemyCheck()
     {
-        while(myEnemy != null)
+        
+        while (myEnemy != null)
         {
             targetDir = myTarget.transform.position - this.transform.position;
             targetDist = targetDir.magnitude;
@@ -283,7 +288,19 @@ public class Monster : CharacterProperty
 
     IEnumerator Debuff(float chill, float percents)
     {
-        yield return null;
+        Color color = Color.cyan;
+        this.GetComponentInChildren<Renderer>().material.color = color;
+        myAgent.speed = monStat.orgData.agentSpeed * percents;
+
+        while (chill > 0.0f)
+        {
+            chill -= Time.deltaTime;
+            print($"{this.name} : {chill}");
+            yield return null;
+        }
+
+        myAgent.speed = monStat.orgData.agentSpeed;
+        this.GetComponentInChildren<Renderer>().material.color = Color.white;
     }
 
 }

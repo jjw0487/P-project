@@ -44,7 +44,6 @@ public class Movement : CharacterProperty
     public bool stun = false; // refer to
     public bool ground = true; //refer to 
 
-
     [Header("BroomMovement")]
     private Vector3 dir = Vector3.zero;
     [SerializeField] private float B_Speed = 10f;
@@ -52,7 +51,6 @@ public class Movement : CharacterProperty
     [SerializeField] private float B_AddFloatPower = 0.2f;
     [SerializeField] private float B_restrictedHeight = 1000f;
     [SerializeField] private GameObject orgDashEffect;
-
 
     [Header("UI")]
     public TMPro.TMP_Text[] state;
@@ -104,7 +102,6 @@ public class Movement : CharacterProperty
             case ONWHAT.Street:
                 if (mySkill.canMove && !stun)
                 {
-                    C_Movement(); //상시실행
                     C_Ray();
                     Running();
                 }
@@ -253,17 +250,18 @@ public class Movement : CharacterProperty
 
     void C_Ray()
     {
-        Ray monCheck = mainCamera.ScreenPointToRay(Input.mousePosition);
+        /*Ray monCheck = mainCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hitMonData;
         if (Physics.Raycast(monCheck, out hitMonData, 100f, 1 << LayerMask.NameToLayer("Monster")))
         {
             //if (hitMonData.transform.parent == transform)
             hitMonData.transform.GetComponentInParent<Monster>().OnMouseHover();
+
         }
         else
         {
-            hitMonData.transform.GetComponentInParent<Monster>().OnMouseHoverExit();
-        }
+            GetComponentInParent<Monster>().OnMouseHoverExit();
+        }*/
 
         /*rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, Speed * Time.deltaTime);
         rigidbody.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, rotSpeed);*/
@@ -288,7 +286,6 @@ public class Movement : CharacterProperty
                 }
                 else
                 {
-                    print("Mon_Attack");
                     C_normAtk(hitData);
                 }
             }
@@ -299,7 +296,6 @@ public class Movement : CharacterProperty
             }
             else if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Ground")))
             {
-                print("Ground");
                 movePoint = hitData.point;
                 if (mySkill.canMove && !stun)
                 {
@@ -329,7 +325,6 @@ public class Movement : CharacterProperty
         {
             StartCoroutine(StackingCoolStacks(5f));
         }
-        print($"--{coolStacks}");
         Vector3 dir = hitPoint.point - transform.position;
         dir.y = 0;
         if (!Mathf.Approximately(dir.magnitude, 0.0f))
@@ -347,14 +342,6 @@ public class Movement : CharacterProperty
         GameObject obj = Instantiate(normAtkData.Effect, myRightHand.position, transform.rotation);
     }
 
-    void C_Movement()
-    {
-        /*if (Input.GetKeyDown(KeyCode.Space) && ground)
-        {
-            state[0].text = "Jump";
-            //C_Jump();
-        }*/
-    }
 
     void Running()
     {
@@ -483,7 +470,6 @@ public class Movement : CharacterProperty
     /////////////////////////////////////Coroutine//////////////////////////////////////////////////////////
     IEnumerator SteppingBeforeNormAtk(RaycastHit hitData)
     {
-        print("Mon_move");
         movePoint = hitData.point;
         myAgent.SetDestination(movePoint);
         
@@ -493,7 +479,6 @@ public class Movement : CharacterProperty
         }
         while (myAgent.remainingDistance > 0.1f)
         {
-            print("Stepping");
             if ((hitData.transform.position - transform.position).magnitude < 5.0f)
             {
                 C_normAtk(hitData);
@@ -558,12 +543,10 @@ public class Movement : CharacterProperty
             if (cool <= 0.0f && coolStacks <= 5)
             {
                 coolStacks++;
-                print($"++{coolStacks}");
                 cool = cooltime;
             }
             yield return null;
         }
-        print($"full{coolStacks}");
 
     }
 }

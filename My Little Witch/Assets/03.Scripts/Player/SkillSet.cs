@@ -116,7 +116,7 @@ public class SkillSet : MonoBehaviour
         fromSkill.myMagicGage.HandleMP(skillStat.orgData.consumeMP);
         GameObject obj = Instantiate(skillStat.orgData.Effect, SkillHitPoint, Quaternion.identity);
         StartCoroutine(fromSkill.Chill(skillStat.orgData.remainTime));
-        SkillOverlapCol_AND(); 
+        SkillOverlapCol_AND();
     }
 
 

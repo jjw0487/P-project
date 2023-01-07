@@ -20,8 +20,8 @@ MonoBehaviour:
   remainTime: 0.5
   consumeMP: 20
   triggerName: FrozenCircle
-  dmg: 20
+  dmg: 5
   rangeOfSkill: 7
   overlapRadius: 2
-  percentage: 0.2
+  percentage: 0.7
   debuffTime: 5
