@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41368326d879bfd49b98246552f5ed64, type: 3}
   m_Name: Fox
   m_EditorClassIdentifier: 
-  <HP>k__BackingField: 0
-  AT: 0
-  DP: 0
-  strikingDist: 0
-  agentSpeed: 0
-  agentStopDist: 0
-  attackRadius: 0
-  attackSpeed: 0
+  <HP>k__BackingField: 20
+  AT: 5
+  DP: 1
+  strikingDist: 1
+  agentSpeed: 2
+  agentStopDist: 1
+  attackRadius: 1
+  attackSpeed: 3

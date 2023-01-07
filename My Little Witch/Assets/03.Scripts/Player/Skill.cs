@@ -74,9 +74,15 @@ public class Skill : MonoBehaviour
         {
             myPlayer.state[0].text = "Chill";
             cool -= Time.deltaTime;
+            if(myPlayer.stun)
+            {
+                canMove = true; 
+                canSkill = true;
+                yield break;
+            }
+
             yield return null;
         }
-
         //Destroy(obj); // 그냥 이펙트에 스크립트 달아서 시간 지나면 사라지게 만들거임 ㅅㄱ
 
         canMove = true; //시간이 끝나면

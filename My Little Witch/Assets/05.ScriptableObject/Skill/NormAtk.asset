@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: NormAtk
   m_EditorClassIdentifier: 
   Type: 0
-  Action: 0
+  Action: 1
   sprite: {fileID: 0}
   performPos: {x: 0, y: 0.6, z: 2}
   Effect: {fileID: 1698648575761504, guid: cf263124cbe15f448b6a2ec0ef11bd54, type: 3}

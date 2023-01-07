@@ -36,7 +36,7 @@ public class SkillSet : MonoBehaviour
 
     public void PerformSkill()
     {
-        if(fromSkill.myMagicCircuit.value > skillStat.orgData.consumeMP)
+        if(fromSkill.myMagicCircuit.value > skillStat.orgData.consumeMP && !fromSkill.myPlayer.stun)
         {
             if(skillStat.orgData.Type == SkillData.SkillType.Buff) // น๖วม
             {
