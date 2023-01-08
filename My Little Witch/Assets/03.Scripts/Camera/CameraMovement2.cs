@@ -2,23 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+// 0109
+
+
 public class CameraMovement2 : MonoBehaviour
 {
-    /*public Transform myPlayer;
+    public Transform myPlayer;
     public Vector3 offset;
 
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
     void Update()
     {
         transform.position = myPlayer.position + offset;
-    }*/
+    }
 
-    [Header("ObjectToFollow")] public Transform objectToFollow;
+    /*[Header("ObjectToFollow")] public Transform objectToFollow;
 
     [Header("Controller")] public float followSpeed = 10.0f;
     public float sensitivity = 30.0f;
@@ -27,13 +25,13 @@ public class CameraMovement2 : MonoBehaviour
     public Vector3 finalDir; // 최종방향
     public float maxDistance;
 
-  /*  [Header("Inventory")] public GameObject myInventory;
+  *//*  [Header("Inventory")] public GameObject myInventory;
     public GameObject myESC;
     public GameObject mySave;
     public GameObject myLoad;
     public GameObject askingUI;
     public GameObject myStatus;
-    public GameObject Shop;*/
+    public GameObject Shop;*//*
 
 
     [Header("MainCamera")] public Transform realCamera;
@@ -64,7 +62,7 @@ public class CameraMovement2 : MonoBehaviour
         finalDir = transform.TransformPoint(dirNormalized * maxDistance); //방향 * 최대거리
     }
 
-    /*void OnCursor()
+    *//*void OnCursor()
     {
         if (myInventory.activeSelf || myESC.activeSelf || mySave.activeSelf || myLoad.activeSelf || askingUI.activeSelf || myStatus.activeSelf || Shop.activeSelf)
         {
@@ -82,7 +80,7 @@ public class CameraMovement2 : MonoBehaviour
                 CameraRotation();
             }
         }
-    }*/
+    }*//*
 
     void CameraRotation()
     {
@@ -95,5 +93,5 @@ public class CameraMovement2 : MonoBehaviour
         //회전
         Quaternion rot = Quaternion.Euler(rotX, rotY, 0);
         transform.rotation = rot;
-    }
+    }*/
 }

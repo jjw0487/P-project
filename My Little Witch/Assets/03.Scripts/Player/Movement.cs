@@ -57,6 +57,7 @@ public class Movement : CharacterProperty
     public StaminaBar myStamina;
     public UnityEngine.UI.Slider myStaminaSlider;
     public HPBar myHPBar;
+    [SerializeField] private GameObject[] normAtkNums;
 
     [Header("Skill")]
     public Skill mySkill;
@@ -74,7 +75,7 @@ public class Movement : CharacterProperty
     {
         //if (onWhat == what) return;
         onWhat = what;
-        switch(onWhat)
+        switch (onWhat)
         {
             case ONWHAT.Street:
                 myAgent.enabled = true;
@@ -106,13 +107,13 @@ public class Movement : CharacterProperty
                     Running();
                 }
 
-                if(!mySkill.canMove || stun) //스킬이나 스턴이 걸리면 움직임 정지
+                if (!mySkill.canMove || stun) //스킬이나 스턴이 걸리면 움직임 정지
                 {
                     curAnim[0].SetBool("IsWalking", false);
                     myAgent.SetDestination(transform.position);
                 }
 
-                if(Input.GetKeyDown(KeyCode.S)) // S키를 눌러 정지
+                if (Input.GetKeyDown(KeyCode.S)) // S키를 눌러 정지
                 {
                     curAnim[0].SetBool("IsWalking", false);
                     myAgent.SetDestination(transform.position);
@@ -134,8 +135,9 @@ public class Movement : CharacterProperty
     void Start()
     {
         coolStacks = 0;
+        StackNumCheck(coolStacks, coolStacks+1);
         StartCoroutine(StackingCoolStacks(5f));
-        myAgent.updateRotation= false; // 네비메시 로테이션을 막자
+        myAgent.updateRotation = false; // 네비메시 로테이션을 막자
         state[0].text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
     }
@@ -152,7 +154,7 @@ public class Movement : CharacterProperty
 
     private void FixedUpdate()
     {
-       
+
         dir.x = Input.GetAxis("Horizontal");
         dir.z = Input.GetAxis("Vertical");
         //totalDist = dir.magnitude;
@@ -163,7 +165,7 @@ public class Movement : CharacterProperty
             myRigid.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
             transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
         }
-       
+
     }
 
     /*private void OnCollisionEnter(Collision collision)
@@ -177,11 +179,11 @@ public class Movement : CharacterProperty
 
     public void CheckGround() // 연속점프 방지, 점프를 땅에 있을 때만
     {
-        if(onWhat == ONWHAT.Street)
+        if (onWhat == ONWHAT.Street)
         {
             RaycastHit hit;
             if (Physics.Raycast(this.transform.localPosition + (Vector3.up * 0.2f), Vector3.down, out hit, 0.4f, layer))
-                //발끝에서 0.2만큼 올려서 아랫방향으로 0.4만큼 쏜다
+            //발끝에서 0.2만큼 올려서 아랫방향으로 0.4만큼 쏜다
             {
                 ground = true;
                 state[1].text = "Ground";
@@ -206,11 +208,11 @@ public class Movement : CharacterProperty
                 state[1].text = "InAir";
             }
         }
-        
+
     }
     void SwitchingCharacter()
     {
-        if(ONWHAT.Broom != onWhat)
+        if (ONWHAT.Broom != onWhat)
         {
             onWhat = ONWHAT.Broom;
             ChangeState(ONWHAT.Broom);
@@ -271,6 +273,7 @@ public class Movement : CharacterProperty
         Vector3 dirXZ = new Vector3(dir.x, 0f, dir.z);
         Quaternion targetRot = Quaternion.LookRotation(dirXZ);*/
 
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -289,7 +292,7 @@ public class Movement : CharacterProperty
                     C_normAtk(hitData);
                 }
             }
-            else if(Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")) && coolStacks == 0)
+            else if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")) && coolStacks == 0)
             {
                 curAnim[0].SetBool("IsWalking", false);
                 myAgent.SetDestination(transform.position);
@@ -318,9 +321,27 @@ public class Movement : CharacterProperty
 
     }
 
+    void StackNumCheck(int i, int n)
+    {
+        normAtkNums[i].SetActive(true);
+
+        if (i > 0)
+        {
+            normAtkNums[n].SetActive(false);
+        }
+
+        if(coolStacks == 0) // 0일 때 예외처리
+        {
+            normAtkNums[1].SetActive(false);
+        }
+
+    }
+
+
     void C_normAtk(RaycastHit hitPoint)
     {
         coolStacks--;
+        StackNumCheck(coolStacks, coolStacks+1);
         if (coolStacks == 4)
         {
             StartCoroutine(StackingCoolStacks(5f));
@@ -544,6 +565,7 @@ public class Movement : CharacterProperty
             {
                 coolStacks++;
                 cool = cooltime;
+                StackNumCheck(coolStacks, coolStacks-1);
             }
             yield return null;
         }
