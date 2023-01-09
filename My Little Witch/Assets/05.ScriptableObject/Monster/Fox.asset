@@ -17,6 +17,6 @@ MonoBehaviour:
   DP: 1
   strikingDist: 1
   agentSpeed: 2
-  agentStopDist: 1
+  agentStopDist: 0.5
   attackRadius: 1
   attackSpeed: 3

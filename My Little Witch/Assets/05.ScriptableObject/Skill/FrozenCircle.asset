@@ -18,6 +18,7 @@ MonoBehaviour:
   performPos: {x: 0, y: 0.8, z: 0}
   Effect: {fileID: 5318118474938795680, guid: ad86381ed1f161744b26b1784616bb5b, type: 3}
   remainTime: 0.5
+  coolTime: 3
   consumeMP: 20
   triggerName: FrozenCircle
   dmg: 5

@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: Null
   m_EditorClassIdentifier: 
   Type: 0
+  Action: 1
   sprite: {fileID: 0}
   performPos: {x: 0, y: 0, z: 0}
   Effect: {fileID: 0}
-  overlapRadius: 0
   remainTime: 0
-  dmg: 0
+  coolTime: 0
   consumeMP: 0
-  rangeOfSkill: 0
   triggerName: 
+  dmg: 0
+  rangeOfSkill: 0
+  overlapRadius: 0
+  percentage: 0
+  debuffTime: 0

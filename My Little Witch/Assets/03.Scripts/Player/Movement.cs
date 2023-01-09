@@ -228,7 +228,7 @@ public class Movement : CharacterProperty
     {
         myHPBar.HandleHP(dmg);
         StartCoroutine(Stunned(0.7f));
-        mySkill.StopSkillCoroutine();
+        //mySkill.StopSkillCoroutine();
         curAnim[0].SetTrigger("IsHit");
         //curAnim[1].SetTrigger("IsHit");
 
@@ -316,7 +316,7 @@ public class Movement : CharacterProperty
             curAnim[0].SetBool("IsWalking", true);
             Vector3 direction = myAgent.desiredVelocity; // 에이전트의 이동방향
             Quaternion targetAngle = Quaternion.LookRotation(direction); //회전각도
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * 8.0f);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * C_rotSpeed);
         }
 
     }
@@ -337,7 +337,7 @@ public class Movement : CharacterProperty
 
     }
 
-
+    Vector3 skillTarget = Vector3.zero;
     void C_normAtk(RaycastHit hitPoint)
     {
         coolStacks--;
@@ -354,6 +354,8 @@ public class Movement : CharacterProperty
             Quaternion target = Quaternion.LookRotation(dir.normalized);
             transform.rotation = target;
         }
+        skillTarget = hitPoint.point;
+        //normAtkData.GetComponent<ProjectileMover>().SetTarget(hitPoint.point);
         curAnim[0].SetBool("IsWalking", false);
         curAnim[0].SetTrigger("NormAtk");
     }
@@ -361,6 +363,7 @@ public class Movement : CharacterProperty
     public void C_OnNormAtk()
     {
         GameObject obj = Instantiate(normAtkData.Effect, myRightHand.position, transform.rotation);
+        obj.GetComponent<ProjectileMover>().SetTarget(skillTarget);
     }
 
 

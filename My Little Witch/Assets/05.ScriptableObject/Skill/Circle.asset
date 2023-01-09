@@ -18,6 +18,7 @@ MonoBehaviour:
   performPos: {x: 0, y: 1, z: 0}
   Effect: {fileID: 1325642784598610, guid: 1f5bb2d1da1b02547b4adcfbc087ef23, type: 3}
   remainTime: 0.5
+  coolTime: 5
   consumeMP: 40
   triggerName: MagicSplash
   dmg: 0

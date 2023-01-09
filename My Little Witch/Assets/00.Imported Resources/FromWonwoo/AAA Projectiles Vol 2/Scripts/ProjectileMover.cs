@@ -15,6 +15,8 @@ public class ProjectileMover : MonoBehaviour
 
     private Monster mon;
     public SkillData skillData;
+    public Vector3 myTargetPos;
+    public Vector3 targetDir;
 
     void Start()
     {
@@ -37,14 +39,19 @@ public class ProjectileMover : MonoBehaviour
         Destroy(gameObject,5);
 	}
 
-    void FixedUpdate ()
+    public void SetTarget(Vector3 target)
     {
-		if (speed != 0)
+        targetDir = (target - transform.position).normalized;
+    }
+    private void FixedUpdate()
+    {
+        if (targetDir != Vector3.zero && speed != 0)
         {
-            rb.velocity = transform.forward * speed;
-            //transform.position += transform.forward * (speed * Time.deltaTime);         
+            //rb.velocity = transform.forward * speed;
+            transform.position += targetDir * (speed * Time.deltaTime);
         }
-	}
+    }
+
 
     void OnCollisionEnter(Collision collision)
     {
@@ -103,4 +110,6 @@ public class ProjectileMover : MonoBehaviour
         }
         Destroy(gameObject);
     }
+
+    
 }

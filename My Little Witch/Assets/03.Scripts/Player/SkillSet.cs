@@ -16,13 +16,15 @@ public class SkillSet : MonoBehaviour
 {
     [Header("Information")]
     public SkillStat skillStat;
-    public Image img;
+    public Image[] img;
 
     [Header("Object")]
     public Skill fromSkill;
     public Transform myCharacter;
-    Camera mainCamera;
-    Vector3 SkillHitPoint;
+
+    private Camera mainCamera;
+    private Vector3 SkillHitPoint;
+    private bool inCoolTime;
 
     private void Awake()
     {
@@ -31,12 +33,12 @@ public class SkillSet : MonoBehaviour
 
     private void Start()
     {
-        img.sprite = skillStat.orgData.sprite; // 업데이트 해줘야함
+        img[0].sprite = skillStat.orgData.sprite; // 나중에 스탯창 만들고 업데이트에 넣어줘야 함 
     }
 
     public void PerformSkill()
     {
-        if(fromSkill.myMagicCircuit.value > skillStat.orgData.consumeMP && !fromSkill.myPlayer.stun)
+        if(!inCoolTime && fromSkill.myMagicCircuit.value > skillStat.orgData.consumeMP && !fromSkill.myPlayer.stun)
         {
             if(skillStat.orgData.Type == SkillData.SkillType.Buff) // 버프
             {
@@ -47,6 +49,7 @@ public class SkillSet : MonoBehaviour
                 else
                 {
                     Buff();
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
                 }
             }
             else if(skillStat.orgData.Type == SkillData.SkillType.Attck) // 어택
@@ -58,6 +61,7 @@ public class SkillSet : MonoBehaviour
                 else
                 {
                     SkillAttack();
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
                 }
             }
             else if(skillStat.orgData.Type == SkillData.SkillType.Debuff) // 디버프
@@ -68,7 +72,7 @@ public class SkillSet : MonoBehaviour
                 }
                 else
                 {
-                    
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
                 }
                 /*GameObject obj = Instantiate(skillStat.orgData.Effect, this.transform.position + Vector3.up, Quaternion.identity);
                 fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName);
@@ -85,6 +89,7 @@ public class SkillSet : MonoBehaviour
                 else
                 {
                     AND(); // 나중에 스킬 전부 AnimEvent로 바꿀거면 지우자
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
                 }  
             }
         }
@@ -167,6 +172,7 @@ public class SkillSet : MonoBehaviour
 
             if (fromSkill.myPlayer.stun) // 얻어 맞으면
             {
+                StartCoroutine(CoolTime(skillStat.orgData.coolTime));
                 fromSkill.SkillLimit.SetActive(false);
                 fromSkill.canMove = true;
                 fromSkill.canSkill = true;
@@ -184,6 +190,7 @@ public class SkillSet : MonoBehaviour
                     myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized);
                     //SkillAttack();
                     fromSkill.SkillLimit.SetActive(false);
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
                     yield break;
                 }
             }
@@ -221,6 +228,7 @@ public class SkillSet : MonoBehaviour
 
             if (fromSkill.myPlayer.stun) // 얻어 맞으면
             {
+                StartCoroutine(CoolTime(skillStat.orgData.coolTime));
                 fromSkill.SkillLimit.SetActive(false);
                 fromSkill.canMove = true;
                 fromSkill.canSkill = true;
@@ -238,6 +246,7 @@ public class SkillSet : MonoBehaviour
                     myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized);
                     //AND();
                     fromSkill.SkillLimit.SetActive(false);
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
                     yield break;
                 }
             }
@@ -257,5 +266,18 @@ public class SkillSet : MonoBehaviour
         fromSkill.canMove = true; //시간이 끝나면
         fromSkill.canSkill = true;
         fromSkill.myPlayer.curAnim[0].SetTrigger("Idle");
+    }
+
+    IEnumerator CoolTime(float cool)
+    {
+        float coolTime = cool;
+        inCoolTime = true; //트루를 주고
+        while (cool > 0.0f)
+        {
+            cool -= Time.deltaTime;
+            img[1].fillAmount = 1f * (cool / coolTime);
+            yield return null;
+        }
+        inCoolTime = false; //시간이 끝나면
     }
 }

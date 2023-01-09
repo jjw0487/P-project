@@ -41,12 +41,12 @@ public class Monster : CharacterProperty
 
     Coroutine c = null;
     Coroutine idle = null;
+    Coroutine roam = null;
     Coroutine attack = null;
-
-    private bool isAttacking;
 
     public void ChangeState(MonsterState what)
     {
+        print($"{this.name} : {what}");
         if (state == what) return;
         state = what;
         switch(state)
@@ -54,39 +54,28 @@ public class Monster : CharacterProperty
             case MonsterState.Create:
                 break;
             case MonsterState.Idle:
-                isAttacking = false;
                 myAgent.SetDestination(IdlePos);
+                roam = StartCoroutine(DelayRoaming(5f));
                 break;
             case MonsterState.Roam:
-                isAttacking = false;
                 Vector3 rndPos = Vector3.zero;
                 rndPos.x = UnityEngine.Random.Range(-2.5f, 2.5f);
                 rndPos.z = UnityEngine.Random.Range(-2.5f, 2.5f);
                 roamPos = transform.position + rndPos;
                 myAgent.SetDestination(roamPos);
-                idle = StartCoroutine(DelayIdle(3f));
+                idle = StartCoroutine(DelayIdle(5f));
                 break;
             case MonsterState.Target:
-                if(idle != null) { StopCoroutine(idle);}
-                if(attack != null) 
-                {
-                    StopCoroutine(attack);
-                }
-                isAttacking = false;
+                if(idle != null) { StopCoroutine(idle); idle = null; }
+                if(roam != null) { StopCoroutine(roam); roam = null; }
+                if(attack != null) { StopCoroutine(attack); attack = null; }
                 break;
             case MonsterState.Attack:
-                print($"{this.name} : 어택 들어옴");
                 myAgent.SetDestination(transform.position);
-
-                /*if (attack != null)
-                {
-                    StopCoroutine(attack);
-                }*/
                 attack = StartCoroutine(Attacking(monStat.orgData.attackSpeed)); //코루틴을 시작하며, 동시에 저장한다.         
                 StartCoroutine(EnemyCheck());
                 break;
             case MonsterState.Dead:
-                isAttacking = false;
                 StopAllCoroutines();
                 StartCoroutine(DelayDead(4f));
                 break;
@@ -170,6 +159,7 @@ public class Monster : CharacterProperty
 
     private void Update()
     {
+
         if(!isDead)
         { 
             StateProcess();
@@ -252,8 +242,6 @@ public class Monster : CharacterProperty
 
     IEnumerator Attacking(float chill)
     {
-        isAttacking = true;
-        print($"{this.name} : Start_C");
         myAgent.SetDestination(transform.position);
         this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
 
@@ -272,7 +260,6 @@ public class Monster : CharacterProperty
             yield return null;
         }
         attack = StartCoroutine(Attacking(monStat.orgData.attackSpeed));
-        print("실행");
     }
 
     IEnumerator EnemyCheck()
