@@ -44,6 +44,9 @@ public class Monster : CharacterProperty
     Coroutine roam = null;
     Coroutine attack = null;
 
+    [Header("UI")]
+    public Transform myHPPos;
+
     public void ChangeState(MonsterState what)
     {
         print($"{this.name} : {what}");
@@ -222,10 +225,13 @@ public class Monster : CharacterProperty
     {
         monStat.curHP -= dmg - monStat.orgData.DP;
         myAgent.SetDestination(transform.position);
-        myAnim.SetTrigger("IsHit");
-        if (monStat.curHP <= Mathf.Epsilon)
+        if (monStat.curHP < 0.0f)
         {
             ChangeState(MonsterState.Dead);
+        }
+        else
+        {
+            myAnim.SetTrigger("IsHit");
         }
     }
 

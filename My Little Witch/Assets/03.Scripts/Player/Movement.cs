@@ -31,6 +31,7 @@ public class Movement : CharacterProperty
     [Header("Ray")]
     private Vector3 movePoint; // 이동 위치 저장
     public Camera mainCamera; // 메인 카메라
+    Vector3 skillTarget = Vector3.zero;
 
     [Header("Movement")]
     public Animator[] curAnim;
@@ -337,7 +338,6 @@ public class Movement : CharacterProperty
 
     }
 
-    Vector3 skillTarget = Vector3.zero;
     void C_normAtk(RaycastHit hitPoint)
     {
         coolStacks--;
@@ -354,7 +354,8 @@ public class Movement : CharacterProperty
             Quaternion target = Quaternion.LookRotation(dir.normalized);
             transform.rotation = target;
         }
-        skillTarget = hitPoint.point;
+        //skillTarget = hitPoint.point;
+        skillTarget = hitPoint.transform.position;
         //normAtkData.GetComponent<ProjectileMover>().SetTarget(hitPoint.point);
         curAnim[0].SetBool("IsWalking", false);
         curAnim[0].SetTrigger("NormAtk");
