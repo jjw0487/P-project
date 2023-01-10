@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.AI;
 
 
@@ -29,7 +30,6 @@ public class Monster : CharacterProperty
     protected Vector3 IdlePos;
     protected AttackArea myAttackArea;
 
-
     [Header("Target")]
     public Transform myTarget = null;
     public LayerMask enemyMask;
@@ -45,7 +45,10 @@ public class Monster : CharacterProperty
     Coroutine attack = null;
 
     [Header("UI")]
-    public Transform myHPPos;
+    GameObject obj;
+    Slider HPSlider;
+    public Transform myHpPos;
+    public Transform repositHPBars;
 
     public void ChangeState(MonsterState what)
     {
@@ -80,6 +83,7 @@ public class Monster : CharacterProperty
                 break;
             case MonsterState.Dead:
                 StopAllCoroutines();
+                Destroy(obj);
                 StartCoroutine(DelayDead(4f));
                 break;
         }
@@ -112,7 +116,6 @@ public class Monster : CharacterProperty
                 }
                 break;
             case MonsterState.Target:
-
                 targetDir = myTarget.transform.position - this.transform.position;
                 targetDist = targetDir.magnitude;
                 targetPos = myTarget.transform.position;
@@ -126,7 +129,6 @@ public class Monster : CharacterProperty
                 {
                     ChangeState(MonsterState.Attack);
                 }
-
 
                 if (myAgent.remainingDistance > 0.1f)
                 {
@@ -151,20 +153,24 @@ public class Monster : CharacterProperty
 
     private void Start()
     {
+        obj = Instantiate(Resources.Load("Monster/MonHP"), repositHPBars) as GameObject;
+        obj.GetComponent<MonsterHP>().myTarget = myHpPos;
+        obj.transform.localScale = monStat.orgData.HPlocalScale;
+        HPSlider = obj.GetComponent<MonsterHP>().myBar;
         ChangeState(MonsterState.Idle);
         IdlePos = this.transform.position;
         isDead = false;
         monStat.curHP = monStat.orgData.HP;
         myAgent.speed = monStat.orgData.agentSpeed;
         myAgent.stoppingDistance = monStat.orgData.agentStopDist;
-        //GetComponentInChildren<Renderer>().material.enableInstancing = false;
     }
 
     private void Update()
     {
-
-        if(!isDead)
-        { 
+        
+        if (!isDead)
+        {
+            HPSlider.value = Mathf.Lerp(HPSlider.value, monStat.curHP / monStat.orgData.HP * 100.0f, 10.0f * Time.deltaTime);
             StateProcess();
         }
     }
@@ -199,7 +205,6 @@ public class Monster : CharacterProperty
                 ChangeState(MonsterState.Idle);
             }
         }
-        
     }
 
     public void MonAttack()
@@ -223,8 +228,8 @@ public class Monster : CharacterProperty
 
     public void OnDamage(float dmg)
     {
-        monStat.curHP -= dmg - monStat.orgData.DP;
         myAgent.SetDestination(transform.position);
+        monStat.curHP -= dmg - monStat.orgData.DP;
         if (monStat.curHP < 0.0f)
         {
             ChangeState(MonsterState.Dead);
@@ -243,7 +248,6 @@ public class Monster : CharacterProperty
             c = null;
         }
         c = StartCoroutine(Debuff(time, percents));
-        // °­»ç´Ô²² ¿©Âåº¸ÀÚ !
     }
 
     IEnumerator Attacking(float chill)
@@ -270,7 +274,6 @@ public class Monster : CharacterProperty
 
     IEnumerator EnemyCheck()
     {
-        
         while (myEnemy != null)
         {
             targetDir = myTarget.transform.position - this.transform.position;
@@ -286,7 +289,6 @@ public class Monster : CharacterProperty
 
     IEnumerator DelayRoaming(float chill)
     {
-        
         yield return new WaitForSeconds(chill);
         ChangeState(MonsterState.Roam);
     }
@@ -324,5 +326,6 @@ public class Monster : CharacterProperty
         myAgent.speed = monStat.orgData.agentSpeed;
         this.GetComponentInChildren<Renderer>().material.color = Color.white;
     }
+
 
 }

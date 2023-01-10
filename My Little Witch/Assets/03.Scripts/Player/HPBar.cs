@@ -20,7 +20,6 @@ public class HPBar : MonoBehaviour
     public void HandleHP(float consume)
     {
         curHP = Mathf.Clamp(curHP, 0.1f, maxHP); // clamp 값을 0.1로 잠궈서 delta가 줄어들지 않는 현상을 방지
-                                                 // 시프트를 여러번 누르면 게이지가 일정시간 경과 후 다시 차오르지 않는 현상을 방지
 
         curHP -= consume; //감소
         curHP += 2 * Time.deltaTime; // 증가
