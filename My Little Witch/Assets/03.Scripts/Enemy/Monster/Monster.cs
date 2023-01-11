@@ -46,13 +46,15 @@ public class Monster : CharacterProperty
 
     [Header("UI")]
     GameObject obj;
+    GameObject floatingDmg;
     Slider HPSlider;
     public Transform myHpPos;
+    public Transform myDmgPos;
     public Transform repositHPBars;
+    public Transform repositFloatingDmg;
 
     public void ChangeState(MonsterState what)
     {
-        print($"{this.name} : {what}");
         if (state == what) return;
         state = what;
         switch(state)
@@ -228,8 +230,14 @@ public class Monster : CharacterProperty
 
     public void OnDamage(float dmg)
     {
+
         myAgent.SetDestination(transform.position);
-        monStat.curHP -= dmg - monStat.orgData.DP;
+        float damage = dmg - monStat.orgData.DP;
+        monStat.curHP -= damage;
+        floatingDmg = Instantiate(Resources.Load("UI/Dmg"), repositFloatingDmg) as GameObject;
+        floatingDmg.GetComponent<FloatingDamage>().myPos = myDmgPos;
+        floatingDmg.GetComponent<FloatingDamage>().dmg.text = damage.ToString();
+
         if (monStat.curHP < 0.0f)
         {
             ChangeState(MonsterState.Dead);
