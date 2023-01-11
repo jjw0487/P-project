@@ -14,6 +14,8 @@ public class FloatingDamage : MonoBehaviour
             Vector3 pos = Camera.main.WorldToScreenPoint(myPos.position);
             transform.position = pos;
         }
+
+        Destroy(this.gameObject, 3f);
     }
 
 }
