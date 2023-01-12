@@ -81,8 +81,8 @@ public class Movement : CharacterProperty
             case ONWHAT.Street:
                 myAgent.enabled = true;
                 Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
-                myRigid.drag = 0f;
-                myRigid.constraints = RigidbodyConstraints.FreezeAll;
+                //myRigid.drag = 0f;
+                //myRigid.constraints = RigidbodyConstraints.FreezeAll;
                 KK.SetActive(true);
                 BR.SetActive(false);
                 break;
@@ -102,6 +102,12 @@ public class Movement : CharacterProperty
         switch (onWhat)
         {
             case ONWHAT.Street:
+                if (Input.GetKeyDown(KeyCode.LeftControl))
+                {
+                   
+                    StartCoroutine(C_Dash());
+                }
+
                 if (mySkill.canMove && !stun)
                 {
                     C_Ray();
@@ -232,7 +238,6 @@ public class Movement : CharacterProperty
         //mySkill.StopSkillCoroutine();
         curAnim[0].SetTrigger("IsHit");
         //curAnim[1].SetTrigger("IsHit");
-
     }
 
     void StateNotice()
@@ -259,7 +264,6 @@ public class Movement : CharacterProperty
         {
             //if (hitMonData.transform.parent == transform)
             hitMonData.transform.GetComponentInParent<Monster>().OnMouseHover();
-
         }
         else
         {
@@ -319,7 +323,6 @@ public class Movement : CharacterProperty
             Quaternion targetAngle = Quaternion.LookRotation(direction); //회전각도
             transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * C_rotSpeed);
         }
-
     }
 
     void StackNumCheck(int i, int n)
@@ -335,7 +338,6 @@ public class Movement : CharacterProperty
         {
             normAtkNums[1].SetActive(false);
         }
-
     }
 
     void C_normAtk(RaycastHit hitPoint)
@@ -360,14 +362,11 @@ public class Movement : CharacterProperty
         curAnim[0].SetBool("IsWalking", false);
         curAnim[0].SetTrigger("NormAtk");
     }
-
     public void C_OnNormAtk()
     {
         GameObject obj = Instantiate(normAtkData.Effect, myRightHand.position, transform.rotation);
         obj.GetComponent<ProjectileMover>().SetTarget(skillTarget);
     }
-
-
     void Running()
     {
         if (Mathf.Approximately(myStaminaSlider.value, 0.0f))
@@ -473,7 +472,6 @@ public class Movement : CharacterProperty
     }
     void B_DashnHeight()
     {
-
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Vector3 dashPower = this.transform.forward * -Mathf.Log(1 / myRigid.drag) * 10f;
@@ -512,8 +510,6 @@ public class Movement : CharacterProperty
             yield return null;
         }
     }
-
-
     IEnumerator Stunned(float cool) // 못 움직이게 하는 스킬들
     {
         stun = true;
@@ -549,7 +545,7 @@ public class Movement : CharacterProperty
             yield return null;
         }
 
-       /* while (cool3 > 0.0f)
+        /* while (cool3 > 0.0f)
         {
             cool3 -= Time.deltaTime;
 
@@ -557,6 +553,14 @@ public class Movement : CharacterProperty
         }
         */
         mySkill.canMove = true;
+    }
+
+    IEnumerator C_Dash()
+    {
+        Vector3 dashPower = this.transform.forward * -Mathf.Log(1 / myRigid.drag) * 30.0f;
+        myRigid.AddForce(dashPower, ForceMode.VelocityChange);
+        Instantiate(orgDashEffect, this.transform.position + Vector3.forward, this.transform.rotation);
+        yield return null;
     }
 
     IEnumerator StackingCoolStacks(float cool)
@@ -573,6 +577,5 @@ public class Movement : CharacterProperty
             }
             yield return null;
         }
-
     }
 }

@@ -15,4 +15,5 @@ public class MonData : ScriptableObject
     public float attackRadius;
     public float attackSpeed;
     public Vector3 HPlocalScale;
+    public float EXP;
 }

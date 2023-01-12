@@ -29,6 +29,7 @@ public class SkillData : ScriptableObject
     public float dmg;
     public float rangeOfSkill;
     public float overlapRadius;
+
     [Header("Selective::Debuff")]
     public float percentage;
     public float debuffTime;

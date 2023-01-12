@@ -10,8 +10,6 @@ public class HoverCheck : MonoBehaviour
 
         this.GetComponent<Renderer>().material.SetFloat("_UseEmission", 1.0f);
     }
-
-
     private void OnMouseExit()
     {
 

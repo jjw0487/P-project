@@ -21,3 +21,4 @@ MonoBehaviour:
   attackRadius: 1
   attackSpeed: 3
   HPlocalScale: {x: 2, y: 2, z: 2}
+  EXP: 100
