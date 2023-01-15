@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: YellowPotion
   m_EditorClassIdentifier: 
   name: YellowPotion
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 8aa1756bc273d964bb16ec10bdca8eae, type: 3}
   obj: {fileID: 1658200699192152387, guid: 246f93a15336809408b127d0edaeb679, type: 3}
   number: 1

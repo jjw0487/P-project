@@ -149,6 +149,9 @@ public class Movement : CharacterProperty
         myAgent.updateRotation = false; // 네비메시 로테이션을 막자
         state[0].text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
+
+        myAgent.updateUpAxis
+        myAgent.updateUpAxis
     }
 
     void Update()
