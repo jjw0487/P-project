@@ -50,8 +50,6 @@ public class Monster : CharacterProperty
     Slider HPSlider;
     public Transform myHpPos;
     public Transform myDmgPos;
-    public Transform repositHPBars;
-    public Transform repositFloatingDmg;
 
     public void ChangeState(MonsterState what)
     {
@@ -155,7 +153,7 @@ public class Monster : CharacterProperty
 
     private void Start()
     {
-        obj = Instantiate(Resources.Load("Monster/MonHP"), repositHPBars) as GameObject;
+        obj = Instantiate(Resources.Load("Monster/MonHP"), SceneData.Inst.HPBars) as GameObject;
         obj.GetComponent<MonsterHP>().myTarget = myHpPos;
         obj.transform.localScale = monStat.orgData.HPlocalScale;
         HPSlider = obj.GetComponent<MonsterHP>().myBar;
@@ -234,7 +232,7 @@ public class Monster : CharacterProperty
         myAgent.SetDestination(transform.position);
         float damage = dmg - monStat.orgData.DP;
         monStat.curHP -= damage;
-        floatingDmg = Instantiate(Resources.Load("UI/Dmg"), repositFloatingDmg) as GameObject;
+        floatingDmg = Instantiate(Resources.Load("UI/Dmg"), SceneData.Inst.FloatingDmg) as GameObject;
         floatingDmg.GetComponent<FloatingDamage>().myPos = myDmgPos;
         floatingDmg.GetComponent<FloatingDamage>().dmg.text = damage.ToString();
 

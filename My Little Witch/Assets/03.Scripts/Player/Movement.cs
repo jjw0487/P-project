@@ -40,7 +40,7 @@ public class Movement : CharacterProperty
     [SerializeField] private float C_rotSpeed = 10f;
     [SerializeField] private float C_JumpHeight = 3f;
     [SerializeField] private LayerMask layer;
-    private bool run;
+    //private bool run;
     private bool canRun = true;
     public bool stun = false; // refer to
     public bool ground = true; //refer to 
@@ -68,7 +68,7 @@ public class Movement : CharacterProperty
 
     [Header("Game Setting")]
     public Transform AttackMark;
-
+    public bool OnInventory = false;
 
     public enum ONWHAT { Street, Broom }
 
@@ -102,16 +102,18 @@ public class Movement : CharacterProperty
         switch (onWhat)
         {
             case ONWHAT.Street:
-                if (Input.GetKeyDown(KeyCode.LeftControl))
-                {
-                   
-                    StartCoroutine(C_Dash());
-                }
+                
 
-                if (mySkill.canMove && !stun)
+                if (mySkill.canMove && !stun && !OnInventory)
                 {
                     C_Ray();
                     Running();
+
+                    if (Input.GetKeyDown(KeyCode.LeftControl))
+                    {
+
+                        StartCoroutine(C_Dash());
+                    }
                 }
 
                 if (!mySkill.canMove || stun) //스킬이나 스턴이 걸리면 움직임 정지
@@ -396,7 +398,7 @@ public class Movement : CharacterProperty
             myAgent.speed = C_speed;
             curAnim[0].SetBool("IsRunning", false);
             
-            run = false;
+            //run = false;
         }
         else
         {
@@ -404,14 +406,14 @@ public class Movement : CharacterProperty
             if (Input.GetKey(KeyCode.LeftShift) && myAgent.remainingDistance > 0.1f && canRun)
             // 시프트를 눌렀고, 이동거리가 있으며 canRun 이 false가 아닐 때
             {
-                run = true;
+               // run = true;
                 myAgent.speed = C_dashSpeed;
                 curAnim[0].SetBool("IsRunning", true);
                 //rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, dashSpeed * Time.deltaTime);
             }
             else // 이동거리값이 0보다 작을 때 shift로 달리기 발동 안할 수 있도록
             {
-                run = false;
+               // run = false;
                 myAgent.speed = C_speed;
                 curAnim[0].SetBool("IsRunning", false);
             }

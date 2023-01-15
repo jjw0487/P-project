@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class ItemData : ScriptableObject
 {
+    new public string name;
     public Sprite sprite;
     public GameObject obj;
     public int number;
