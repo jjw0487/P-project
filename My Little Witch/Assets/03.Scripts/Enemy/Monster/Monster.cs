@@ -39,6 +39,8 @@ public class Monster : CharacterProperty
     protected Vector3 targetDir;
     protected float targetDist;
 
+    private bool onBattle;
+
     Coroutine c = null;
     Coroutine idle = null;
     Coroutine roam = null;
@@ -48,6 +50,7 @@ public class Monster : CharacterProperty
     GameObject obj;
     GameObject floatingDmg;
     Slider HPSlider;
+
     public Transform myHpPos;
     public Transform myDmgPos;
 
@@ -153,10 +156,6 @@ public class Monster : CharacterProperty
 
     private void Start()
     {
-        obj = Instantiate(Resources.Load("Monster/MonHP"), SceneData.Inst.HPBars) as GameObject;
-        obj.GetComponent<MonsterHP>().myTarget = myHpPos;
-        obj.transform.localScale = monStat.orgData.HPlocalScale;
-        HPSlider = obj.GetComponent<MonsterHP>().myBar;
         ChangeState(MonsterState.Idle);
         IdlePos = this.transform.position;
         isDead = false;
@@ -167,10 +166,12 @@ public class Monster : CharacterProperty
 
     private void Update()
     {
-        
         if (!isDead)
         {
-            HPSlider.value = Mathf.Lerp(HPSlider.value, monStat.curHP / monStat.orgData.HP * 100.0f, 10.0f * Time.deltaTime);
+            if (onBattle)
+            {
+                HPSlider.value = Mathf.Lerp(HPSlider.value, monStat.curHP / monStat.orgData.HP * 100.0f, 10.0f * Time.deltaTime);
+            }
             StateProcess();
         }
     }
@@ -188,6 +189,13 @@ public class Monster : CharacterProperty
         //behaviorstate -> exit ÇÒ ¶§ 
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
+            //
+            onBattle = true;
+            obj = Instantiate(Resources.Load("Monster/MonHP"), SceneData.Inst.HPBars) as GameObject;
+            obj.GetComponent<MonsterHP>().myTarget = myHpPos;
+            obj.transform.localScale = monStat.orgData.HPlocalScale;
+            HPSlider = obj.GetComponent<MonsterHP>().myBar;
+            //
             myTarget = other.transform.parent.GetComponent<Transform>();
             myEnemy = other.transform.parent.GetComponent<Movement>();
             ChangeState(MonsterState.Target);
@@ -196,10 +204,15 @@ public class Monster : CharacterProperty
 
     private void OnTriggerExit(Collider other)
     {
+        
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
             myTarget = null;
             myEnemy = null;
+            //
+            onBattle = false;
+            Destroy(obj);
+            //
             if (!isDead)
             {
                 ChangeState(MonsterState.Idle);
@@ -228,7 +241,6 @@ public class Monster : CharacterProperty
 
     public void OnDamage(float dmg)
     {
-
         myAgent.SetDestination(transform.position);
         float damage = dmg - monStat.orgData.DP;
         monStat.curHP -= damage;
@@ -332,6 +344,4 @@ public class Monster : CharacterProperty
         myAgent.speed = monStat.orgData.agentSpeed;
         this.GetComponentInChildren<Renderer>().material.color = Color.white;
     }
-
-
 }

@@ -150,8 +150,6 @@ public class Movement : CharacterProperty
         state[0].text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
 
-        myAgent.updateUpAxis
-        myAgent.updateUpAxis
     }
 
     void Update()
@@ -305,6 +303,10 @@ public class Movement : CharacterProperty
             else if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")) && coolStacks == 0)
             {
                 curAnim[0].SetBool("IsWalking", false);
+                myAgent.SetDestination(transform.position);
+            }
+            else if(Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Item")))
+            {
                 myAgent.SetDestination(transform.position);
             }
             else if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Ground")))

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class DragImage : PointerCheck
+public class DragImage : MonoBehaviour
 {
     public static DragImage Inst;
     public Slots dragSlot;
