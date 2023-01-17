@@ -16,8 +16,6 @@ public class Item : MonoBehaviour
 {
 
     public ItemInformation myItem;
-    public Transform inventory;
-
     private void Start()
     {
         myItem.curNumber = myItem.orgData.number;

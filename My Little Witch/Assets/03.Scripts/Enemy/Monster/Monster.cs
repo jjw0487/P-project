@@ -82,7 +82,7 @@ public class Monster : CharacterProperty
             case MonsterState.Attack:
                 myAgent.SetDestination(transform.position);
                 attack = StartCoroutine(Attacking(monStat.orgData.attackSpeed)); //코루틴을 시작하며, 동시에 저장한다.         
-                StartCoroutine(EnemyCheck());
+                //StartCoroutine(EnemyCheck());
                 break;
             case MonsterState.Dead:
                 StopAllCoroutines();
@@ -133,7 +133,7 @@ public class Monster : CharacterProperty
                     ChangeState(MonsterState.Attack);
                 }
 
-                if (myAgent.remainingDistance > 0.1f)
+                if (myAgent.remainingDistance > 0.2f)
                 {
                     myAnim.SetBool("IsRunning", true);
                 }
@@ -172,16 +172,13 @@ public class Monster : CharacterProperty
             {
                 HPSlider.value = Mathf.Lerp(HPSlider.value, monStat.curHP / monStat.orgData.HP * 100.0f, 10.0f * Time.deltaTime);
             }
-            StateProcess();
+
+            if(myAnim.GetBool("IsAttacking") == false)
+            {
+                print("가능");
+                StateProcess();
+            }
         }
-    }
-    public void OnMouseHover()
-    {
-        GetComponentInChildren<Renderer>().material.SetFloat("_UseEmission", 1.0f);
-    }
-    public void OnMouseHoverExit()
-    {
-        GetComponentInChildren<Renderer>().material.SetFloat("_UseEmission", 0.0f);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -270,34 +267,33 @@ public class Monster : CharacterProperty
 
     IEnumerator Attacking(float chill)
     {
-        myAgent.SetDestination(transform.position);
-        this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
 
-        float cool = 0.3f;
-        while(cool > 0.0f)
+        myAgent.SetDestination(transform.position);
+
+        float cool = 0.3f; // 공격을 시작 전 0.3 만큼의 대기
+        while (cool > 0.0f)
         {
             cool -= Time.deltaTime;
             yield return null;
         }
 
+        this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
         myAnim.SetTrigger("Attack");
-
-        while(chill > 0.0f)
-        {
-            chill -= Time.deltaTime;
-            yield return null;
-        }
-        attack = StartCoroutine(Attacking(monStat.orgData.attackSpeed));
-    }
-
-    IEnumerator EnemyCheck()
-    {
         while (myEnemy != null)
         {
+            chill -= Time.deltaTime;
+            if(chill < 0.0f)
+            {
+                myAgent.SetDestination(transform.position);
+                this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
+                myAnim.SetTrigger("Attack");
+                chill = monStat.orgData.attackSpeed;
+            }
+
             targetDir = myTarget.transform.position - this.transform.position;
-            targetDist = targetDir.magnitude;
-            if (targetDist > monStat.orgData.strikingDist)
-            { 
+            targetDist = targetDir.magnitude; // 공격하는 중 타겟의 거리 계산
+            if (targetDist > monStat.orgData.strikingDist) // 타겟이 범위를 벗어났다면?
+            {
                 ChangeState(MonsterState.Target);
                 yield break;
             }

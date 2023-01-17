@@ -17,7 +17,7 @@ MonoBehaviour:
   DP: 10
   strikingDist: 2
   agentSpeed: 3
-  agentStopDist: 0.5
+  agentStopDist: 1
   attackRadius: 1
   attackSpeed: 3
   HPlocalScale: {x: 2, y: 2, z: 2}

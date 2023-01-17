@@ -519,6 +519,7 @@ public class Movement : CharacterProperty
     }
     IEnumerator Stunned(float cool) // 못 움직이게 하는 스킬들
     {
+        
         stun = true;
         while (cool > 0.0f)
         {
@@ -527,6 +528,7 @@ public class Movement : CharacterProperty
             yield return null;
         }
         stun = false;
+        state[0].text = "Idle";
     }
 
     IEnumerator Jumping(float cool, float cool2, float cool3)

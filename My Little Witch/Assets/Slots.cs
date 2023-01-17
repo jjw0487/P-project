@@ -10,14 +10,14 @@ using static UnityEditor.Progress;
 public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     public Item item;
-    Image img;
+    [SerializeField] Image img;
     public TMPro.TMP_Text count;
     private int itemCount = 0;
 
 
     void Start()
     {
-        img = this.GetComponent<Image>();
+        //img = this.GetComponent<Image>();
 
         if (GetComponent<Item>() != null)
         {

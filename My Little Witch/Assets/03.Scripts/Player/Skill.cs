@@ -53,17 +53,8 @@ public class Skill : MonoBehaviour
             myPlayer.curAnim[0].SetInteger("SkillNum", 3);
         }
     }
-    public void Notification(bool can, bool cant)
-    {
-        if(!can)
-        {
-            // .text = " 마력이 부족합니다. "
-        }
-        else
-        {
-            // .text = " 스킬을 시전중에 있습니다. "
-        }
-    }
+    
+
     public IEnumerator Chill(float cool) // 못 움직이게 하는 스킬들
     {
         canSkill = false;
@@ -101,11 +92,8 @@ public class Skill : MonoBehaviour
         //시간이 끝나면
         canSkill = true;
     }
+    
 
-    public void StopSkillCoroutine()
-    {
-        StopAllCoroutines();
-    }
 
 
 }
