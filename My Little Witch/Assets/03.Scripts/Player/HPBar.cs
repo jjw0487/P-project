@@ -21,7 +21,7 @@ public class HPBar : MonoBehaviour
     {
         curHP = Mathf.Clamp(curHP, 0.1f, maxHP); // clamp 값을 0.1로 잠궈서 delta가 줄어들지 않는 현상을 방지
 
-        curHP -= consume; //감소
+        curHP -= consume; // 감소
         curHP += 2 * Time.deltaTime; // 증가
 
         //바의 부드러운 증감

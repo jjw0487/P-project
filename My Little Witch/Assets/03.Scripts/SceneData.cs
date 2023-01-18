@@ -12,6 +12,7 @@ public class SceneData : MonoBehaviour
     public Transform FloatingDmg;
     //public Transform Minimap;
     public Transform InvenSlot;
+    public Transform EagleExitPos;
     public Inventory Inven;
 
     private void Awake()

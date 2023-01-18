@@ -12,7 +12,8 @@ public class CameraMovement : MonoBehaviour
     Vector3 myDir = Vector3.zero;
     float targetDist = 0.0f;
     float dist = 0.0f;
-    private Vector3 offset;
+    public Vector3 offset;
+
 
 
     void Start()
@@ -28,14 +29,9 @@ public class CameraMovement : MonoBehaviour
         }
         else
         {
-            offset = new Vector3(this.transform.position.x, myTarget.transform.position.y + 7.0f, this.transform.position.z);
-            transform.position = offset;
+            transform.position = myTarget.transform.position;
         }
         
-        /*if(Input.GetMouseButtonUp(1))
-        {
-            
-        }*/
     }
 
 

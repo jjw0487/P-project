@@ -457,6 +457,7 @@ public class Movement : CharacterProperty
 
             }
         }
+
         if (dir.z > 0)
         {
           
@@ -479,7 +480,7 @@ public class Movement : CharacterProperty
     }
     void B_DashnHeight()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift))
+        if(Input.GetKeyDown(KeyCode.LeftShift))
         {
             Vector3 dashPower = this.transform.forward * -Mathf.Log(1 / myRigid.drag) * 10f;
             // drag 공기저항값을 역수로 뒤집어서 로그로 바꾸고 - 를 넣어줘서 값을 구한 후 우리가 구한 대시양을 곱해준다 < 자연스러운 대시를 위해(무슨 소리인지 모르겠다.)
@@ -487,7 +488,7 @@ public class Movement : CharacterProperty
             Instantiate(orgDashEffect, this.transform.position, this.transform.rotation);
         }
 
-        if (this.transform.position.y < B_restrictedHeight) // 높이제한
+        if(this.transform.position.y < B_restrictedHeight) // 높이제한
         {
             if (Input.GetKey(KeyCode.Space))
             {

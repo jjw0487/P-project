@@ -10,10 +10,21 @@ public class EagleSpiral : MonoBehaviour
 
     public float speed;
     public float rotateDuration;
-    public Transform eagleExitPos;
 
-    Transform myTarget;
+    // 시작하고 저장해서 위치값 바뀌지 않도록
+    Vector3 myTargetPos;
+    Vector3 myExitPos;
     Vector3 myTargetDir;
+
+    void Start()
+    {
+        E_ChangeState(EagleMovement.Create);
+    }
+
+    void Update()
+    {
+        E_StateProcess();
+    }
 
 
     public void E_ChangeState(EagleMovement what)
@@ -23,7 +34,8 @@ public class EagleSpiral : MonoBehaviour
         switch (eagleMovement)
         {
             case EagleMovement.Create:
-                myTarget = SceneData.Inst.myPlayer.transform;
+                myTargetPos = SceneData.Inst.myPlayer.transform.position;
+                myExitPos = SceneData.Inst.EagleExitPos.transform.position;
                 E_ChangeState(EagleMovement.Forward);
                 break;
             case EagleMovement.Forward:
@@ -32,7 +44,7 @@ public class EagleSpiral : MonoBehaviour
                 StartCoroutine(RotateAround(rotateDuration));
                 break;
             case EagleMovement.Leave:
-                StartCoroutine(Rotating((eagleExitPos.position - transform.position).normalized));
+                StartCoroutine(Rotating((myExitPos - transform.position).normalized));
                 break;
             case EagleMovement.Disappear:
                 Destroy(this.gameObject);
@@ -61,19 +73,17 @@ public class EagleSpiral : MonoBehaviour
             case EagleMovement.Create:
                 break;
             case EagleMovement.Forward:
-                myTargetDir = (myTarget.transform.position - transform.position).normalized;
+                myTargetDir = (myTargetPos - transform.position).normalized;
                 transform.position += myTargetDir * (speed * Time.deltaTime);
-                if(Vector3.Distance(myTarget.transform.position, transform.position) < 1f)
+                if(Vector3.Distance(myTargetPos, transform.position) < 1f)
                 { E_ChangeState(EagleMovement.Spiral); }
                 break;
             case EagleMovement.Spiral:
                 break;
             case EagleMovement.Leave:
-                //Quaternion rot = Quaternion.LookRotation((eagleExitPos.position - transform.position).normalized);
-                //this.transform.rotation = Quaternion.Slerp(this.transform.rotation, rot, Time.deltaTime * 10f);
-                myTargetDir = (eagleExitPos.transform.position - transform.position).normalized;
+                myTargetDir = (myExitPos - transform.position).normalized;
                 transform.position += myTargetDir * (speed * Time.deltaTime);
-                if(Vector3.Distance(eagleExitPos.transform.position, transform.position) < 1f)
+                if(Vector3.Distance(myExitPos, transform.position) < 1f)
                 {
                     E_ChangeState(EagleMovement.Disappear);
                 }
@@ -83,22 +93,14 @@ public class EagleSpiral : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        E_ChangeState(EagleMovement.Create);
-    }
-
-    void Update()
-    {
-        E_StateProcess();
-    }
+    
 
     IEnumerator RotateAround(float duration)
     {
         while(duration > 0.0f)
         {
             duration -= Time.deltaTime;
-            transform.RotateAround(myTarget.transform.position, Vector3.up, -120f * Time.deltaTime);
+            transform.RotateAround(myTargetPos, Vector3.up, -120f * Time.deltaTime);
             yield return null;
         }
         E_ChangeState(EagleMovement.Leave);
