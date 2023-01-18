@@ -16,4 +16,6 @@ public class MonData : ScriptableObject
     public float attackSpeed;
     public Vector3 HPlocalScale;
     public float EXP;
+
+    public ItemData[] DropItems;
 }

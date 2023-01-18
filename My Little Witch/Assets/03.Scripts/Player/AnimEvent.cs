@@ -27,12 +27,12 @@ public class AnimEvent : MonoBehaviour
 
     /////////////PLAYER//////////////////////
     
-    public void OnPlayerNormAtk()
+    public void OnPlayerNormAtk() // 일반공격
     {
         player.C_OnNormAtk();
     }
 
-    public void OnPlayerANDSkill()
+    public void OnPlayerANDSkill() // 어택 n 디버프 스킬
     {
         skillSet[GetComponent<Animator>().GetInteger("SkillNum")].AND();
         //skillSet[i].AND();
@@ -43,8 +43,12 @@ public class AnimEvent : MonoBehaviour
 
     }
 
-    public void OnPlayerAtkSkill()
+    public void OnPlayerAtkSkill() // 대기모션 있는 스킬
     {
         skillSet[GetComponent<Animator>().GetInteger("SkillNum")].SkillAttack();
+    }
+    public void OnPlayerAtkWithoutWaitMotion() // 대기모션 없는 스킬
+    {
+        skillSet[GetComponent<Animator>().GetInteger("SkillNum")].SkillAttackWithoutWaitMotion();
     }
 }

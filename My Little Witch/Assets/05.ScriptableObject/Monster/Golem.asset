@@ -22,3 +22,5 @@ MonoBehaviour:
   attackSpeed: 3
   HPlocalScale: {x: 2, y: 2, z: 2}
   EXP: 100
+  DropItems:
+  - {fileID: 11400000, guid: 02673d5deb0cf9e469b19ff1e3b4eaf5, type: 2}

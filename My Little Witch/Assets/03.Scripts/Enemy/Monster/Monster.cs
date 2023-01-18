@@ -47,7 +47,7 @@ public class Monster : CharacterProperty
     Coroutine attack = null;
 
     [Header("UI")]
-    GameObject obj;
+    GameObject hpObj;
     GameObject floatingDmg;
     Slider HPSlider;
 
@@ -86,7 +86,7 @@ public class Monster : CharacterProperty
                 break;
             case MonsterState.Dead:
                 StopAllCoroutines();
-                Destroy(obj);
+                Destroy(hpObj);
                 StartCoroutine(DelayDead(4f));
                 break;
         }
@@ -142,7 +142,7 @@ public class Monster : CharacterProperty
                     myAnim.SetBool("IsRunning", false);
                 }
                 break;
-            case MonsterState.Attack:                
+            case MonsterState.Attack:
                 break;
             case MonsterState.Dead:
                 break;
@@ -175,7 +175,6 @@ public class Monster : CharacterProperty
 
             if(myAnim.GetBool("IsAttacking") == false)
             {
-                print("가능");
                 StateProcess();
             }
         }
@@ -188,10 +187,10 @@ public class Monster : CharacterProperty
         {
             //
             onBattle = true;
-            obj = Instantiate(Resources.Load("Monster/MonHP"), SceneData.Inst.HPBars) as GameObject;
-            obj.GetComponent<MonsterHP>().myTarget = myHpPos;
-            obj.transform.localScale = monStat.orgData.HPlocalScale;
-            HPSlider = obj.GetComponent<MonsterHP>().myBar;
+            hpObj = Instantiate(Resources.Load("Monster/MonHP"), SceneData.Inst.HPBars) as GameObject;
+            hpObj.GetComponent<MonsterHP>().myTarget = myHpPos;
+            hpObj.transform.localScale = monStat.orgData.HPlocalScale;
+            HPSlider = hpObj.GetComponent<MonsterHP>().myBar;
             //
             myTarget = other.transform.parent.GetComponent<Transform>();
             myEnemy = other.transform.parent.GetComponent<Movement>();
@@ -208,7 +207,7 @@ public class Monster : CharacterProperty
             myEnemy = null;
             //
             onBattle = false;
-            Destroy(obj);
+            Destroy(hpObj);
             //
             if (!isDead)
             {
@@ -322,6 +321,8 @@ public class Monster : CharacterProperty
             chill -= Time.deltaTime;
             yield return null;
         }
+        // 난수를 생성해서 랜덤하게 아이템을 switch 로 드랍되도록 만들어보자
+        GameObject DropItem = Instantiate(monStat.orgData.DropItems[0].obj, this.transform.position, Quaternion.identity) as GameObject; // 드랍 아이템
         Destroy(gameObject);
     }
 

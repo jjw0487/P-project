@@ -60,8 +60,10 @@ public class SkillSet : MonoBehaviour
                 }
                 else
                 {
-                    SkillAttack();
-                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
+                    //SkillAttackWithoutWaitMotion(); // 애님이벤트에서 실행
+                    StartCoroutine(fromSkill.Chill(skillStat.orgData.remainTime));
+                    fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName);
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime)); 
                 }
             }
             else if(skillStat.orgData.Type == SkillData.SkillType.Debuff) // 디버프
@@ -74,11 +76,7 @@ public class SkillSet : MonoBehaviour
                 {
                     StartCoroutine(CoolTime(skillStat.orgData.coolTime));
                 }
-                /*GameObject obj = Instantiate(skillStat.orgData.Effect, this.transform.position + Vector3.up, Quaternion.identity);
-                fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName);
-                fromSkill.myMagicGage.HandleMP(skillStat.orgData.consumeMP);
-                StartCoroutine(fromSkill.Chill(skillStat.orgData.remainTime, obj));
-                SkillOverlapCol(); // 디버프*/
+                
             }
             else //공격 N 디버프
             {
@@ -102,21 +100,27 @@ public class SkillSet : MonoBehaviour
 
     public void Buff()
     {
-        GameObject obj = Instantiate(skillStat.orgData.Effect, SkillHitPoint, Quaternion.identity);
+        GameObject obj = Instantiate(skillStat.orgData.Effect, myCharacter.transform.position + skillStat.orgData.performPos, Quaternion.identity);
         fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName);
         fromSkill.myMagicGage.HandleMP(skillStat.orgData.consumeMP);
         StartCoroutine(fromSkill.Chill(skillStat.orgData.remainTime));
     }
+    public void SkillAttackWithoutWaitMotion() // 일반 스킬어택 <- 애님이벤트에서 실행
+    {
+        fromSkill.myMagicGage.HandleMP(skillStat.orgData.consumeMP);
+        GameObject obj = Instantiate(skillStat.orgData.Effect, myCharacter.transform.position + skillStat.orgData.performPos, Quaternion.identity);
+        SkillOverlapColWithoutWaitMotion();
+    }
 
-    public void SkillAttack()
+    public void SkillAttack() // 어택 with Waiting Motion <- 애님이벤트에서 실행
     {
         fromSkill.myMagicGage.HandleMP(skillStat.orgData.consumeMP);
         GameObject obj = Instantiate(skillStat.orgData.Effect, SkillHitPoint, Quaternion.identity);
         StartCoroutine(fromSkill.Chill(skillStat.orgData.remainTime));
-        SkillOverlapCol(); // 어택
+        SkillOverlapCol(); 
     }
 
-    public void AND() // 어택 N 디버프
+    public void AND() // 어택 N 디버프 with Waiting Motion <- 애님이벤트에서 실행
     {
         fromSkill.myMagicGage.HandleMP(skillStat.orgData.consumeMP);
         GameObject obj = Instantiate(skillStat.orgData.Effect, SkillHitPoint, Quaternion.identity);
@@ -124,8 +128,24 @@ public class SkillSet : MonoBehaviour
         SkillOverlapCol_AND();
     }
 
+    public void SkillOverlapColWithoutWaitMotion() // 대기 모션 없는 
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(myCharacter.transform.position, skillStat.orgData.overlapRadius);
+        foreach (Collider col in hitColliders)
+        {
+            if (col.gameObject.layer == LayerMask.NameToLayer("Monster"))
+            {
+                /*Monster mon = col.GetComponentInParent<Monster>();
+                if (mon == null) continue;*/   //나중에 nullref 나오면 예외처리 해줘야함.
+                if (!col.GetComponentInParent<Monster>().isDead)
+                {
+                    col.GetComponentInParent<Monster>().OnDamage(skillStat.orgData.dmg);
+                }
+            }
+        }
+    }
 
-    public void SkillOverlapCol()
+    public void SkillOverlapCol() 
     {
         Collider[] hitColliders = Physics.OverlapSphere(SkillHitPoint, skillStat.orgData.overlapRadius);
         foreach (Collider col in hitColliders)
@@ -162,9 +182,10 @@ public class SkillSet : MonoBehaviour
     {
         fromSkill.canMove = false;
         fromSkill.canSkill = false;
-        fromSkill.myPlayer.curAnim[0].SetTrigger("WaitForPos");
-        fromSkill.SkillLimit.SetActive(true);
-        fromSkill.rangeOfSkills.localScale = new Vector3 (skillStat.orgData.rangeOfSkill, 0.01f, skillStat.orgData.rangeOfSkill);
+
+        fromSkill.myPlayer.curAnim[0].SetTrigger("WaitForPos"); // 대기모션
+        fromSkill.SkillLimit.SetActive(true); // 스킬 사정거리 표시 
+        fromSkill.rangeOfSkills.localScale = new Vector3 (skillStat.orgData.rangeOfSkill, 0.01f, skillStat.orgData.rangeOfSkill); // 스킬 사정거리
         
         while (cool > 0.0f)
         {
@@ -176,33 +197,33 @@ public class SkillSet : MonoBehaviour
                 fromSkill.SkillLimit.SetActive(false);
                 fromSkill.canMove = true;
                 fromSkill.canSkill = true;
-                yield break;
+                yield break; //바로 종료
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0)) // 대기 시간 내에 마우스 입력
             {
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hitData;
                 if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("SkillLimit")))
                 {
-                    fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName);
-                    SkillHitPoint = skillStat.orgData.performPos + hitData.point;
-                    myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized);
-                    //SkillAttack();
-                    fromSkill.SkillLimit.SetActive(false);
-                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
+                    fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName); //애니메이션
+                    SkillHitPoint = skillStat.orgData.performPos + hitData.point; // 스킬힛포인트 변수를 만들고
+                    myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized); // 시전 방향으로 쳐다보고
+                    //SkillAttack(); // 애님이벤트에서 작동
+                    fromSkill.SkillLimit.SetActive(false); // 사정거리 끄고
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime)); //쿨타임
                     yield break;
                 }
             }
 
-            if (Input.GetMouseButtonDown(1))
+            if (Input.GetMouseButtonDown(1)) // 마우스 오른쪽 버튼으로 취소
             {
                 //취소
                 fromSkill.SkillLimit.SetActive(false);
                 fromSkill.canMove = true; 
                 fromSkill.canSkill = true;
                 fromSkill.myPlayer.curAnim[0].SetTrigger("Idle");
-                yield break;
+                yield break; //쿨타임 없이 종료
             }
             
             yield return null;
@@ -214,13 +235,13 @@ public class SkillSet : MonoBehaviour
     }
 
 
-    public IEnumerator WaitForThePerform_AND(float cool)
+    public IEnumerator WaitForThePerform_AND(float cool) // 공격과 디버프
     {
         fromSkill.canMove = false;
         fromSkill.canSkill = false;
-        fromSkill.myPlayer.curAnim[0].SetTrigger("WaitForPos");
-        fromSkill.SkillLimit.SetActive(true);
-        fromSkill.rangeOfSkills.localScale = new Vector3(skillStat.orgData.rangeOfSkill, 0.01f, skillStat.orgData.rangeOfSkill);
+        fromSkill.myPlayer.curAnim[0].SetTrigger("WaitForPos"); // 대기모션
+        fromSkill.SkillLimit.SetActive(true); // 스킬 사정거리    
+        fromSkill.rangeOfSkills.localScale = new Vector3(skillStat.orgData.rangeOfSkill, 0.01f, skillStat.orgData.rangeOfSkill); // 스킬 사정거리
 
         while (cool > 0.0f)
         {
@@ -232,7 +253,7 @@ public class SkillSet : MonoBehaviour
                 fromSkill.SkillLimit.SetActive(false);
                 fromSkill.canMove = true;
                 fromSkill.canSkill = true;
-                yield break;
+                yield break; // 바로 종료
             }
 
             if (Input.GetMouseButtonDown(0))
@@ -241,12 +262,12 @@ public class SkillSet : MonoBehaviour
                 RaycastHit hitData;
                 if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("SkillLimit")))
                 {
-                    fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName);
-                    SkillHitPoint = skillStat.orgData.performPos + hitData.point;
-                    myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized);
-                    //AND();
-                    fromSkill.SkillLimit.SetActive(false);
-                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
+                    fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName); // 애니메이션
+                    SkillHitPoint = skillStat.orgData.performPos + hitData.point; // 스킬이 나갈 포지션 값을 받아두고
+                    myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized); // 스킬 쏜 방향으로 쳐다보고
+                    //AND(); //애님이벤트에서 작동
+                    fromSkill.SkillLimit.SetActive(false); //사정거리
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime)); //쿨타임
                     yield break;
                 }
             }
