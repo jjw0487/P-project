@@ -15,10 +15,12 @@ MonoBehaviour:
   <HP>k__BackingField: 100
   AT: 10
   DP: 2
-  strikingDist: 1.2
+  strikingDist: 1.57
   agentSpeed: 2
-  agentStopDist: 0.5
+  agentStopDist: 0
   attackRadius: 0.5
   attackSpeed: 4
   HPlocalScale: {x: 1, y: 1, z: 1}
   EXP: 30
+  DropItems:
+  - {fileID: 11400000, guid: 48611bdc6adf76448bff90a4a09c694a, type: 2}

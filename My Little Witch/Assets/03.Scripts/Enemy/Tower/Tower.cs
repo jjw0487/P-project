@@ -58,8 +58,6 @@ public class Tower : MonoBehaviour
 
         while (myEnemy != null)
         {
-
-            print("Attack");
             GameObject obj = Instantiate(orgArrow, myArrowStand.position, myArrowStand.rotation);
             obj.GetComponent<Arrow>().OnFire(myEnemy);
             yield return new WaitForSeconds(attackSpeed);

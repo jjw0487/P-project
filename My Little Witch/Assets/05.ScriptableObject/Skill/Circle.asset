@@ -15,7 +15,7 @@ MonoBehaviour:
   Type: 0
   Action: 1
   sprite: {fileID: 21300000, guid: d88540e451b7d644bbc90f3bc0654eac, type: 3}
-  performPos: {x: 0, y: 1, z: 0}
+  performPos: {x: 0, y: 2, z: 0}
   Effect: {fileID: 1325642784598610, guid: 1f5bb2d1da1b02547b4adcfbc087ef23, type: 3}
   remainTime: 0.5
   coolTime: 5
