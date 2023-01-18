@@ -15,7 +15,6 @@ public class ProjectileMover : MonoBehaviour
 
     private Monster mon;
     public SkillData skillData;
-    public Vector3 myTargetPos;
     public Vector3 targetDir;
 
     void Start()

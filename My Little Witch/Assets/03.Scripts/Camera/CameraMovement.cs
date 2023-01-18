@@ -12,31 +12,31 @@ public class CameraMovement : MonoBehaviour
     Vector3 myDir = Vector3.zero;
     float targetDist = 0.0f;
     float dist = 0.0f;
+    private Vector3 offset;
 
 
     void Start()
     {
-        myDir = transform.position - myTarget.position;
-        targetDist = dist = myDir.magnitude;
-        myDir.Normalize();
-
     }
 
     void Update()
     {
-        targetDist -= Input.GetAxis("Mouse ScrollWheel") * ZoomSpeed;
-        targetDist = Mathf.Clamp(targetDist, ZoomRange.x, ZoomRange.y);
-        dist = Mathf.Lerp(dist, targetDist, Time.deltaTime * 5.0f);
 
-        this.transform.position = Vector3.Lerp(this.transform.position, myTarget.transform.position + myDir * dist, lerpspeed);
-
-/*
-        Vector3 rot = myTarget.transform.rotation.eulerAngles; // 현재 카메라의 각도를 Vector3로 반환
-        rot.y += Input.GetAxis("Mouse X") * rotateSpeed; // 마우스 X 위치 * 회전 스피드
-                                                         //rot.x += -1 * Input.GetAxis("Mouse Y") * rotateSpeed; // 마우스 Y 위치 * 회전 스피드
-        Quaternion q = Quaternion.Euler(rot); // Quaternion으로 변환
-        this.transform.rotation = Quaternion.Slerp(transform.rotation, q, 0.5f); // 자연스럽게 회전
-*/
+        if (Input.GetMouseButton(1))
+        {
+            transform.RotateAround(myTarget.transform.position, Vector3.up, Input.GetAxis("Mouse X") * 10f);
+        }
+        else
+        {
+            offset = new Vector3(this.transform.position.x, myTarget.transform.position.y + 7.0f, this.transform.position.z);
+            transform.position = offset;
+        }
+        
+        /*if(Input.GetMouseButtonUp(1))
+        {
+            
+        }*/
     }
+
 
 }
