@@ -33,7 +33,7 @@ public class SkillSet : MonoBehaviour
 
     private void Start()
     {
-        img[0].sprite = skillStat.orgData.sprite; // 나중에 스탯창 만들고 업데이트에 넣어줘야 함 
+        img[0].sprite = skillStat.orgData.sprite; // 나중에 스탯창 만들고 드랍때마다 함수 만들어서 호출되도록 해야함.
     }
 
     public void PerformSkill()
@@ -117,7 +117,7 @@ public class SkillSet : MonoBehaviour
         fromSkill.myMagicGage.HandleMP(skillStat.orgData.consumeMP);
         GameObject obj = Instantiate(skillStat.orgData.Effect, SkillHitPoint, Quaternion.identity);
         StartCoroutine(fromSkill.Chill(skillStat.orgData.remainTime));
-        SkillOverlapCol(); 
+        SkillOverlapCol();
     }
 
     public void AND() // 어택 N 디버프 with Waiting Motion <- 애님이벤트에서 실행
@@ -195,8 +195,6 @@ public class SkillSet : MonoBehaviour
             {
                 StartCoroutine(CoolTime(skillStat.orgData.coolTime));
                 fromSkill.SkillLimit.SetActive(false);
-                fromSkill.canMove = true;
-                fromSkill.canSkill = true;
                 yield break; //바로 종료
             }
 
@@ -251,8 +249,6 @@ public class SkillSet : MonoBehaviour
             {
                 StartCoroutine(CoolTime(skillStat.orgData.coolTime));
                 fromSkill.SkillLimit.SetActive(false);
-                fromSkill.canMove = true;
-                fromSkill.canSkill = true;
                 yield break; // 바로 종료
             }
 

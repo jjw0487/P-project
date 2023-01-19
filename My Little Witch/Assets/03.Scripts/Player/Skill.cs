@@ -55,12 +55,11 @@ public class Skill : MonoBehaviour
     }
     
 
-    public IEnumerator Chill(float cool) // 못 움직이게 하는 스킬들
+    public IEnumerator Chill(float cool) // 애니메이션 동안 움직임 제한 <- SkillData.remainTime
     {
-        canSkill = false;
-        canMove = false;
+        canSkill = false; // -> SkillSet.cs
+        canMove = false; // -> Movement.cs
         //Cursor.SetCursor(myCursor.cursorImg[1], Vector2.zero, CursorMode.ForceSoftware);
-
         while (cool > 0.0f)
         {
             myPlayer.state[0].text = "Chill";
@@ -71,29 +70,12 @@ public class Skill : MonoBehaviour
                 canSkill = true;
                 yield break;
             }
-
             yield return null;
         }
-        //Destroy(obj); // 그냥 이펙트에 스크립트 달아서 시간 지나면 사라지게 만들거임 ㅅㄱ
-
-        canMove = true; //시간이 끝나면
+        canMove = true;
         canSkill = true;
         //Cursor.SetCursor(myCursor.cursorImg[0], Vector2.zero, CursorMode.ForceSoftware);
     }
-
-    public IEnumerator Cool(float cool) // 스킬 쿨타임
-    {
-        canSkill = false;
-        while (cool > 0.0f)
-        {
-            cool -= Time.deltaTime;
-            yield return null;
-        }
-        //시간이 끝나면
-        canSkill = true;
-    }
-    
-
 
 
 }

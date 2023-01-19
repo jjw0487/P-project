@@ -16,13 +16,13 @@ MonoBehaviour:
   Action: 0
   sprite: {fileID: 0}
   performPos: {x: 0, y: 0.3, z: 0}
-  Effect: {fileID: 1133303769236451467, guid: 877ca140237edbb48af7f4ce9a1ea996, type: 3}
+  Effect: {fileID: 8840272899098191565, guid: f409fba448b408f4fb8cd61cb6728a7a, type: 3}
   remainTime: 0.5
   coolTime: 15
   consumeMP: 40
   triggerName: SummonGuoba
-  dmg: 25
-  rangeOfSkill: 0
-  overlapRadius: 0
+  dmg: 1
+  rangeOfSkill: 7
+  overlapRadius: 5
   percentage: 10
-  debuffTime: 0
+  debuffTime: 100

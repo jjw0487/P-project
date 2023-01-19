@@ -33,8 +33,8 @@ public class Monster : CharacterProperty
     [Header("Target")]
     public Transform myTarget = null;
     public LayerMask enemyMask;
-    protected Movement myEnemy;
-    
+    public Movement myEnemy = null;
+
     protected Vector3 targetPos;
     protected Vector3 targetDir;
     protected float targetDist;
@@ -58,7 +58,7 @@ public class Monster : CharacterProperty
     {
         if (state == what) return;
         state = what;
-        switch(state)
+        switch (state)
         {
             case MonsterState.Create:
                 break;
@@ -75,9 +75,9 @@ public class Monster : CharacterProperty
                 idle = StartCoroutine(DelayIdle(5f));
                 break;
             case MonsterState.Target:
-                if(idle != null) { StopCoroutine(idle); idle = null; }
-                if(roam != null) { StopCoroutine(roam); roam = null; }
-                if(attack != null) { StopCoroutine(attack); attack = null; }
+                if (idle != null) { StopCoroutine(idle); idle = null; }
+                if (roam != null) { StopCoroutine(roam); roam = null; }
+                if (attack != null) { StopCoroutine(attack); attack = null; }
                 break;
             case MonsterState.Attack:
                 myAgent.SetDestination(transform.position);
@@ -123,12 +123,12 @@ public class Monster : CharacterProperty
                 targetDist = targetDir.magnitude;
                 targetPos = myTarget.transform.position;
 
-                if (myEnemy != null)
+                if (myTarget != null)
                 {
                     myAgent.SetDestination(targetPos);
                 }
 
-                if(targetDist <= monStat.orgData.strikingDist)
+                if (targetDist <= monStat.orgData.strikingDist)
                 {
                     ChangeState(MonsterState.Attack);
                 }
@@ -140,6 +140,11 @@ public class Monster : CharacterProperty
                 else
                 {
                     myAnim.SetBool("IsRunning", false);
+                }
+
+                if (Vector3.Distance(myTarget.transform.position, this.transform.position) < 7.0f)
+                {
+                    OnExitMotion();
                 }
                 break;
             case MonsterState.Attack:
@@ -173,7 +178,7 @@ public class Monster : CharacterProperty
                 HPSlider.value = Mathf.Lerp(HPSlider.value, monStat.curHP / monStat.orgData.HP * 100.0f, 10.0f * Time.deltaTime);
             }
 
-            if(myAnim.GetBool("IsAttacking") == false)
+            if (myAnim.GetBool("IsAttacking") == false)
             {
                 StateProcess();
             }
@@ -192,15 +197,15 @@ public class Monster : CharacterProperty
             hpObj.transform.localScale = monStat.orgData.HPlocalScale;
             HPSlider = hpObj.GetComponent<MonsterHP>().myBar;
             //
-            myTarget = other.transform.parent.GetComponent<Transform>();
-            myEnemy = other.transform.parent.GetComponent<Movement>();
+            if (myTarget == null) { myTarget = other.transform.parent.GetComponent<Transform>(); }
+            if (myEnemy == null) { myEnemy = other.transform.parent.GetComponent<Movement>(); }
             ChangeState(MonsterState.Target);
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        
+
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
             myTarget = null;
@@ -214,6 +219,11 @@ public class Monster : CharacterProperty
                 ChangeState(MonsterState.Idle);
             }
         }
+    }
+
+    public void OnExitMotion()
+    {
+       
     }
 
     public void MonAttack()
@@ -232,6 +242,11 @@ public class Monster : CharacterProperty
                 myEnemy.OnDmg(monStat.orgData.AT);
                 break;
             }
+            if (col.name == "Guoba2")
+            {
+                myTarget.GetComponent<Guoba_M>().OnDmg(monStat.orgData.AT);
+                break;
+            }
         }
     }
 
@@ -239,6 +254,7 @@ public class Monster : CharacterProperty
     {
         myAgent.SetDestination(transform.position);
         float damage = dmg - monStat.orgData.DP;
+        if (damage < 0) { damage = 0; }
         monStat.curHP -= damage;
         floatingDmg = Instantiate(Resources.Load("UI/Dmg"), SceneData.Inst.FloatingDmg) as GameObject;
         floatingDmg.GetComponent<FloatingDamage>().myPos = myDmgPos;

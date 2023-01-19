@@ -9,17 +9,6 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float ZoomSpeed;
     //[SerializeField] private float rotateSpeed = 10.0f;
 
-    Vector3 myDir = Vector3.zero;
-    float targetDist = 0.0f;
-    float dist = 0.0f;
-    public Vector3 offset;
-
-
-
-    void Start()
-    {
-    }
-
     void Update()
     {
 

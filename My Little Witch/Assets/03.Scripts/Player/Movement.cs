@@ -38,7 +38,6 @@ public class Movement : CharacterProperty
     [SerializeField] private float C_speed = 4f;
     [SerializeField] private float C_dashSpeed = 7f;
     [SerializeField] private float C_rotSpeed = 10f;
-    [SerializeField] private float C_JumpHeight = 3f;
     [SerializeField] private LayerMask layer;
     //private bool run;
     private bool canRun = true;
@@ -178,14 +177,6 @@ public class Movement : CharacterProperty
 
     }
 
-    /*private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-        {
-            curAnim[0].SetTrigger("Land");
-        }
-    }*/
-
 
     public void CheckGround() // 연속점프 방지, 점프를 땅에 있을 때만
     {
@@ -238,9 +229,7 @@ public class Movement : CharacterProperty
     {
         myHPBar.HandleHP(dmg);
         StartCoroutine(Stunned(0.7f));
-        //mySkill.StopSkillCoroutine();
         curAnim[0].SetTrigger("IsHit");
-        //curAnim[1].SetTrigger("IsHit");
     }
 
     void StateNotice()
@@ -433,13 +422,6 @@ public class Movement : CharacterProperty
     }
 
     
-    /*void C_Jump()
-    {
-        curAnim[0].SetTrigger("Jump");
-        StartCoroutine(Jumping(0.6f, 0.8f, 0.6f));
-    }*/
-
-    
     ///////////////////////////////////////////Broom//////////////////////////////////////
     
     void B_Movement()
@@ -529,40 +511,9 @@ public class Movement : CharacterProperty
             yield return null;
         }
         stun = false;
-        state[0].text = "Idle";
-    }
-
-    IEnumerator Jumping(float cool, float cool2, float cool3)
-    {
-        mySkill.canMove = false;
-        while (cool > 0.0f)
-        {
-            state[0].text = "Jump";
-            cool -= Time.deltaTime;
-            yield return null;
-        }
-        Vector3 jumpPower = Vector3.up * C_JumpHeight;
-        GetComponent<Rigidbody>().AddForce(jumpPower, ForceMode.VelocityChange);
-
-        while (cool2 > 0.0f)
-        {// 점프 중 일정 시간에만 움직임과 로테이션을 따로 설정
-            cool2 -= Time.deltaTime;
-            dir.x = Input.GetAxis("Horizontal");
-            dir.z = Input.GetAxis("Vertical");
-            myRigid.MovePosition(this.transform.position + dir * 1f * Time.deltaTime);
-            transform.forward = Vector3.Lerp(transform.forward, dir, 2f * Time.deltaTime);
-            transform.forward = Vector3.Lerp(transform.forward, dir, 2f * Time.deltaTime);
-            yield return null;
-        }
-
-        /* while (cool3 > 0.0f)
-        {
-            cool3 -= Time.deltaTime;
-
-            yield return null;
-        }
-        */
         mySkill.canMove = true;
+        mySkill.canSkill = true;
+        state[0].text = "Idle";
     }
 
     IEnumerator C_Dash()
