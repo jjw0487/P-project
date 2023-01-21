@@ -16,6 +16,7 @@ public class Guoba_M : MonoBehaviour
     public SkillData myData;
     public Transform previousTarget = null;
     public float HP;
+    public GameObject explosion;
 
     void Start()
     {
@@ -42,11 +43,10 @@ public class Guoba_M : MonoBehaviour
                         {
                             col.GetComponentInParent<Monster>().myTarget = this.transform;
                             col.GetComponentInParent<Monster>().ChangeState(MonsterState.Target);
-                            StartCoroutine(BeforeDestroy(myData.percentage));
-                            break;
                         }
                     }
                 }
+                StartCoroutine(BeforeDestroy(myData.percentage));
                 break;
             case GuobaMachineState.Attack:
                 break;
@@ -70,18 +70,16 @@ public class Guoba_M : MonoBehaviour
                         {
                             col.GetComponentInParent<Monster>().myTarget = previousTarget;
                             col.GetComponentInParent<Monster>().ChangeState(MonsterState.Target);
-                            break;
                         }
                         else
                         {
                             col.GetComponentInParent<Monster>().myTarget = null;
-                            break;
                         }
                     }
                 }
             }
 
-            // Æø¹ß ÀÌÆåÆ® ¹ßµ¿ ÈÄ µ¥¹ÌÁö ÁÜ
+            Explosion();
 
             Destroy(gameObject);
         }
@@ -94,7 +92,7 @@ public class Guoba_M : MonoBehaviour
             howlong -= Time.deltaTime;
             yield return null;
         }
-
+        
         Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, myData.overlapRadius);
         foreach (Collider col in hitColliders)
         {
@@ -106,19 +104,33 @@ public class Guoba_M : MonoBehaviour
                     {
                         col.GetComponentInParent<Monster>().myTarget = previousTarget;
                         col.GetComponentInParent<Monster>().ChangeState(MonsterState.Target);
-                        break;
                     }
                     else
                     {
                         col.GetComponentInParent<Monster>().myTarget = null;
-                        break;
                     }
                 }
             }
         }
 
-        // Æø¹ß ÀÌÆåÆ® ¹ßµ¿ ÈÄ µ¥¹ÌÁö ÁÜ
-
+        Explosion();
         Destroy(gameObject);
+    }
+
+    void Explosion()
+    {
+        Instantiate(explosion, this.transform.position, Quaternion.identity);
+
+        Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, 2f);
+        foreach (Collider col in hitColliders)
+        {
+            if (col.gameObject.layer == LayerMask.NameToLayer("Monster"))
+            {
+                if (!col.GetComponentInParent<Monster>().isDead)
+                {
+                    col.GetComponentInParent<Monster>().OnDamage(myData.consumeMP);
+                }
+            }
+        }
     }
 }

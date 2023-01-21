@@ -25,4 +25,4 @@ MonoBehaviour:
   rangeOfSkill: 7
   overlapRadius: 5
   percentage: 10
-  debuffTime: 100
+  debuffTime: 50
