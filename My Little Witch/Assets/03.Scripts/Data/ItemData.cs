@@ -11,4 +11,5 @@ public class ItemData : ScriptableObject
     public Sprite sprite;
     public GameObject obj;
     public int number;
+    public string explanation;
 }

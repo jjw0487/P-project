@@ -7,24 +7,26 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
 
-public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Item item;
-    [SerializeField] Image img;
+    [SerializeField] private Image img;
+    //private Image previousImg;
     public TMPro.TMP_Text count;
     private int itemCount = 0;
 
 
     void Start()
     {
-        //img = this.GetComponent<Image>();
+        //previousImg = img; //이미지를 미리 저장해서 슬롯이 클리어 될 때 새로 만들어줘야 함
 
-        if (GetComponent<Item>() != null)
+        if (GetComponent<Item>() != null) // 아이템을 놓고 실험할 경우
         {
             item = GetComponentInChildren<Item>();
             itemCount = GetComponentInChildren<Item>().myItem.curNumber;
         }
     }
+    
 
     /*public void ShowingSprite()
     {
@@ -76,10 +78,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
 
     public void OnDrag(PointerEventData eventData)
     {
-        
         if (item != null) 
         {
-            //this.transform.position = eventData.position;
             DragImage.Inst.transform.position = eventData.position;
         }
     }
@@ -88,21 +88,18 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     {
         DragImage.Inst.SetColor(0);
         DragImage.Inst.dragSlot = null;
-        //this.transform.localPosition = Vector3.zero; 
     }
 
     public void OnDrop(PointerEventData eventData)
     { // 다른 슬롯 위치에 놓였을 때
 
-        //this.transform.SetParent(eventData.pointerDrag.transform);
-        //this.transform.localPosition = Vector3.zero;
         if(DragImage.Inst.dragSlot != null) { ChangeSlot();}
     }
 
 
     private void ChangeSlot()
     {
-        Item temp = item;
+        Item temp = item; // 아이템을 담을 공간을 만들고
         int tempItemCount = itemCount;
         AddItem(DragImage.Inst.dragSlot.item, DragImage.Inst.dragSlot.itemCount);
 
@@ -124,4 +121,20 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         count.text = "";
     }
 
+
+    public void OnPointerEnter(PointerEventData eventData) // 마우스가 아이템 위에 있을 때
+    {
+        if (item != null)
+        {
+            SceneData.Inst.itemExplnation.text = item.myItem.orgData.explanation;
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (item != null)
+        {
+            SceneData.Inst.itemExplnation.text = "";
+        }
+    }
 }

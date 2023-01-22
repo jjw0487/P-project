@@ -65,7 +65,7 @@ public class Monster : CharacterProperty
             case MonsterState.Idle:
                 onBattle = false;
                 myAgent.SetDestination(IdlePos);
-                roam = StartCoroutine(DelayRoaming(5f));
+                roam = StartCoroutine(DelayState(MonsterState.Roam, 5f));
                 break;
             case MonsterState.Roam:
                 Vector3 rndPos = Vector3.zero;
@@ -73,7 +73,7 @@ public class Monster : CharacterProperty
                 rndPos.z = UnityEngine.Random.Range(-2.5f, 2.5f);
                 roamPos = transform.position + rndPos;
                 myAgent.SetDestination(roamPos);
-                idle = StartCoroutine(DelayIdle(5f));
+                idle = StartCoroutine(DelayState(MonsterState.Idle, 5f));
                 break;
             case MonsterState.Target:
                 if (idle != null) { StopCoroutine(idle); idle = null; }
@@ -88,6 +88,7 @@ public class Monster : CharacterProperty
             case MonsterState.Dead:
                 StopAllCoroutines();
                 Destroy(hpObj);
+                hpObj = null;
                 StartCoroutine(DelayDead(4f));
                 break;
         }
@@ -100,24 +101,12 @@ public class Monster : CharacterProperty
             case MonsterState.Create:
                 break;
             case MonsterState.Idle:
-                if (myAgent.remainingDistance > 0.1f)
-                {
-                    myAnim.SetBool("IsRunning", true);
-                }
-                else
-                {
-                    myAnim.SetBool("IsRunning", false);
-                }
+                if (myAgent.remainingDistance > 0.2f) { myAnim.SetBool("IsRunning", true); }
+                else { myAnim.SetBool("IsRunning", false); }
                 break;
             case MonsterState.Roam:
-                if (myAgent.remainingDistance > 0.1f)
-                {
-                    myAnim.SetBool("IsRunning", true);
-                }
-                else
-                {
-                    myAnim.SetBool("IsRunning", false);
-                }
+                if (myAgent.remainingDistance > 0.2f) { myAnim.SetBool("IsRunning", true); }
+                else { myAnim.SetBool("IsRunning", false); }
                 break;
             case MonsterState.Target:
                 if (myTarget != null)
@@ -125,41 +114,21 @@ public class Monster : CharacterProperty
                     targetDir = myTarget.transform.position - this.transform.position;
                     targetDist = targetDir.magnitude;
                     targetPos = myTarget.transform.position;
-                    myAgent.SetDestination(targetPos);
+                    if (!myAgent.pathPending) { myAgent.SetDestination(targetPos); }
                 }
                 else { ChangeState(MonsterState.Idle); }
                
+                if (targetDist <= monStat.orgData.strikingDist) { ChangeState(MonsterState.Attack); }
 
-                if (targetDist <= monStat.orgData.strikingDist)
-                {
-                    ChangeState(MonsterState.Attack);
-                }
-
-                if (myAgent.remainingDistance > 0.2f)
-                {
-                    myAnim.SetBool("IsRunning", true);
-                }
-                else
-                {
-                    myAnim.SetBool("IsRunning", false);
-                }
-
-                if (Vector3.Distance(myTarget.transform.position, this.transform.position) > 10.0f)
-                {
-                    OnExitMotion();
-                }
+                if (myAgent.remainingDistance > 0.2f) { myAnim.SetBool("IsRunning", true); }
+                else { myAnim.SetBool("IsRunning", false); }
+                
+                if (Vector3.Distance(myTarget.transform.position, this.transform.position) > 10.0f) { OnExitMotion(); }
+          
                 break;
             case MonsterState.Attack:
-
-                if (myAgent.remainingDistance > 0.2f)
-                {
-                    myAnim.SetBool("IsRunning", true);
-                }
-                else
-                {
-                    myAnim.SetBool("IsRunning", false);
-                }
-
+                if (myAgent.remainingDistance > 0.2f) { myAnim.SetBool("IsRunning", true); }
+                else { myAnim.SetBool("IsRunning", false); }
                 break;
             case MonsterState.Dead:
                 break;
@@ -204,10 +173,13 @@ public class Monster : CharacterProperty
         {
             //
             onBattle = true;
-            hpObj = Instantiate(Resources.Load("Monster/MonHP"), SceneData.Inst.HPBars) as GameObject;
-            hpObj.GetComponent<MonsterHP>().myTarget = myHpPos;
-            hpObj.transform.localScale = monStat.orgData.HPlocalScale;
-            HPSlider = hpObj.GetComponent<MonsterHP>().myBar;
+            if(hpObj == null)
+            {
+                hpObj = Instantiate(Resources.Load("Monster/MonHP"), SceneData.Inst.HPBars) as GameObject;
+                hpObj.GetComponent<MonsterHP>().myTarget = myHpPos;
+                hpObj.transform.localScale = monStat.orgData.HPlocalScale;
+                HPSlider = hpObj.GetComponent<MonsterHP>().myBar;
+            }
             //
             if (myTarget == null) { myTarget = other.transform.parent.GetComponent<Transform>(); }
             if (myEnemy == null) { myEnemy = other.transform.parent.GetComponent<Movement>(); }
@@ -221,6 +193,7 @@ public class Monster : CharacterProperty
         myEnemy = null;
         //
         Destroy(hpObj);
+        hpObj= null;
         //
         if (!isDead)
         {
@@ -323,21 +296,12 @@ public class Monster : CharacterProperty
         }
     }
 
-    IEnumerator DelayRoaming(float chill)
-    {
-        yield return new WaitForSeconds(chill);
-        ChangeState(MonsterState.Roam);
-    }
     IEnumerator DelayState(MonsterState state, float chill)
-    { // 동현씨가 만들어줌
-        yield return new WaitForSeconds(chill);
-        ChangeState(MonsterState.Roam);
-    }
-    IEnumerator DelayIdle(float chill)
     {
         yield return new WaitForSeconds(chill);
-        ChangeState(MonsterState.Idle);
+        ChangeState(state);
     }
+ 
     IEnumerator DelayDead(float chill)
     {
         myAgent.SetDestination(transform.position);
@@ -349,7 +313,7 @@ public class Monster : CharacterProperty
             yield return null;
         }
         // 난수를 생성해서 랜덤하게 아이템을 switch 로 드랍되도록 만들어보자
-        GameObject DropItem = Instantiate(monStat.orgData.DropItems[0].obj, this.transform.position, Quaternion.identity) // 드랍 아이템
+        GameObject DropItem = Instantiate(monStat.orgData.DropItems[0].obj, this.transform.position, Quaternion.identity); // 드랍 아이템
         Destroy(gameObject);
     }
 

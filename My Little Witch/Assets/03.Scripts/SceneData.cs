@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SceneData : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class SceneData : MonoBehaviour
     public Transform InvenSlot;
     public Transform EagleExitPos;
     public Inventory Inven;
+
+    public TMPro.TMP_Text itemExplnation;
 
     private void Awake()
     {

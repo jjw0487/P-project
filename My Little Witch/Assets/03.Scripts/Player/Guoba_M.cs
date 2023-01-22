@@ -57,7 +57,7 @@ public class Guoba_M : MonoBehaviour
     {
         print("¾Æ¾ß");
         HP -= dmg;
-        if(HP < 0f)
+        if (HP < 0f)
         {
             Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, myData.overlapRadius);
             foreach (Collider col in hitColliders)
@@ -87,12 +87,12 @@ public class Guoba_M : MonoBehaviour
 
     IEnumerator BeforeDestroy(float howlong)
     {
-        while(howlong > 0f)
+        while (howlong > 0f)
         {
             howlong -= Time.deltaTime;
             yield return null;
         }
-        
+
         Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, myData.overlapRadius);
         foreach (Collider col in hitColliders)
         {
