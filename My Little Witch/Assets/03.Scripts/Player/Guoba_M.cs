@@ -22,7 +22,7 @@ public class Guoba_M : MonoBehaviour
     {
         Gu_ChangeState(GuobaMachineState.Create); // 업데이트 없이 만들어보자
         previousTarget = SceneData.Inst.myPlayer.GetComponent<Transform>();
-        HP = myData.debuffTime;
+        HP = myData.debuffTime[myData.level];
     }
 
     public void Gu_ChangeState(GuobaMachineState what)
@@ -46,7 +46,7 @@ public class Guoba_M : MonoBehaviour
                         }
                     }
                 }
-                StartCoroutine(BeforeDestroy(myData.percentage));
+                StartCoroutine(BeforeDestroy(myData.percentage[myData.level]));
                 break;
             case GuobaMachineState.Attack:
                 break;

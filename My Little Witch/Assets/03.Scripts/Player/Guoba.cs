@@ -19,7 +19,7 @@ public class Guoba : MonoBehaviour
     void Start()
     {
         Gu_ChangeState(GuobaMachineState.Create); // 업데이트 없이 만들어보자
-        Destroy(gameObject, myData.percentage);
+        Destroy(gameObject, myData.percentage[myData.level]);
     }
 
     public void Gu_ChangeState(GuobaMachineState what)

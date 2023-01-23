@@ -40,8 +40,10 @@ public class ProjectileMover : MonoBehaviour
 
     public void SetTarget(Vector3 target)
     {
+        target += new Vector3(0f, 0.5f, 0f);
         targetDir = (target - transform.position).normalized;
     }
+
     private void FixedUpdate()
     {
         if (targetDir != Vector3.zero && speed != 0)
@@ -69,7 +71,7 @@ public class ProjectileMover : MonoBehaviour
                 if (mon == null) continue;*/   //나중에 nullref 나오면 예외처리 해줘야함.
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(skillData.dmg);
+                    col.GetComponentInParent<Monster>().OnDamage(skillData.dmg[skillData.level]);
                 }
             }
         }

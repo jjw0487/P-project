@@ -49,7 +49,7 @@ public class SkillSet : MonoBehaviour
                 else
                 {
                     Buff();
-                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime[skillStat.orgData.level]));
                 }
             }
             else if(skillStat.orgData.Type == SkillData.SkillType.Attck) // 어택
@@ -63,7 +63,7 @@ public class SkillSet : MonoBehaviour
                     //SkillAttackWithoutWaitMotion(); // 애님이벤트에서 실행
                     StartCoroutine(fromSkill.Chill(skillStat.orgData.remainTime));
                     fromSkill.myPlayer.curAnim[0].SetTrigger(skillStat.orgData.triggerName);
-                    StartCoroutine(CoolTime(skillStat.orgData.coolTime)); 
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime[skillStat.orgData.level])); 
                 }
             }
             else if(skillStat.orgData.Type == SkillData.SkillType.Debuff) // 디버프
@@ -74,7 +74,7 @@ public class SkillSet : MonoBehaviour
                 }
                 else
                 {
-                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime[skillStat.orgData.level]));
                 }
                 
             }
@@ -87,7 +87,7 @@ public class SkillSet : MonoBehaviour
                 else
                 {
                     AND(); // 나중에 스킬 전부 AnimEvent로 바꿀거면 지우자
-                    StartCoroutine(CoolTime(skillStat.orgData.coolTime));
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime[skillStat.orgData.level]));
                 }  
             }
         }
@@ -139,7 +139,7 @@ public class SkillSet : MonoBehaviour
                 if (mon == null) continue;*/   //나중에 nullref 나오면 예외처리 해줘야함.
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(skillStat.orgData.dmg);
+                    col.GetComponentInParent<Monster>().OnDamage(skillStat.orgData.dmg[skillStat.orgData.level]);
                 }
             }
         }
@@ -156,7 +156,7 @@ public class SkillSet : MonoBehaviour
                 if (mon == null) continue;*/   //나중에 nullref 나오면 예외처리 해줘야함.
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(skillStat.orgData.dmg);
+                    col.GetComponentInParent<Monster>().OnDamage(skillStat.orgData.dmg[skillStat.orgData.level]);
                 }
             }
         }
@@ -171,8 +171,8 @@ public class SkillSet : MonoBehaviour
             {
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(skillStat.orgData.dmg);
-                    col.GetComponentInParent<Monster>().OnDebuff(skillStat.orgData.debuffTime, skillStat.orgData.percentage);
+                    col.GetComponentInParent<Monster>().OnDamage(skillStat.orgData.dmg[skillStat.orgData.level]);
+                    col.GetComponentInParent<Monster>().OnDebuff(skillStat.orgData.debuffTime[skillStat.orgData.level], skillStat.orgData.percentage[skillStat.orgData.level]);
                 }
             }
         }
@@ -193,7 +193,7 @@ public class SkillSet : MonoBehaviour
 
             if (fromSkill.myPlayer.stun) // 얻어 맞으면
             {
-                StartCoroutine(CoolTime(skillStat.orgData.coolTime));
+                StartCoroutine(CoolTime(skillStat.orgData.coolTime[skillStat.orgData.level]));
                 fromSkill.SkillLimit.SetActive(false);
                 yield break; //바로 종료
             }
@@ -209,7 +209,7 @@ public class SkillSet : MonoBehaviour
                     myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized); // 시전 방향으로 쳐다보고
                     //SkillAttack(); // 애님이벤트에서 작동
                     fromSkill.SkillLimit.SetActive(false); // 사정거리 끄고
-                    StartCoroutine(CoolTime(skillStat.orgData.coolTime)); //쿨타임
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime[skillStat.orgData.level])); //쿨타임
                     yield break;
                 }
             }
@@ -247,7 +247,7 @@ public class SkillSet : MonoBehaviour
 
             if (fromSkill.myPlayer.stun) // 얻어 맞으면
             {
-                StartCoroutine(CoolTime(skillStat.orgData.coolTime));
+                StartCoroutine(CoolTime(skillStat.orgData.coolTime[skillStat.orgData.level]));
                 fromSkill.SkillLimit.SetActive(false);
                 yield break; // 바로 종료
             }
@@ -263,7 +263,7 @@ public class SkillSet : MonoBehaviour
                     myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized); // 스킬 쏜 방향으로 쳐다보고
                     //AND(); //애님이벤트에서 작동
                     fromSkill.SkillLimit.SetActive(false); //사정거리
-                    StartCoroutine(CoolTime(skillStat.orgData.coolTime)); //쿨타임
+                    StartCoroutine(CoolTime(skillStat.orgData.coolTime[skillStat.orgData.level])); //쿨타임
                     yield break;
                 }
             }

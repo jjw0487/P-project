@@ -14,15 +14,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   Action: 0
-  sprite: {fileID: 21300000, guid: cf40c27b01072a5409de662954b70835, type: 3}
+  level: 1
+  sprite: {fileID: 21300000, guid: 275b75eac56b4f9479461d5cda9133c5, type: 3}
   performPos: {x: 0, y: 0.5, z: 0}
   Effect: {fileID: 1966937190983394, guid: db331aea270302141bab9e1c17c5b24c, type: 3}
   remainTime: 0.5
-  coolTime: 3
+  coolTime:
+  - 7
+  - 6
+  - 5
+  - 4
+  - 3
   consumeMP: 20
   triggerName: Light
-  dmg: 50
+  dmg:
+  - 25
+  - 40
+  - 60
+  - 90
+  - 120
   rangeOfSkill: 10
   overlapRadius: 2
-  percentage: 0
-  debuffTime: 0
+  percentage:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  debuffTime:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0

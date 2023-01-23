@@ -6,11 +6,11 @@ public class InteractableUIManager : PointerCheck
 {
     private bool inven = false;
     // private bool status = false;
-    // private bool skillbook = false;
+    private bool skillbook = false;
 
     [SerializeField] private GameObject Inventory;
     //[SerializeField] private GameObject Status;
-    //[SerializeField] private GameObject SkillBook;
+    [SerializeField] private GameObject SkillBook;
 
     private void Update()
     {
@@ -30,16 +30,16 @@ public class InteractableUIManager : PointerCheck
 
         if (Input.GetKeyDown(KeyCode.K))
         {
-            //status = !status;
-            //if (inven) { Open(Status); }
-            //else { Close(Status); }
+            skillbook = !skillbook;
+            if (skillbook) { Open(SkillBook); }
+            else { Close(SkillBook); }
         }
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            //skillBool = !skillBook;
-            //if (inven) { Open(SkillBook); }
-            //else { Close(SkillBook); }
+            //status = !status;
+            //if (status) { Open(Status); }
+            //else { Close(Status); }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -61,7 +61,7 @@ public class InteractableUIManager : PointerCheck
     {
         Close(Inventory);
         //Close(Status);
-        //Close(SkillBook);
+        Close(SkillBook);
     }
 
 }
