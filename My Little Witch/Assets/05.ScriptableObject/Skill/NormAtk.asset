@@ -14,15 +14,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Action: 1
+  level: 1
   sprite: {fileID: 0}
   performPos: {x: 0, y: 0.6, z: 2}
   Effect: {fileID: 1698648575761504, guid: cf263124cbe15f448b6a2ec0ef11bd54, type: 3}
   remainTime: 0
-  coolTime: 0
+  coolTime:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
   consumeMP: 0
   triggerName: 
-  dmg: 10
+  dmg:
+  - 10
+  - 20
+  - 30
+  - 40
+  - 50
   rangeOfSkill: 5
   overlapRadius: 0.7
-  percentage: 0
-  debuffTime: 0
+  percentage:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0
+  debuffTime:
+  - 0
+  - 0
+  - 0
+  - 0
+  - 0

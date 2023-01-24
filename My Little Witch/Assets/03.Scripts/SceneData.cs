@@ -8,7 +8,7 @@ public class SceneData : MonoBehaviour
     public static SceneData Inst = null;
 
     public Movement myPlayer;
-
+    public Skill mySkill;
     public Transform HPBars;
     public Transform FloatingDmg;
     //public Transform Minimap;

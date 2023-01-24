@@ -15,6 +15,7 @@ public class CameraMovement : MonoBehaviour
         if (Input.GetMouseButton(1))
         {
             transform.RotateAround(myTarget.transform.position, Vector3.up, Input.GetAxis("Mouse X") * 10f);
+            transform.position = myTarget.transform.position;
         }
         else
         {

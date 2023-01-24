@@ -7,6 +7,11 @@ public class DragImage : MonoBehaviour
 {
     public static DragImage Inst;
     public Slots dragSlot;
+    public SkillData dragSkillData;
+    public SkillSet dragSkillSet;
+
+    public bool fromBook;
+
     [SerializeField]private Image itemImage;
 
     private void Awake()
@@ -20,12 +25,19 @@ public class DragImage : MonoBehaviour
         SetColor(1);
     }
 
+    public void DragSetSprite(Sprite sprite)
+    {
+        itemImage.sprite = sprite;
+        SetColor(1);
+    }
+
     public void SetColor(float _alpha)
     {
         Color color = itemImage.color;
         color.a = _alpha;
         itemImage.color = color;
     }
+
 
 
 }

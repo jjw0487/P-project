@@ -168,22 +168,25 @@ public class Monster : CharacterProperty
 
     private void OnTriggerEnter(Collider other)
     {
-        //behaviorstate -> exit 할 때 
-        if ((enemyMask & 1 << other.gameObject.layer) != 0)
+        //behaviorstate -> exit 할 때
+        if (!isDead)
         {
-            //
-            onBattle = true;
-            if(hpObj == null)
+            if ((enemyMask & 1 << other.gameObject.layer) != 0)
             {
-                hpObj = Instantiate(Resources.Load("Monster/MonHP"), SceneData.Inst.HPBars) as GameObject;
-                hpObj.GetComponent<MonsterHP>().myTarget = myHpPos;
-                hpObj.transform.localScale = monStat.orgData.HPlocalScale;
-                HPSlider = hpObj.GetComponent<MonsterHP>().myBar;
+                //
+                onBattle = true;
+                if (hpObj == null)
+                {
+                    hpObj = Instantiate(Resources.Load("Monster/MonHP"), SceneData.Inst.HPBars) as GameObject;
+                    hpObj.GetComponent<MonsterHP>().myTarget = myHpPos;
+                    hpObj.transform.localScale = monStat.orgData.HPlocalScale;
+                    HPSlider = hpObj.GetComponent<MonsterHP>().myBar;
+                }
+                //
+                if (myTarget == null) { myTarget = other.transform.parent.GetComponent<Transform>(); }
+                if (myEnemy == null) { myEnemy = other.transform.parent.GetComponent<Movement>(); }
+                ChangeState(MonsterState.Target);
             }
-            //
-            if (myTarget == null) { myTarget = other.transform.parent.GetComponent<Transform>(); }
-            if (myEnemy == null) { myEnemy = other.transform.parent.GetComponent<Movement>(); }
-            ChangeState(MonsterState.Target);
         }
     }
 

@@ -15,6 +15,8 @@ public class HPBar : MonoBehaviour
     void Update()
     {
         HandleHP(0f);
+
+        //코루틴을 만들어서 n초 후에 체력이 n씩 회복하도록 만들자.
     }
 
     public void HandleHP(float consume)
