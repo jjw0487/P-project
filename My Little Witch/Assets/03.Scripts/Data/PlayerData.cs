@@ -8,5 +8,6 @@ public class PlayerData : ScriptableObject
     public float HP;
     public float MP;
     public float AT;
-    public float[] EXP;
+    public int Level;
+    public int[] EXP;
 }

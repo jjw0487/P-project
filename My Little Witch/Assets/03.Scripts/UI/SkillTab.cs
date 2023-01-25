@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.VirtualTexturing;
 using UnityEngine.UI;
 using static UnityEditor.Progress;
 
-public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
+public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
     public SkillBook skillBook;
     public Button lvUpBtn;
@@ -57,4 +58,19 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         }
     }
 
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            for (int i = 0; i < SceneData.Inst.mySkill.skillSetArray.Length; ++i) // 슬롯 수량만큼 반복
+            {
+                if (SceneData.Inst.mySkill.skillSetArray[i].myData == null) // 자식이 하나만 있다면
+                {
+
+                    SceneData.Inst.mySkill.skillSetArray[i].AddSkillData(this.myData);
+                    break; // 조건검사에 걸린다면 반복문 탈출
+                }
+            }
+        }
+    }
 }

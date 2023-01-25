@@ -86,6 +86,7 @@ public class Monster : CharacterProperty
                 //StartCoroutine(EnemyCheck());
                 break;
             case MonsterState.Dead:
+                myEnemy.GetEXP(monStat.orgData.EXP);
                 StopAllCoroutines();
                 Destroy(hpObj);
                 hpObj = null;
@@ -114,16 +115,19 @@ public class Monster : CharacterProperty
                     targetDir = myTarget.transform.position - this.transform.position;
                     targetDist = targetDir.magnitude;
                     targetPos = myTarget.transform.position;
+
                     if (!myAgent.pathPending) { myAgent.SetDestination(targetPos); }
+
+                    if (targetDist <= monStat.orgData.strikingDist) { ChangeState(MonsterState.Attack); }
+
+                    if (Vector3.Distance(myTarget.transform.position, this.transform.position) > 10.0f) { OnExitMotion(); }
                 }
                 else { ChangeState(MonsterState.Idle); }
                
-                if (targetDist <= monStat.orgData.strikingDist) { ChangeState(MonsterState.Attack); }
 
                 if (myAgent.remainingDistance > 0.2f) { myAnim.SetBool("IsRunning", true); }
                 else { myAnim.SetBool("IsRunning", false); }
-                
-                if (Vector3.Distance(myTarget.transform.position, this.transform.position) > 10.0f) { OnExitMotion(); }
+
           
                 break;
             case MonsterState.Attack:
@@ -232,11 +236,13 @@ public class Monster : CharacterProperty
     {
         myAgent.SetDestination(transform.position);
         float damage = dmg - monStat.orgData.DP;
-        if (damage < 0) { damage = 0; }
-        monStat.curHP -= damage;
+        float dmgRndVal = UnityEngine.Random.Range(damage * 0.7f, damage);
+        if (damage < 0) { dmgRndVal = 0;}
+        int finalDmg = (int)dmgRndVal;
+        monStat.curHP -= finalDmg;
         floatingDmg = Instantiate(Resources.Load("UI/Dmg"), SceneData.Inst.FloatingDmg) as GameObject;
         floatingDmg.GetComponent<FloatingDamage>().myPos = myDmgPos;
-        floatingDmg.GetComponent<FloatingDamage>().dmg.text = damage.ToString();
+        floatingDmg.GetComponent<FloatingDamage>().dmg.text = finalDmg.ToString();
 
         if (monStat.curHP < 0.0f)
         {

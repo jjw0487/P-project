@@ -23,6 +23,7 @@ Material:
   m_Name: BuildingImage_A
   m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
   m_ValidKeywords:
+  - _ENVIRONMENTREFLECTIONS_OFF
   - _SURFACE_TYPE_TRANSPARENT
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -159,7 +160,7 @@ Material:
     - _DoubleSidedNormalMode: 2
     - _DstBlend: 10
     - _EnableFogOnTransparent: 1
-    - _EnvironmentReflections: 1
+    - _EnvironmentReflections: 0
     - _Fl: 1
     - _Float0: 1
     - _Float1: 10

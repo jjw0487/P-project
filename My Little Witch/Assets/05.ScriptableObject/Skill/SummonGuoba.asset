@@ -28,11 +28,11 @@ MonoBehaviour:
   consumeMP: 40
   triggerName: SummonGuoba
   dmg:
-  - 30
-  - 55
-  - 80
-  - 100
-  - 120
+  - 0
+  - 10
+  - 15
+  - 20
+  - 25
   rangeOfSkill: 7
   overlapRadius: 5
   percentage:

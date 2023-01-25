@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   Action: 0
-  level: 5
+  level: 1
   sprite: {fileID: 21300000, guid: 275b75eac56b4f9479461d5cda9133c5, type: 3}
   performPos: {x: 0, y: 0.5, z: 0}
   Effect: {fileID: 1966937190983394, guid: db331aea270302141bab9e1c17c5b24c, type: 3}

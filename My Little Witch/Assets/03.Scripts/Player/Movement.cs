@@ -19,6 +19,7 @@ public struct PlayerStat
     public PlayerData orgData;
     public float curHP;
     public float curMP;
+
 }
 public class Movement : CharacterProperty
 {
@@ -27,6 +28,9 @@ public class Movement : CharacterProperty
     [SerializeField] private GameObject KK;
     [SerializeField] private GameObject BR;
     public PlayerStat charStat;
+
+    public int level;
+    public int curExp;
 
     [Header("Ray")]
     private Vector3 movePoint; // 이동 위치 저장
@@ -149,6 +153,9 @@ public class Movement : CharacterProperty
         state[0].text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
 
+
+        level = charStat.orgData.Level;
+        curExp = charStat.orgData.EXP[level - 1];
     }
 
     void Update()
@@ -177,6 +184,28 @@ public class Movement : CharacterProperty
 
     }
 
+    public void GetEXP(int exp)
+    {
+        curExp -= exp;
+        if(curExp < 0)
+        {
+            curExp *= -1; //음수를 양수로
+            LevelUp(+curExp);
+        }
+    }
+    public void LevelUp(int rest)
+    {
+        Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
+        Instantiate(Resources.Load("Etc/Eagle"), Camera.main.transform.position, Quaternion.identity);
+        ++level; // 일단 스크립터블에 영향이 안가도록 데이터는 건드리지 말고 이렇게 두자
+        curExp = charStat.orgData.EXP[level - 1];
+        curExp -= rest;
+        if(curExp < 0)
+        {
+            curExp *= -1;
+            LevelUp(+curExp);
+        }
+    }
 
     public void CheckGround() // 연속점프 방지, 점프를 땅에 있을 때만
     {
