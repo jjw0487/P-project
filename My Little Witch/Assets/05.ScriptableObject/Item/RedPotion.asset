@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752bbd610381815439151a00d19c64d9, type: 3}
   m_Name: RedPotion
   m_EditorClassIdentifier: 
+  itemType: 0
+  value: 30
+  valueType: 1
   name: RedPotion
   sprite: {fileID: 21300000, guid: b99f8c13ecc2ba847b0f18406345797b, type: 3}
   obj: {fileID: 9140091562336114817, guid: c4282f81f25c86c49a5c6874e53d1767, type: 3}

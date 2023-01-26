@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 752bbd610381815439151a00d19c64d9, type: 3}
+  m_Name: SilverChest
+  m_EditorClassIdentifier: 
+  itemType: 0
+  value: 0
+  valueType: 0
+  name: Silver Tresure
+  sprite: {fileID: 21300000, guid: cc5428806c3747a4cb4b5a7b426a8597, type: 3}
+  obj: {fileID: 3902759725349737359, guid: b676eea8292a1df49aa0c80042bc278c, type: 3}
+  number: 1
+  explanation: "\uB808\uBCA8\uC5C5\uC5D0 \uB530\uB978 \uBCF4\uC0C1\uD488\uC774 \uB4E4\uC5B4\uC788\uB2E4."

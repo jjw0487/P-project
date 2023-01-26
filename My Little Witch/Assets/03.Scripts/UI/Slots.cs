@@ -14,12 +14,11 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     //private Image previousImg;
     public TMPro.TMP_Text count;
     private int itemCount = 0;
+    private Sprite orgSprite;
 
 
     void Start()
     {
-        //previousImg = img; //이미지를 미리 저장해서 슬롯이 클리어 될 때 새로 만들어줘야 함
-
         if (GetComponent<Item>() != null) // 아이템을 놓고 실험할 경우
         {
             item = GetComponentInChildren<Item>();
@@ -38,6 +37,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
 
     public void AddItem(Item _item, int _count)
     {
+        if(orgSprite == null) { orgSprite = GetComponent<Image>().sprite; }
+        // 기존 이미지를 둬서 슬롯이 clear 될 때 붙여주자
         item = _item;
         count.text = _item.myItem.curNumber.ToString();
         itemCount = _count;
@@ -62,9 +63,43 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     {
         if(eventData.button == PointerEventData.InputButton.Left)
         {
-            //
+            if(item != null)
+            {
+                if (item.myItem.orgData.itemType == ItemData.ItemType.Consumable)
+                {
+                    if (itemCount > 1)
+                    {
+                        //몇 개 사용하시겠습니까?
+
+                    }
+                    else
+                    {
+                        //아이템을 사용하시겠습니까?
+                        SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value);
+                        Destroy(item.gameObject);
+                        ClearSlot();
+                    }
+                }
+                else if (item.myItem.orgData.itemType == ItemData.ItemType.Interactable)
+                {
+
+                }
+                else if (item.myItem.orgData.itemType == ItemData.ItemType.Material)
+                {
+
+                }
+            }
+            
         }
     }
+
+    void UseConsumableItem(int howmany)
+    {
+        SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value);
+        Destroy(item.gameObject);
+        ClearSlot();
+    }
+
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -118,7 +153,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     private void ClearSlot()
     {
         item = null;
-        img.sprite = null;
+        img.sprite = orgSprite;
         count.text = "";
     }
 

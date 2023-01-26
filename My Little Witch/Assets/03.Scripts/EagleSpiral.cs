@@ -11,6 +11,8 @@ public class EagleSpiral : MonoBehaviour
     public float speed;
     public float rotateDuration;
 
+    public GameObject[] dropItems;
+
     // 시작하고 저장해서 위치값 바뀌지 않도록
     Vector3 myTargetPos;
     Vector3 myExitPos;
@@ -52,7 +54,7 @@ public class EagleSpiral : MonoBehaviour
         }
     }
 
-    IEnumerator Rotating(Vector3 dir)
+    IEnumerator Rotating(Vector3 dir) // 독수리가 위로 향해 올라갈 때 자연스러움을 위해
     {
         Quaternion end = Quaternion.LookRotation(dir);
         Quaternion start = transform.rotation;

@@ -14,15 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Action: 1
+  level: 1
   sprite: {fileID: 0}
   performPos: {x: 0, y: 0, z: 0}
   Effect: {fileID: 0}
   remainTime: 0
-  coolTime: 0
+  coolTime: []
   consumeMP: 0
   triggerName: 
-  dmg: 0
+  dmg: []
   rangeOfSkill: 0
   overlapRadius: 0
-  percentage: 0
-  debuffTime: 0
+  percentage: []
+  debuffTime: []

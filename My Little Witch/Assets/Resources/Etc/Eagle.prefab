@@ -46,8 +46,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eagleMovement: 0
-  speed: 2
+  speed: 3
   rotateDuration: 3.2
+  dropItems:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1001 &1210535573180956994
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ public class SkillBook : MonoBehaviour
 
     public int skillPoint;
 
-    void Start()
+    void Awake()
     {
         skillPoint = 5;
         point.text = skillPoint.ToString();

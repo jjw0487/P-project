@@ -83,7 +83,6 @@ public class Movement : CharacterProperty
         {
             case ONWHAT.Street:
                 myAgent.enabled = true;
-                Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
                 //myRigid.drag = 0f;
                 //myRigid.constraints = RigidbodyConstraints.FreezeAll;
                 KK.SetActive(true);
@@ -92,7 +91,6 @@ public class Movement : CharacterProperty
             case ONWHAT.Broom:
                 myAgent.SetDestination(transform.position);
                 myAgent.enabled = false;
-                Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
                 myRigid.drag = 6f;
                 myRigid.constraints = RigidbodyConstraints.None | RigidbodyConstraints.FreezeRotation;
                 BR.SetActive(true);
@@ -182,6 +180,14 @@ public class Movement : CharacterProperty
             transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
         }
 
+    }
+
+    public void GetItemValue(int i, int value)
+    {
+        if(i == 1)
+        {
+            myHPBar.HandleHP(value);
+        }
     }
 
     public void GetEXP(int exp)
