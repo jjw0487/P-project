@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters;
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class HS_CameraController : MonoBehaviour
 {
@@ -36,7 +32,7 @@ public class HS_CameraController : MonoBehaviour
         {
             currDistance = 2;
         }
-        
+
         // (currDistance - 2) / 3.5f - constant for far camera position
         var targetPos = Holder.position + new Vector3(0, (distanceHit - 2) / 3f + cameraPos[1], 0);
 

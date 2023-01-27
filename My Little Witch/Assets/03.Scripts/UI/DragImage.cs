@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +10,7 @@ public class DragImage : MonoBehaviour
 
     public bool fromBook;
 
-    [SerializeField]private Image itemImage;
+    [SerializeField] private Image itemImage;
 
     private void Awake()
     {

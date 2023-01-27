@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TargetProjectile : MonoBehaviour
 {
@@ -33,7 +31,7 @@ public class TargetProjectile : MonoBehaviour
 
     //Link from movement controller
     //TARGET POSITION + TARGET OFFSET
-    public void UpdateTarget(Transform targetPosition , Vector3 Offset)
+    public void UpdateTarget(Transform targetPosition, Vector3 Offset)
     {
         target = targetPosition;
         targetOffset = Offset;

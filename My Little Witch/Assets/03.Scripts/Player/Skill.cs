@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -53,7 +51,7 @@ public class Skill : MonoBehaviour
             myPlayer.curAnim[0].SetInteger("SkillNum", 3);
         }
     }
-    
+
 
     public IEnumerator Chill(float cool) // 애니메이션 동안 움직임 제한 <- SkillData.remainTime
     {
@@ -64,9 +62,9 @@ public class Skill : MonoBehaviour
         {
             myPlayer.state[0].text = "Chill";
             cool -= Time.deltaTime;
-            if(myPlayer.stun)
+            if (myPlayer.stun)
             {
-                canMove = true; 
+                canMove = true;
                 canSkill = true;
                 yield break;
             }

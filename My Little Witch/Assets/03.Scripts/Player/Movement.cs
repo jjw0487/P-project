@@ -1,17 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UI;
-using UnityEngine.AI;
-using static Movement;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using static UnityEditor.PlayerSettings;
-using static UnityEngine.GraphicsBuffer;
-using UnityEngine.UIElements;
-using UnityEngine.EventSystems;
 
 [Serializable]
 public struct PlayerStat
@@ -31,6 +20,7 @@ public class Movement : CharacterProperty
 
     public int level;
     public int curExp;
+    public GameObject eagle;
 
     [Header("Ray")]
     private Vector3 movePoint; // 이동 위치 저장
@@ -103,7 +93,7 @@ public class Movement : CharacterProperty
         switch (onWhat)
         {
             case ONWHAT.Street:
-                
+
 
                 if (mySkill.canMove && !stun && !OnInventory)
                 {
@@ -145,7 +135,7 @@ public class Movement : CharacterProperty
     void Start()
     {
         coolStacks = 0;
-        StackNumCheck(coolStacks, coolStacks+1);
+        StackNumCheck(coolStacks, coolStacks + 1);
         StartCoroutine(StackingCoolStacks(5f));
         myAgent.updateRotation = false; // 네비메시 로테이션을 막자
         state[0].text = "Idle";
@@ -168,7 +158,6 @@ public class Movement : CharacterProperty
 
     private void FixedUpdate()
     {
-
         dir.x = Input.GetAxis("Horizontal");
         dir.z = Input.GetAxis("Vertical");
         //totalDist = dir.magnitude;
@@ -184,7 +173,7 @@ public class Movement : CharacterProperty
 
     public void GetItemValue(int i, int value)
     {
-        if(i == 1)
+        if (i == 1)
         {
             myHPBar.HandleHP(value);
         }
@@ -193,7 +182,7 @@ public class Movement : CharacterProperty
     public void GetEXP(int exp)
     {
         curExp -= exp;
-        if(curExp < 0)
+        if (curExp < 0)
         {
             curExp *= -1; //음수를 양수로
             LevelUp(+curExp);
@@ -202,11 +191,12 @@ public class Movement : CharacterProperty
     public void LevelUp(int rest)
     {
         Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
-        Instantiate(Resources.Load("Etc/Eagle"), Camera.main.transform.position, Quaternion.identity);
+        Instantiate(eagle, Camera.main.transform.position, Quaternion.identity);
+        // eagle.getlevel();
         ++level; // 일단 스크립터블에 영향이 안가도록 데이터는 건드리지 말고 이렇게 두자
         curExp = charStat.orgData.EXP[level - 1];
         curExp -= rest;
-        if(curExp < 0)
+        if (curExp < 0)
         {
             curExp *= -1;
             LevelUp(+curExp);
@@ -329,7 +319,7 @@ public class Movement : CharacterProperty
                 curAnim[0].SetBool("IsWalking", false);
                 myAgent.SetDestination(transform.position);
             }
-            else if(Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Item")))
+            else if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Item")))
             {
                 myAgent.SetDestination(transform.position);
             }
@@ -365,7 +355,7 @@ public class Movement : CharacterProperty
             normAtkNums[n].SetActive(false);
         }
 
-        if(coolStacks == 0) // 0일 때 예외처리
+        if (coolStacks == 0) // 0일 때 예외처리
         {
             normAtkNums[1].SetActive(false);
         }
@@ -374,7 +364,7 @@ public class Movement : CharacterProperty
     void C_normAtk(RaycastHit hitPoint)
     {
         coolStacks--;
-        StackNumCheck(coolStacks, coolStacks+1);
+        StackNumCheck(coolStacks, coolStacks + 1);
         if (coolStacks == 4)
         {
             StartCoroutine(StackingCoolStacks(5f));
@@ -426,7 +416,7 @@ public class Movement : CharacterProperty
             }
             myAgent.speed = C_speed;
             curAnim[0].SetBool("IsRunning", false);
-            
+
             //run = false;
         }
         else
@@ -435,14 +425,14 @@ public class Movement : CharacterProperty
             if (Input.GetKey(KeyCode.LeftShift) && myAgent.remainingDistance > 0.1f && canRun)
             // 시프트를 눌렀고, 이동거리가 있으며 canRun 이 false가 아닐 때
             {
-               // run = true;
+                // run = true;
                 myAgent.speed = C_dashSpeed;
                 curAnim[0].SetBool("IsRunning", true);
                 //rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, dashSpeed * Time.deltaTime);
             }
             else // 이동거리값이 0보다 작을 때 shift로 달리기 발동 안할 수 있도록
             {
-               // run = false;
+                // run = false;
                 myAgent.speed = C_speed;
                 curAnim[0].SetBool("IsRunning", false);
             }
@@ -456,9 +446,9 @@ public class Movement : CharacterProperty
         }
     }
 
-    
+
     ///////////////////////////////////////////Broom//////////////////////////////////////
-    
+
     void B_Movement()
     {
         //Vector3 characterDir = transform.rotation * dir;
@@ -477,7 +467,7 @@ public class Movement : CharacterProperty
 
         if (dir.z > 0)
         {
-          
+
             if (dir.x < 0)//left
             {
                 curAnim[1].SetBool("IsTurningLeft", true);
@@ -487,7 +477,7 @@ public class Movement : CharacterProperty
                 curAnim[1].SetBool("IsTurningRight", true);
             }
         }
-        
+
         if (dir.x == 0)//Idle
         {
             curAnim[1].SetBool("IsTurningLeft", false);
@@ -497,7 +487,7 @@ public class Movement : CharacterProperty
     }
     void B_DashnHeight()
     {
-        if(Input.GetKeyDown(KeyCode.LeftShift))
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Vector3 dashPower = this.transform.forward * -Mathf.Log(1 / myRigid.drag) * 10f;
             // drag 공기저항값을 역수로 뒤집어서 로그로 바꾸고 - 를 넣어줘서 값을 구한 후 우리가 구한 대시양을 곱해준다 < 자연스러운 대시를 위해(무슨 소리인지 모르겠다.)
@@ -505,7 +495,7 @@ public class Movement : CharacterProperty
             Instantiate(orgDashEffect, this.transform.position, this.transform.rotation);
         }
 
-        if(this.transform.position.y < B_restrictedHeight) // 높이제한
+        if (this.transform.position.y < B_restrictedHeight) // 높이제한
         {
             if (Input.GetKey(KeyCode.Space))
             {
@@ -520,8 +510,8 @@ public class Movement : CharacterProperty
     {
         movePoint = hitData.point;
         myAgent.SetDestination(movePoint);
-        
-        while(myAgent.pathPending)
+
+        while (myAgent.pathPending)
         {
             yield return null;
         }
@@ -537,7 +527,7 @@ public class Movement : CharacterProperty
     }
     IEnumerator Stunned(float cool) // 못 움직이게 하는 스킬들
     {
-        
+
         stun = true;
         while (cool > 0.0f)
         {
@@ -569,7 +559,7 @@ public class Movement : CharacterProperty
             {
                 coolStacks++;
                 cool = cooltime;
-                StackNumCheck(coolStacks, coolStacks-1);
+                StackNumCheck(coolStacks, coolStacks - 1);
             }
             yield return null;
         }

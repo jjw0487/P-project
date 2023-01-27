@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SkillSlots : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
@@ -18,7 +16,7 @@ public class SkillSlots : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         {
             skillData = this.GetComponent<SkillTab>().myData;
         }
-        else if(this.GetComponent<SkillSet>() != null)
+        else if (this.GetComponent<SkillSet>() != null)
         {
             skillSet = this.GetComponent<SkillSet>();
         }
@@ -44,7 +42,7 @@ public class SkillSlots : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
             DragImage.Inst.transform.position = eventData.position;
         }
 
-        if(skillSet != null)
+        if (skillSet != null)
         {
             DragImage.Inst.dragSkillSet = skillSet;
             DragImage.Inst.DragSetImage(Image);

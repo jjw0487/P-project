@@ -1,11 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.AI;
 
 
 [Serializable]
@@ -123,12 +119,12 @@ public class Monster : CharacterProperty
                     if (Vector3.Distance(myTarget.transform.position, this.transform.position) > 10.0f) { OnExitMotion(); }
                 }
                 else { ChangeState(MonsterState.Idle); }
-               
+
 
                 if (myAgent.remainingDistance > 0.2f) { myAnim.SetBool("IsRunning", true); }
                 else { myAnim.SetBool("IsRunning", false); }
 
-          
+
                 break;
             case MonsterState.Attack:
                 if (myAgent.remainingDistance > 0.2f) { myAnim.SetBool("IsRunning", true); }
@@ -200,7 +196,7 @@ public class Monster : CharacterProperty
         myEnemy = null;
         //
         Destroy(hpObj);
-        hpObj= null;
+        hpObj = null;
         //
         if (!isDead)
         {
@@ -237,7 +233,7 @@ public class Monster : CharacterProperty
         myAgent.SetDestination(transform.position);
         float damage = dmg - monStat.orgData.DP;
         float dmgRndVal = UnityEngine.Random.Range(damage * 0.7f, damage);
-        if (damage < 0) { dmgRndVal = 0;}
+        if (damage < 0) { dmgRndVal = 0; }
         int finalDmg = (int)dmgRndVal;
         monStat.curHP -= finalDmg;
         floatingDmg = Instantiate(Resources.Load("UI/Dmg"), SceneData.Inst.FloatingDmg) as GameObject;
@@ -256,7 +252,7 @@ public class Monster : CharacterProperty
 
     public void OnDebuff(float time, float percents)
     {
-        if (c != null) 
+        if (c != null)
         {
             StopCoroutine(c);
             c = null;
@@ -276,7 +272,7 @@ public class Monster : CharacterProperty
             yield return null;
         }
 
-        if(myTarget != null)
+        if (myTarget != null)
         {
             this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
             myAnim.SetTrigger("Attack");
@@ -286,7 +282,7 @@ public class Monster : CharacterProperty
         while (myTarget != null)
         {
             chill -= Time.deltaTime;
-            if(chill < 0.0f)
+            if (chill < 0.0f)
             {
                 myAgent.SetDestination(transform.position);
                 this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
@@ -310,7 +306,7 @@ public class Monster : CharacterProperty
         yield return new WaitForSeconds(chill);
         ChangeState(state);
     }
- 
+
     IEnumerator DelayDead(float chill)
     {
         myAgent.SetDestination(transform.position);

@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752bbd610381815439151a00d19c64d9, type: 3}
   m_Name: GoldChest
   m_EditorClassIdentifier: 
-  itemType: 0
+  itemType: 2
   value: 0
   valueType: 0
   name: Gold Tresure
   sprite: {fileID: 21300000, guid: cc5428806c3747a4cb4b5a7b426a8597, type: 3}
-  obj: {fileID: 5598578689922100110, guid: 779b6652a523d5b4e84db6ce5aacfb0e, type: 3}
-  number: 1
+  obj: {fileID: 1487593569942193769, guid: dd282998fa71c634393734d15484a96d, type: 3}
+  count: 1
   explanation: "\uC88B\uC740 \uBCF4\uBB3C\uC774 \uB4E4\uC5B4\uC788\uC744 \uAC83 \uB9CC
     \uAC19\uB2E4."

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +12,7 @@ public class MagicGageBar : MonoBehaviour
 
     void Update()
     {
-        
+
         HandleMP(0f);
     }
 

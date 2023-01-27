@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class Arrow : MonoBehaviour
@@ -24,10 +22,10 @@ public class Arrow : MonoBehaviour
         Vector3 dir = target - pos;
         float totalDist = dir.magnitude;
         dir.Normalize();
-        while(totalDist > 0f)
+        while (totalDist > 0f)
         {
             float delta = speed * Time.deltaTime;
-            if(totalDist < delta)
+            if (totalDist < delta)
             {
                 delta = totalDist;
             }

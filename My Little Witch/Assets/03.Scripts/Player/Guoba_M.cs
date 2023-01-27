@@ -1,10 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.UI;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UIElements;
 using static Monster;
 
 public class Guoba_M : MonoBehaviour
@@ -22,7 +17,7 @@ public class Guoba_M : MonoBehaviour
     {
         Gu_ChangeState(GuobaMachineState.Create); // 업데이트 없이 만들어보자
         previousTarget = SceneData.Inst.myPlayer.GetComponent<Transform>();
-        HP = myData.debuffTime[myData.level-1];
+        HP = myData.debuffTime[myData.level - 1];
     }
 
     public void Gu_ChangeState(GuobaMachineState what)
@@ -46,7 +41,7 @@ public class Guoba_M : MonoBehaviour
                         }
                     }
                 }
-                StartCoroutine(BeforeDestroy(myData.percentage[myData.level-1]));
+                StartCoroutine(BeforeDestroy(myData.percentage[myData.level - 1]));
                 break;
             case GuobaMachineState.Attack:
                 break;
@@ -55,7 +50,6 @@ public class Guoba_M : MonoBehaviour
 
     public void OnDmg(float dmg)
     {
-        print("아야");
         HP -= dmg;
         if (HP < 0f)
         {

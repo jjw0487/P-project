@@ -88,7 +88,7 @@ namespace DigitalRuby.PyroParticles
                 case "RangeOfFloats":
                     DrawRangeField(position, labelWidth, textFieldWidth, prop, true);
                     break;
-           
+
                 default:
                     EditorGUI.HelpBox(position, "[Compact] doesn't work with type '" + prop.type + "'", MessageType.Error);
                     break;

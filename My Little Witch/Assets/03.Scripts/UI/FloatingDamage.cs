@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FloatingDamage : MonoBehaviour
@@ -9,7 +7,7 @@ public class FloatingDamage : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(myPos != null)
+        if (myPos != null)
         {
             Vector3 pos = Camera.main.WorldToScreenPoint(myPos.position);
             transform.position = pos;

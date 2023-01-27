@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class FrontSpawner : MonoBehaviour 
+public class FrontSpawner : MonoBehaviour
 {
     public Transform pivot;
     public float speed = 15f;

@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class CameraMovement : MonoBehaviour
 {
@@ -21,7 +20,7 @@ public class CameraMovement : MonoBehaviour
         {
             transform.position = myTarget.transform.position;
         }
-        
+
     }
 
 

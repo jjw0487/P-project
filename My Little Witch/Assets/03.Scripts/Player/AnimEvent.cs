@@ -8,7 +8,7 @@ public class AnimEvent : MonoBehaviour
 
     private void Awake()
     {
-        if(GetComponent<Monster>() != null)
+        if (GetComponent<Monster>() != null)
         {
             monster = GetComponent<Monster>();
         }
@@ -18,7 +18,7 @@ public class AnimEvent : MonoBehaviour
         }
     }
     /////////////MONSTER////////////////////
-    
+
     public void OnMonAttack()
     {
         monster.MonAttack();
@@ -26,7 +26,7 @@ public class AnimEvent : MonoBehaviour
 
 
     /////////////PLAYER//////////////////////
-    
+
     public void OnPlayerNormAtk() // 일반공격
     {
         player.C_OnNormAtk();

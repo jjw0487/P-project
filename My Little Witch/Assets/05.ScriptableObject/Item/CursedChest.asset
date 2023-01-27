@@ -17,7 +17,7 @@ MonoBehaviour:
   valueType: 0
   name: Cursed Tresure
   sprite: {fileID: 21300000, guid: cc5428806c3747a4cb4b5a7b426a8597, type: 3}
-  obj: {fileID: 6931441979005641154, guid: 6e0db8ac670302b459773f43c73ce086, type: 3}
-  number: 1
+  obj: {fileID: 3893533120355240627, guid: b773f56eb752f5044be928f4049125ef, type: 3}
+  count: 1
   explanation: "\uC5B4\uB5A4 \uBB3C\uAC74\uC774 \uB4E4\uC5B4\uC788\uC744\uC9C0 \uC544\uBB34\uB3C4
     \uBAA8\uB978\uB2E4."

@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace DigitalRuby.PyroParticles
 {
@@ -133,7 +132,7 @@ namespace DigitalRuby.PyroParticles
 
         protected override void Update()
         {
- 	        base.Update();
+            base.Update();
 
             if (Duration > 0.0f && (elapsedSecond += Time.deltaTime) >= 1.0f)
             {

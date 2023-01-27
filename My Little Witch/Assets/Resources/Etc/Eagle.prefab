@@ -49,16 +49,16 @@ MonoBehaviour:
   speed: 3
   rotateDuration: 3.2
   dropItems:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4571764902643027460, guid: c6287c3a5e8a8b548824e533d1f949d8, type: 3}
+  - {fileID: 4571764902643027460, guid: 68aacfadb0978e646bea50afb0344734, type: 3}
+  - {fileID: 4571764902643027460, guid: 82a02be9aec4da34a8295433c5ab684e, type: 3}
+  - {fileID: 4571764902643027460, guid: 6e31340a933572a499fc8d3a2710ada6, type: 3}
+  - {fileID: 4571764902643027460, guid: 372445cef3c0e12458bd634303cafecd, type: 3}
+  - {fileID: 4571764902643027460, guid: 411c1e58e8660044a9449e4a9544acbc, type: 3}
+  - {fileID: 4571764902643027460, guid: d7020e50756ab984bb62018e617e42a1, type: 3}
+  - {fileID: 4571764902643027460, guid: 810a6c9a77da1f846abab3c995c27cf8, type: 3}
+  - {fileID: 4571764902643027460, guid: 4523844e1c654454188dc077305c0cb5, type: 3}
+  - {fileID: 1487593569942193769, guid: 285ede75d32332a4fb1bafe68982b00b, type: 3}
 --- !u!1001 &1210535573180956994
 PrefabInstance:
   m_ObjectHideFlags: 0

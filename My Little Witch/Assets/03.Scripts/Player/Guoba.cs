@@ -1,10 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.UI;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UIElements;
-using static Monster;
 
 public class Guoba : MonoBehaviour
 {

@@ -1,8 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using static UnityEngine.GraphicsBuffer;
 
 public class Tower : MonoBehaviour
 {
@@ -16,7 +13,7 @@ public class Tower : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        
+
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
             myEnemy = other.transform.parent.GetComponent<Movement>();
@@ -61,7 +58,7 @@ public class Tower : MonoBehaviour
             GameObject obj = Instantiate(orgArrow, myArrowStand.position, myArrowStand.rotation);
             obj.GetComponent<Arrow>().OnFire(myEnemy);
             yield return new WaitForSeconds(attackSpeed);
-           
+
         }
     }
 }

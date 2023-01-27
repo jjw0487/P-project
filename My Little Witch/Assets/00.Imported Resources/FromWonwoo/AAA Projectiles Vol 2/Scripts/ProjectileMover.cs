@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ProjectileMover : MonoBehaviour
 {
@@ -35,8 +33,8 @@ public class ProjectileMover : MonoBehaviour
                 Destroy(flashInstance, flashPsParts.main.duration);
             }
         }
-        Destroy(gameObject,5);
-	}
+        Destroy(gameObject, 5);
+    }
 
     public void SetTarget(Vector3 target)
     {
@@ -61,7 +59,7 @@ public class ProjectileMover : MonoBehaviour
         speed = 0;
 
         /////////////
-        
+
         Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, skillData.overlapRadius);
         foreach (Collider col in hitColliders)
         {
@@ -112,5 +110,5 @@ public class ProjectileMover : MonoBehaviour
         Destroy(gameObject);
     }
 
-    
+
 }

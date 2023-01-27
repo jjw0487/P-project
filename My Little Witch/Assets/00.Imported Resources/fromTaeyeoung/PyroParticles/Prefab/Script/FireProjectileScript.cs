@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
 namespace DigitalRuby.PyroParticles
 {
@@ -50,7 +50,7 @@ namespace DigitalRuby.PyroParticles
 
         private bool collided;
 
- 
+
         private IEnumerator SendCollisionAfterDelay()
         {
             yield return new WaitForSeconds(ProjectileColliderDelay);

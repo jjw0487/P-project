@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8566056783275893560}
   m_LocalRotation: {x: -0.70575374, y: 0.043722153, z: 0.043722153, w: 0.70575374}
-  m_LocalPosition: {x: 156.66307, y: 24.898226, z: 131.36758}
+  m_LocalPosition: {x: 999, y: 999, z: 999}
   m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -102,7 +102,7 @@ MonoBehaviour:
   myItem:
     orgData: {fileID: 11400000, guid: 02673d5deb0cf9e469b19ff1e3b4eaf5, type: 2}
     curNumber: 0
-  inventory: {fileID: 0}
+  contents: []
 --- !u!136 &4281379939537961416
 CapsuleCollider:
   m_ObjectHideFlags: 0

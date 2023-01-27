@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 namespace DigitalRuby.PyroParticles
 {
@@ -71,7 +70,7 @@ namespace DigitalRuby.PyroParticles
                 else
                 {
                     Camera.main.rect = new Rect(0.0f, 0.0f, 1.0f, 1.0f);
-                }                
+                }
             }
         }
 

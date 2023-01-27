@@ -1,11 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Threading;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -25,7 +20,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             itemCount = GetComponentInChildren<Item>().myItem.curNumber;
         }
     }
-    
+
 
     /*public void ShowingSprite()
     {
@@ -37,23 +32,24 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
 
     public void AddItem(Item _item, int _count)
     {
-        if(orgSprite == null) { orgSprite = GetComponent<Image>().sprite; }
+        if (orgSprite == null) { orgSprite = GetComponent<Image>().sprite; }
         // 기존 이미지를 둬서 슬롯이 clear 될 때 붙여주자
         item = _item;
-        count.text = _item.myItem.curNumber.ToString();
-        itemCount = _count;
+        AddCount(_count);
         img.sprite = _item.myItem.orgData.sprite;
     }
 
-    public void AddCount()
+    public void AddCount(int howmany)
     {
+        itemCount += howmany;
+        item.myItem.curNumber = itemCount;
         count.text = item.myItem.curNumber.ToString();
     }
 
     void logic()
     {
         // 드래그에 접근한 아이템이 한 개 이상일 때
-        if(itemCount > 1)
+        if (itemCount > 1)
         {
             // 드래그 할 아이템이 한 개 이상일 때 몇개를 이동 및 소모 할 것인지 물어보자.
         }
@@ -61,35 +57,39 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if(eventData.button == PointerEventData.InputButton.Left)
+        if (eventData.button == PointerEventData.InputButton.Left)
         {
-            if(item != null)
+            if (item != null)
             {
                 if (item.myItem.orgData.itemType == ItemData.ItemType.Consumable)
                 {
-                    if (itemCount > 1)
+                    SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value);
+                    Destroy(item.gameObject);
+                    ClearSlot();
+                    /*if (itemCount > 1)
                     {
                         //몇 개 사용하시겠습니까?
-
                     }
                     else
                     {
                         //아이템을 사용하시겠습니까?
-                        SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value);
-                        Destroy(item.gameObject);
-                        ClearSlot();
-                    }
+                    }*/
                 }
                 else if (item.myItem.orgData.itemType == ItemData.ItemType.Interactable)
                 {
-
+                    for (int i = 0; i < item.contents.Length; i++)
+                    {
+                        item.GetItemFromInteractableItems(item.contents[i]);
+                    }
+                    Destroy(item.gameObject);
+                    ClearSlot();
                 }
                 else if (item.myItem.orgData.itemType == ItemData.ItemType.Material)
                 {
 
                 }
             }
-            
+
         }
     }
 
@@ -103,7 +103,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if(item != null) 
+        if (item != null)
         {
             DragImage.Inst.dragSlot = this;
             DragImage.Inst.DragSetImage(img);
@@ -113,7 +113,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
 
     public void OnDrag(PointerEventData eventData)
     {
-        if (item != null) 
+        if (item != null)
         {
             DragImage.Inst.transform.position = eventData.position;
         }
@@ -128,18 +128,18 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     public void OnDrop(PointerEventData eventData)
     { // 다른 슬롯 위치에 놓였을 때
 
-        if(DragImage.Inst.dragSlot != null) { ChangeSlot();}
+        if (DragImage.Inst.dragSlot != null) { ChangeSlot(); }
     }
 
 
     private void ChangeSlot()
     {
-        
+
         Item temp = item; // 아이템을 담을 공간을 만들고
         int tempItemCount = itemCount;
         AddItem(DragImage.Inst.dragSlot.item, DragImage.Inst.dragSlot.itemCount);
 
-        if(temp != null)
+        if (temp != null)
         {
             DragImage.Inst.dragSlot.AddItem(temp, tempItemCount);
         }

@@ -1,12 +1,7 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 
 public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
@@ -40,7 +35,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         {
             img[0].sprite = myData.sprite; // 나중에 스탯창 만들고 드랍때마다 함수 만들어서 호출되도록 해야함.
         }
-        
+
     }
 
 
@@ -71,10 +66,10 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     }
 
     public void OnDrop(PointerEventData eventData)
-    { 
+    {
         //if (DragImage.Inst.dragSkillData != null) { ChangeSlot(); }
         if (DragImage.Inst.dragSkillData != null && DragImage.Inst.fromBook) { AddSkillData(DragImage.Inst.dragSkillData); }
-        else if(DragImage.Inst.dragSkillData != null && !DragImage.Inst.fromBook) { ChangeSlot();}
+        else if (DragImage.Inst.dragSkillData != null && !DragImage.Inst.fromBook) { ChangeSlot(); }
     }
 
     private void ChangeSlot()
@@ -107,21 +102,21 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void PerformSkill()
     {
-        if(!inCoolTime && fromSkill.myMagicCircuit.value > myData.consumeMP && !fromSkill.myPlayer.stun)
+        if (!inCoolTime && fromSkill.myMagicCircuit.value > myData.consumeMP && !fromSkill.myPlayer.stun)
         {
-            if(myData.Type == SkillData.SkillType.Buff) // 버프
+            if (myData.Type == SkillData.SkillType.Buff) // 버프
             {
-                if(myData.Action == SkillData.ActionType.WaitBeforeAction)
+                if (myData.Action == SkillData.ActionType.WaitBeforeAction)
                 {
                     StartCoroutine(WaitForThePerform(5f));
                 }
                 else
                 {
                     Buff();
-                    StartCoroutine(CoolTime(myData.coolTime[myData.level-1]));
+                    StartCoroutine(CoolTime(myData.coolTime[myData.level - 1]));
                 }
             }
-            else if(myData.Type == SkillData.SkillType.Attck) // 어택
+            else if (myData.Type == SkillData.SkillType.Attck) // 어택
             {
                 if (myData.Action == SkillData.ActionType.WaitBeforeAction)
                 {
@@ -132,10 +127,10 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                     //SkillAttackWithoutWaitMotion(); // 애님이벤트에서 실행
                     StartCoroutine(fromSkill.Chill(myData.remainTime));
                     fromSkill.myPlayer.curAnim[0].SetTrigger(myData.triggerName);
-                    StartCoroutine(CoolTime(myData.coolTime[myData.level-1])); 
+                    StartCoroutine(CoolTime(myData.coolTime[myData.level - 1]));
                 }
             }
-            else if(myData.Type == SkillData.SkillType.Debuff) // 디버프
+            else if (myData.Type == SkillData.SkillType.Debuff) // 디버프
             {
                 if (myData.Action == SkillData.ActionType.WaitBeforeAction)
                 {
@@ -143,9 +138,9 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 }
                 else
                 {
-                    StartCoroutine(CoolTime(myData.coolTime[myData.level-1]));
+                    StartCoroutine(CoolTime(myData.coolTime[myData.level - 1]));
                 }
-                
+
             }
             else //공격 N 디버프
             {
@@ -157,14 +152,14 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 {
                     AND(); // 나중에 스킬 전부 AnimEvent로 바꿀거면 지우자
                     StartCoroutine(CoolTime(myData.coolTime[myData.level]));
-                }  
+                }
             }
         }
         else
         {
             fromSkill.myPlayer.state[2].text = "마력이 부족합니다.";
         }
-        
+
     }
 
     public void Buff()
@@ -209,24 +204,24 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                 if (mon == null) continue;*/   //나중에 nullref 나오면 예외처리 해줘야함.
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level-1]);
+                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level - 1]);
                 }
             }
         }
     }
 
-    public void SkillOverlapCol() 
+    public void SkillOverlapCol()
     {
         Collider[] hitColliders = Physics.OverlapSphere(SkillHitPoint, myData.overlapRadius);
         foreach (Collider col in hitColliders)
         {
-          if(col.gameObject.layer == LayerMask.NameToLayer("Monster"))
+            if (col.gameObject.layer == LayerMask.NameToLayer("Monster"))
             {
                 /*Monster mon = col.GetComponentInParent<Monster>();
                 if (mon == null) continue;*/   //나중에 nullref 나오면 예외처리 해줘야함.
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level-1]);
+                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level - 1]);
                 }
             }
         }
@@ -241,8 +236,8 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             {
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level-1]);
-                    col.GetComponentInParent<Monster>().OnDebuff(myData.debuffTime[myData.level-1], myData.percentage[myData.level-1]);
+                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level - 1]);
+                    col.GetComponentInParent<Monster>().OnDebuff(myData.debuffTime[myData.level - 1], myData.percentage[myData.level - 1]);
                 }
             }
         }
@@ -255,15 +250,15 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
         fromSkill.myPlayer.curAnim[0].SetTrigger("WaitForPos"); // 대기모션
         fromSkill.SkillLimit.SetActive(true); // 스킬 사정거리 표시 
-        fromSkill.rangeOfSkills.localScale = new Vector3 (myData.rangeOfSkill, 0.01f, myData.rangeOfSkill); // 스킬 사정거리
-        
+        fromSkill.rangeOfSkills.localScale = new Vector3(myData.rangeOfSkill, 0.01f, myData.rangeOfSkill); // 스킬 사정거리
+
         while (cool > 0.0f)
         {
             cool -= Time.deltaTime;
 
             if (fromSkill.myPlayer.stun) // 얻어 맞으면
             {
-                StartCoroutine(CoolTime(myData.coolTime[myData.level-1]));
+                StartCoroutine(CoolTime(myData.coolTime[myData.level - 1]));
                 fromSkill.SkillLimit.SetActive(false);
                 yield break; //바로 종료
             }
@@ -288,12 +283,12 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             {
                 //취소
                 fromSkill.SkillLimit.SetActive(false);
-                fromSkill.canMove = true; 
+                fromSkill.canMove = true;
                 fromSkill.canSkill = true;
                 fromSkill.myPlayer.curAnim[0].SetTrigger("Idle");
                 yield break; //쿨타임 없이 종료
             }
-            
+
             yield return null;
         }
         fromSkill.SkillLimit.SetActive(false);
@@ -332,7 +327,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                     myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized); // 스킬 쏜 방향으로 쳐다보고
                     //AND(); //애님이벤트에서 작동
                     fromSkill.SkillLimit.SetActive(false); //사정거리
-                    StartCoroutine(CoolTime(myData.coolTime[myData.level-1])); //쿨타임
+                    StartCoroutine(CoolTime(myData.coolTime[myData.level - 1])); //쿨타임
                     yield break;
                 }
             }
@@ -367,5 +362,5 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         inCoolTime = false; //시간이 끝나면
     }
 
- 
+
 }

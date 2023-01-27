@@ -12,8 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 752bbd610381815439151a00d19c64d9, type: 3}
   m_Name: BluePotion
   m_EditorClassIdentifier: 
+  itemType: 0
+  value: 0
+  valueType: 0
   name: BluePotion
   sprite: {fileID: 21300000, guid: 5e160ff9648049645bddeb916502e7cf, type: 3}
   obj: {fileID: 8566056783275893560, guid: 733f6c6d9024a994ab10ed3ef97b7ddd, type: 3}
-  number: 1
+  count: 1
   explanation: "\uC18C\uB7C9\uC758 \uB9C8\uB825\uC744 \uBCF4\uCDA9\uD574 \uC900\uB2E4."

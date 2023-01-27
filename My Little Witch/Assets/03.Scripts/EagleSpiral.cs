@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static Movement;
 
 public class EagleSpiral : MonoBehaviour
 {
@@ -59,7 +57,7 @@ public class EagleSpiral : MonoBehaviour
         Quaternion end = Quaternion.LookRotation(dir);
         Quaternion start = transform.rotation;
         float t = 0.0f;
-        while(t < 1.0f)
+        while (t < 1.0f)
         {
             t += Time.deltaTime;
             transform.rotation = Quaternion.Slerp(start, end, t);
@@ -77,7 +75,7 @@ public class EagleSpiral : MonoBehaviour
             case EagleMovement.Forward:
                 myTargetDir = (myTargetPos - transform.position).normalized;
                 transform.position += myTargetDir * (speed * Time.deltaTime);
-                if(Vector3.Distance(myTargetPos, transform.position) < 1f)
+                if (Vector3.Distance(myTargetPos, transform.position) < 1f)
                 { E_ChangeState(EagleMovement.Spiral); }
                 break;
             case EagleMovement.Spiral:
@@ -85,7 +83,7 @@ public class EagleSpiral : MonoBehaviour
             case EagleMovement.Leave:
                 myTargetDir = (myExitPos - transform.position).normalized;
                 transform.position += myTargetDir * (speed * Time.deltaTime);
-                if(Vector3.Distance(myExitPos, transform.position) < 1f)
+                if (Vector3.Distance(myExitPos, transform.position) < 1f)
                 {
                     E_ChangeState(EagleMovement.Disappear);
                 }
@@ -95,11 +93,11 @@ public class EagleSpiral : MonoBehaviour
         }
     }
 
-    
+
 
     IEnumerator RotateAround(float duration)
     {
-        while(duration > 0.0f)
+        while (duration > 0.0f)
         {
             duration -= Time.deltaTime;
             transform.RotateAround(myTargetPos, Vector3.up, -120f * Time.deltaTime);
