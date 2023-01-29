@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class EagleSpiral : MonoBehaviour
 {
@@ -12,9 +13,9 @@ public class EagleSpiral : MonoBehaviour
     public GameObject[] dropItems;
 
     // 시작하고 저장해서 위치값 바뀌지 않도록
-    Vector3 myTargetPos;
-    Vector3 myExitPos;
-    Vector3 myTargetDir;
+    private Vector3 myTargetPos;
+    private Vector3 myExitPos;
+    private Vector3 myTargetDir;
 
     void Start()
     {
@@ -25,7 +26,6 @@ public class EagleSpiral : MonoBehaviour
     {
         E_StateProcess();
     }
-
 
     public void E_ChangeState(EagleMovement what)
     {
@@ -44,6 +44,7 @@ public class EagleSpiral : MonoBehaviour
                 StartCoroutine(RotateAround(rotateDuration));
                 break;
             case EagleMovement.Leave:
+                GameObject obj = Instantiate(dropItems[SceneData.Inst.myPlayer.level-2], this.transform.position, Quaternion.identity);
                 StartCoroutine(Rotating((myExitPos - transform.position).normalized));
                 break;
             case EagleMovement.Disappear:
@@ -92,8 +93,6 @@ public class EagleSpiral : MonoBehaviour
                 break;
         }
     }
-
-
 
     IEnumerator RotateAround(float duration)
     {

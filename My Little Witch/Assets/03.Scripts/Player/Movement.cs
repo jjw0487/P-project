@@ -36,7 +36,7 @@ public class Movement : CharacterProperty
     //private bool run;
     private bool canRun = true;
     public bool stun = false; // refer to
-    public bool ground = true; //refer to 
+    public bool ground = true; //refer to
 
     [Header("BroomMovement")]
     private Vector3 dir = Vector3.zero;
@@ -61,7 +61,7 @@ public class Movement : CharacterProperty
 
     [Header("Game Setting")]
     public Transform AttackMark;
-    public bool OnInventory = false;
+    public bool OnInteraction = false;
 
     public enum ONWHAT { Street, Broom }
 
@@ -93,16 +93,13 @@ public class Movement : CharacterProperty
         switch (onWhat)
         {
             case ONWHAT.Street:
-
-
-                if (mySkill.canMove && !stun && !OnInventory)
+                if (mySkill.canMove && !stun && !OnInteraction)
                 {
                     C_Ray();
                     Running();
 
                     if (Input.GetKeyDown(KeyCode.LeftControl))
                     {
-
                         StartCoroutine(C_Dash());
                     }
                 }
@@ -141,7 +138,6 @@ public class Movement : CharacterProperty
         state[0].text = "Idle";
         canRun = true; //시작할 때 바로 뛸 수 있도록
 
-
         level = charStat.orgData.Level;
         curExp = charStat.orgData.EXP[level - 1];
     }
@@ -170,6 +166,16 @@ public class Movement : CharacterProperty
         }
 
     }
+  
+    /// ///////////////////////////////////       UI       ///////////////////////////////////////////
+    public void GetInteraction(bool trueornot)
+    {
+        OnInteraction = trueornot;
+        myAgent.SetDestination(transform.position);
+        curAnim[0].SetBool("IsWalking", false);
+
+        print(trueornot);
+    }
 
     public void GetItemValue(int i, int value)
     {
@@ -185,14 +191,12 @@ public class Movement : CharacterProperty
         if (curExp < 0)
         {
             curExp *= -1; //음수를 양수로
+            curExp *= -1; 
             LevelUp(+curExp);
         }
     }
     public void LevelUp(int rest)
     {
-        Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
-        Instantiate(eagle, Camera.main.transform.position, Quaternion.identity);
-        // eagle.getlevel();
         ++level; // 일단 스크립터블에 영향이 안가도록 데이터는 건드리지 말고 이렇게 두자
         curExp = charStat.orgData.EXP[level - 1];
         curExp -= rest;
@@ -201,6 +205,8 @@ public class Movement : CharacterProperty
             curExp *= -1;
             LevelUp(+curExp);
         }
+        Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
+        Instantiate(eagle, Camera.main.transform.position, Quaternion.identity);
     }
 
     public void CheckGround() // 연속점프 방지, 점프를 땅에 있을 때만
@@ -333,7 +339,7 @@ public class Movement : CharacterProperty
             }
         }
 
-        if (myAgent.velocity.sqrMagnitude >= 0.1f * 0.1f && myAgent.remainingDistance <= 0.1f)
+        if (myAgent.velocity.sqrMagnitude >= 0.1f * 0.1f && myAgent.remainingDistance <= 0.2f)
         {
             curAnim[0].SetBool("IsWalking", false);
         }

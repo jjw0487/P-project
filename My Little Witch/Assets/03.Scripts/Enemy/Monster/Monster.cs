@@ -82,8 +82,8 @@ public class Monster : CharacterProperty
                 //StartCoroutine(EnemyCheck());
                 break;
             case MonsterState.Dead:
-                myEnemy.GetEXP(monStat.orgData.EXP);
                 StopAllCoroutines();
+                myEnemy.GetEXP(monStat.orgData.EXP);
                 Destroy(hpObj);
                 hpObj = null;
                 StartCoroutine(DelayDead(4f));
@@ -318,7 +318,7 @@ public class Monster : CharacterProperty
             yield return null;
         }
         // 난수를 생성해서 랜덤하게 아이템을 switch 로 드랍되도록 만들어보자
-        GameObject DropItem = Instantiate(monStat.orgData.DropItems[0].obj, this.transform.position, Quaternion.identity); // 드랍 아이템
+        GameObject DropItem = Instantiate(monStat.orgData.DropItems[0].obj, this.transform.position + Vector3.up, Quaternion.identity); // 드랍 아이템
         Destroy(gameObject);
     }
 

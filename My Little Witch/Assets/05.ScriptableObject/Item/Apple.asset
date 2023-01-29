@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Apple
   m_EditorClassIdentifier: 
   itemType: 0
-  value: 0
-  valueType: 0
+  value: 10
+  valueType: 1
   name: Apple
   sprite: {fileID: 21300000, guid: beed43015f0e04a45a78c8e02d7323c4, type: 3}
   obj: {fileID: 8785237554500615155, guid: 3df126029b499c54ea97105328f95401, type: 3}

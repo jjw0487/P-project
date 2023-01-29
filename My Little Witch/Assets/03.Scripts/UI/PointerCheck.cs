@@ -6,11 +6,11 @@ public class PointerCheck : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        SceneData.Inst.myPlayer.OnInventory = true;
+        SceneData.Inst.myPlayer.OnInteraction = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        SceneData.Inst.myPlayer.OnInventory = false;
+        SceneData.Inst.myPlayer.OnInteraction = false;
     }
 }

@@ -72,9 +72,7 @@ public class SkillSlots : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
 
     public void OnDrop(PointerEventData eventData)
     { // 다른 슬롯 위치에 놓였을 때
-
-        if (DragImage.Inst.dragSkillSet != null) { ChangeSlot(); }
-
+       if (DragImage.Inst.dragSkillSet != null) { ChangeSlot();}
     }
 
 

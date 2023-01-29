@@ -63,42 +63,68 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             {
                 if (item.myItem.orgData.itemType == ItemData.ItemType.Consumable)
                 {
-                    SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value);
-                    Destroy(item.gameObject);
-                    ClearSlot();
-                    /*if (itemCount > 1)
+                    if (itemCount > 1)
                     {
-                        //몇 개 사용하시겠습니까?
+                        SceneData.Inst.Inven.usePanel[1].SetActive(true);
+                        SceneData.Inst.Inven.usePanel[1].GetComponent<ItemAmountReturn>().GetItemInfo(this, itemCount);
                     }
                     else
                     {
-                        //아이템을 사용하시겠습니까?
-                    }*/
+                        SceneData.Inst.Inven.usePanel[0].SetActive(true);
+                        SceneData.Inst.Inven.usePanel[0].GetComponent<DecisionReturn>().ReturnDecision(this);
+                    }
                 }
                 else if (item.myItem.orgData.itemType == ItemData.ItemType.Interactable)
                 {
-                    for (int i = 0; i < item.contents.Length; i++)
-                    {
-                        item.GetItemFromInteractableItems(item.contents[i]);
-                    }
-                    Destroy(item.gameObject);
-                    ClearSlot();
+                    SceneData.Inst.Inven.usePanel[0].SetActive(true);
+                    SceneData.Inst.Inven.usePanel[0].GetComponent<DecisionReturn>().ReturnDecision(this);
                 }
-                else if (item.myItem.orgData.itemType == ItemData.ItemType.Material)
-                {
-
-                }
+                
+                // 매터리얼 타입은 반응 안하도록
             }
 
         }
     }
 
-    void UseConsumableItem(int howmany)
+   
+    public void UseItems(int howmany)
     {
-        SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value);
-        Destroy(item.gameObject);
-        ClearSlot();
+        SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType*howmany, item.myItem.orgData.value);
+        itemCount -= howmany;
+        if (itemCount == 0) { Destroy(item.gameObject); ClearSlot(); }
+        else
+        {
+            item.myItem.curNumber = itemCount;
+            count.text = item.myItem.curNumber.ToString();
+        }
     }
+
+    public void UseSingleItem()
+    {
+        if (item.myItem.orgData.itemType == ItemData.ItemType.Consumable)
+        {
+            SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value);
+            Destroy(item.gameObject);
+            ClearSlot();
+        }
+        else if (item.myItem.orgData.itemType == ItemData.ItemType.Interactable)
+        {//보물상자는 한 개 씩 열도록 구분(single, plural)을 두지 않을거라 이렇게 설정
+
+            for (int i = 0; i < item.contents.Length; i++)
+            {
+                item.GetItemFromInteractableItems(item.contents[i]);
+            }
+            itemCount -= 1;
+            if (itemCount == 0) { Destroy(item.gameObject); ClearSlot(); }
+            else
+            {
+                item.myItem.curNumber = itemCount;
+                count.text = item.myItem.curNumber.ToString();
+            }
+            
+        }
+    }
+
 
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -153,6 +179,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     private void ClearSlot()
     {
         item = null;
+        itemCount = 0;
         img.sprite = orgSprite;
         count.text = "";
     }
