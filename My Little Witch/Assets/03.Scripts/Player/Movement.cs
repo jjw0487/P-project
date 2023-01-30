@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [Serializable]
@@ -167,14 +168,20 @@ public class Movement : CharacterProperty
 
     }
   
-    /// ///////////////////////////////////       UI       ///////////////////////////////////////////
+    ////////////////////////////      UI       ///////////////////////////////////////////
     public void GetInteraction(bool trueornot)
     {
         OnInteraction = trueornot;
-        myAgent.SetDestination(transform.position);
-        curAnim[0].SetBool("IsWalking", false);
 
-        print(trueornot);
+        myAgent.SetDestination(transform.position);
+
+        curAnim[0].SetBool("IsWalking", false);
+        curAnim[0].SetBool("IsRunning", false);
+
+        Quaternion camRot = mainCamera.transform.parent.rotation;
+        Quaternion target = Quaternion.Euler(camRot.eulerAngles.x, this.transform.rotation.eulerAngles.y, camRot.eulerAngles.z);
+        mainCamera.transform.parent.rotation = target;
+
     }
 
     public void GetItemValue(int i, int value)

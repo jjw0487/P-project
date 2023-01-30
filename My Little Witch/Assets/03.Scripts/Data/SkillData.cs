@@ -5,7 +5,7 @@ using UnityEngine;
 public class SkillData : ScriptableObject
 {
 
-    public enum SkillType { Buff, Attck, Debuff, AttackNDebuff }
+    public enum SkillType { Buff, Attck, Debuff, AttackNDebuff, NormalAttack }
     public enum ActionType { WaitBeforeAction, None }
 
     [Header("Type")]

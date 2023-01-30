@@ -11,6 +11,6 @@ public class Obstacles : MonoBehaviour
         Quaternion target = Quaternion.LookRotation(dir.normalized);
         SceneData.Inst.myPlayer.transform.rotation = target;
 
-        Camera.main.GetComponentInChildren<Animator>().SetTrigger("Interaction");
+        Camera.main.transform.parent.GetComponent<Animator>()?.SetTrigger("Interaction");
     }
 }
