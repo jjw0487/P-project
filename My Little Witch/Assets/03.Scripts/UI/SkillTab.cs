@@ -62,7 +62,6 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             {
                 if (SceneData.Inst.mySkill.skillSetArray[i].myData == null) // 자식이 하나만 있다면
                 {
-
                     SceneData.Inst.mySkill.skillSetArray[i].AddSkillData(this.myData);
                     break; // 조건검사에 걸린다면 반복문 탈출
                 }

@@ -190,7 +190,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             SkillOverlapCol();
         }
         else if(myData.orientation == SkillData.Orientation.Remain)
-        { //paeticleCollisionEnter로 해볼까?
+        { // particleCollisionEnter로 해볼까?
             fromSkill.myMagicGage.HandleMP(myData.consumeMP);
             GameObject obj = Instantiate(myData.Effect, SkillHitPoint, Quaternion.identity);
             StartCoroutine(fromSkill.Chill(myData.remainTime));

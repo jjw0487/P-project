@@ -13,18 +13,28 @@ MonoBehaviour:
   m_Name: Circular
   m_EditorClassIdentifier: 
   Type: 1
-  Action: 0
+  Action: 1
   orientation: 1
   level: 1
   sprite: {fileID: 21300000, guid: 092c1e6be4a4c69468985b060b5c9fc0, type: 3}
   performPos: {x: 0, y: 0.5, z: 0}
   Effect: {fileID: 1018882707796302, guid: 25f8a4b26b924e543b4a8241d268c8d0, type: 3}
-  remainTime: 0
-  coolTime: []
-  consumeMP: 0
-  triggerName: 
-  dmg: []
+  remainTime: 1
+  coolTime:
+  - 11
+  - 10
+  - 9
+  - 8
+  - 7
+  consumeMP: 30
+  triggerName: Circular
+  dmg:
+  - 25
+  - 30
+  - 35
+  - 40
+  - 45
   rangeOfSkill: 0
-  overlapRadius: 0
+  overlapRadius: 0.5
   percentage: []
   debuffTime: []

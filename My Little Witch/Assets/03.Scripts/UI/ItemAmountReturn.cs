@@ -29,7 +29,7 @@ public class ItemAmountReturn : MonoBehaviour
         numCount.text = _itemCount.ToString();
     }
 
-    public void ReturnValue()
+    public void ReturnValue() //버튼
     {
         _slot.UseItems(_itemCount);
         _slot = null;
@@ -38,7 +38,7 @@ public class ItemAmountReturn : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void Cancel()
+    public void Cancel() //버튼
     {
         _slot = null;
         _itemCount = 0;

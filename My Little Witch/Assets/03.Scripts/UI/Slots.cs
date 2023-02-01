@@ -89,7 +89,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
    
     public void UseItems(int howmany)
     {
-        SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType*howmany, item.myItem.orgData.value);
+        SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value*howmany);
         itemCount -= howmany;
         if (itemCount == 0) { Destroy(item.gameObject); ClearSlot(); }
         else

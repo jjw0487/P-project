@@ -10,13 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4856668287497590}
   - component: {fileID: 198571459502215574}
-  - component: {fileID: 114351253421974366}
+  - component: {fileID: 8392062628824351914}
   - component: {fileID: 199085376630515598}
   - component: {fileID: 108320471180231846}
   - component: {fileID: 54026867493614958}
   - component: {fileID: 135840973497244662}
   - component: {fileID: -9036675382021270491}
-  - component: {fileID: 8392062628824351914}
   m_Layer: 0
   m_Name: Circular
   m_TagString: Untagged
@@ -4817,7 +4816,7 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &114351253421974366
+--- !u!114 &8392062628824351914
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4826,10 +4825,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1018882707796302}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605a456cfc02f6b499a64717539a27e8, type: 3}
+  m_Script: {fileID: 11500000, guid: baa3554afdf93a54ab2ec02709da656d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 25
   hitOffset: 0.1
   UseFirePointRotation: 0
   rotationOffset: {x: 0, y: 0, z: 0}
@@ -4837,8 +4835,7 @@ MonoBehaviour:
   flash: {fileID: 1177731487666324, guid: b60b851266323fb4b9becb9f63f748c9, type: 3}
   Detached:
   - {fileID: 1830546583308538}
-  skillData: {fileID: 0}
-  targetDir: {x: 0, y: 0, z: 0}
+  skillData: {fileID: 11400000, guid: 4109d60cc2b55894096b5ec969e8fa9a, type: 2}
 --- !u!199 &199085376630515598
 ParticleSystemRenderer:
   serializedVersion: 6
@@ -4997,10 +4994,10 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1018882707796302}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.35
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-9036675382021270491
 MonoBehaviour:
@@ -5022,18 +5019,6 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
---- !u!114 &8392062628824351914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1018882707796302}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: baa3554afdf93a54ab2ec02709da656d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1167430563995920
 GameObject:
   m_ObjectHideFlags: 0
