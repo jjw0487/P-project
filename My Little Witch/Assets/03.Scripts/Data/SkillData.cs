@@ -7,10 +7,12 @@ public class SkillData : ScriptableObject
 
     public enum SkillType { Buff, Attck, Debuff, AttackNDebuff, NormalAttack }
     public enum ActionType { WaitBeforeAction, None }
+    public enum Orientation { immediate, Remain }
 
     [Header("Type")]
     public SkillType Type;
     public ActionType Action;
+    public Orientation orientation;
 
     [Header("Mutual Information")]
     public int level;

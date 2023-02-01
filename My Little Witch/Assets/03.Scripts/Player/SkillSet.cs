@@ -38,7 +38,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     }
 
-
+    /// ////////////////////////          UI            //////////////////////////////
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (myData != null)
@@ -93,6 +93,8 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         myData = null;
         img[0].sprite = null;
     }
+
+    ////////////////////////////          Skill          //////////////////////////////
 
     public void AddSkillData(SkillData data)
     {
@@ -172,6 +174,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void SkillAttackWithoutWaitMotion() // 일반 스킬어택 <- 애님이벤트에서 실행
     {
+
         fromSkill.myMagicGage.HandleMP(myData.consumeMP);
         GameObject obj = Instantiate(myData.Effect, myCharacter.transform.position + myData.performPos, Quaternion.identity);
         SkillOverlapColWithoutWaitMotion();
@@ -179,10 +182,20 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     public void SkillAttack() // 어택 with Waiting Motion <- 애님이벤트에서 실행
     {
-        fromSkill.myMagicGage.HandleMP(myData.consumeMP);
-        GameObject obj = Instantiate(myData.Effect, SkillHitPoint, Quaternion.identity);
-        StartCoroutine(fromSkill.Chill(myData.remainTime));
-        SkillOverlapCol();
+        if (myData.orientation == SkillData.Orientation.immediate)
+        {
+            fromSkill.myMagicGage.HandleMP(myData.consumeMP);
+            GameObject obj = Instantiate(myData.Effect, SkillHitPoint, Quaternion.identity);
+            StartCoroutine(fromSkill.Chill(myData.remainTime));
+            SkillOverlapCol();
+        }
+        else if(myData.orientation == SkillData.Orientation.Remain)
+        { //paeticleCollisionEnter로 해볼까?
+            fromSkill.myMagicGage.HandleMP(myData.consumeMP);
+            GameObject obj = Instantiate(myData.Effect, SkillHitPoint, Quaternion.identity);
+            StartCoroutine(fromSkill.Chill(myData.remainTime));
+        }
+            
     }
 
     public void AND() // 어택 N 디버프 with Waiting Motion <- 애님이벤트에서 실행

@@ -422,6 +422,7 @@ MonoBehaviour:
   previousTarget: {fileID: 0}
   HP: 0
   explosion: {fileID: 100002, guid: a8952ba24b310f94684354048cb588a9, type: 3}
+  appearance: {fileID: 1382430444795516, guid: f5fd3512cd610e240859d4dc7e26d34a, type: 3}
 --- !u!195 &8534211946892781554
 NavMeshAgent:
   m_ObjectHideFlags: 0

@@ -12,6 +12,7 @@ public class Guoba_M : MonoBehaviour
     public Transform previousTarget = null;
     public float HP;
     public GameObject explosion;
+    public GameObject appearance;
 
     void Start()
     {
@@ -26,6 +27,7 @@ public class Guoba_M : MonoBehaviour
         switch (GuobaState)
         {
             case GuobaMachineState.Create:
+                Instantiate(appearance, this.transform.position, Quaternion.identity);
                 Gu_ChangeState(GuobaMachineState.Target);
                 break;
             case GuobaMachineState.Target:
