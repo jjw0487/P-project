@@ -36,7 +36,6 @@ public class CircularEftMover : MonoBehaviour
             }
         }
     }
-
     private void FixedUpdate()
     {
 
@@ -46,14 +45,12 @@ public class CircularEftMover : MonoBehaviour
 
     }
 
-
-
     void OnCollisionEnter(Collision collision)
     {
         //Lock all axes movement and rotation
         rb.constraints = RigidbodyConstraints.FreezeAll;
         /////////////
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Monster"))
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Monster") && !collision.gameObject.GetComponentInParent<Monster>().isDead)
         {
             Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, skillData.overlapRadius);
             foreach (Collider col in hitColliders)

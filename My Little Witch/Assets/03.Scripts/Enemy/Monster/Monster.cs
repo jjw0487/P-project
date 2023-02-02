@@ -148,6 +148,7 @@ public class Monster : CharacterProperty
         monStat.curHP = monStat.orgData.HP;
         myAgent.speed = monStat.orgData.agentSpeed;
         myAgent.stoppingDistance = monStat.orgData.agentStopDist;
+
     }
 
     private void Update()
@@ -189,6 +190,12 @@ public class Monster : CharacterProperty
             }
         }
     }
+
+    public virtual void Test()
+    {
+        print(this.name);
+    }
+
 
     public void OnExitMotion()
     {

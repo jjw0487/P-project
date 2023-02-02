@@ -32,5 +32,6 @@ public class SkillData : ScriptableObject
     [Header("Selective::Debuff")]
     public float[] percentage;
     public float[] debuffTime;
+    public int[] upgrade;
 
 }

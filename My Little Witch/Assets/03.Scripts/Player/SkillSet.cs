@@ -172,15 +172,34 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         StartCoroutine(fromSkill.Chill(myData.remainTime));
     }
 
-    public void SkillAttackWithoutWaitMotion() // 일반 스킬어택 <- 애님이벤트에서 실행
+    public void SkillAttackWithoutWaitMotion() // 일반 스킬어택 <- 애님이벤트에서 실행 OnPlayerAtkWithoutWaitMotion()
     {
+        if (myData.orientation == SkillData.Orientation.immediate)
+        {
+            fromSkill.myMagicGage.HandleMP(myData.consumeMP);
+            GameObject obj = Instantiate(myData.Effect, myCharacter.transform.position + myData.performPos, Quaternion.identity);
+            SkillOverlapColWithoutWaitMotion();
+        }
+        else if (myData.orientation == SkillData.Orientation.Remain)
+        {
+            fromSkill.myMagicGage.HandleMP(myData.consumeMP);
+            GameObject obj = Instantiate(myData.Effect, myCharacter.transform.position + new Vector3(1, 0.5f, 0), Quaternion.identity);
+            GameObject obj2 = Instantiate(myData.Effect, myCharacter.transform.position + new Vector3(-1, 0.5f, 0), Quaternion.identity);
+            GameObject obj3 = Instantiate(myData.Effect, myCharacter.transform.position + new Vector3(0, 0.5f, 1), Quaternion.identity);
+            GameObject obj4 = Instantiate(myData.Effect, myCharacter.transform.position + new Vector3(0, 0.5f, -1), Quaternion.identity);
 
-        fromSkill.myMagicGage.HandleMP(myData.consumeMP);
-        GameObject obj = Instantiate(myData.Effect, myCharacter.transform.position + myData.performPos, Quaternion.identity);
-        SkillOverlapColWithoutWaitMotion();
+            /*for (int i = 0; i < myData.level; ++i)
+            {
+                Vector3 performPos = myCharacter.transform.position + myData.performPos;
+                GameObject obj = Instantiate(myData.Effect, performPos, Quaternion.identity);
+            }*/
+
+            StartCoroutine(fromSkill.Chill(myData.remainTime));
+            //데미지는 이펙트 안에서 호출
+        }
     }
 
-    public void SkillAttack() // 어택 with Waiting Motion <- 애님이벤트에서 실행
+    public void SkillAttack() // 어택 with Waiting Motion <- 애님이벤트에서 실행 OnPlayerAtkSkill()
     {
         if (myData.orientation == SkillData.Orientation.immediate)
         {
@@ -189,16 +208,11 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             StartCoroutine(fromSkill.Chill(myData.remainTime));
             SkillOverlapCol();
         }
-        else if(myData.orientation == SkillData.Orientation.Remain)
-        { // particleCollisionEnter로 해볼까?
-            fromSkill.myMagicGage.HandleMP(myData.consumeMP);
-            GameObject obj = Instantiate(myData.Effect, SkillHitPoint, Quaternion.identity);
-            StartCoroutine(fromSkill.Chill(myData.remainTime));
-        }
+        
             
     }
 
-    public void AND() // 어택 N 디버프 with Waiting Motion <- 애님이벤트에서 실행
+    public void AND() // 어택 N 디버프 with Waiting Motion <- 애님이벤트에서 실행 OnPlayerANDSkill()
     {
         fromSkill.myMagicGage.HandleMP(myData.consumeMP);
         GameObject obj = Instantiate(myData.Effect, SkillHitPoint, Quaternion.identity);
