@@ -11,7 +11,6 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public Image[] img;
 
     [Header("Object")]
-    [Header("Object")]
     public Skill fromSkill;
     public Transform myCharacter;
 

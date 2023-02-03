@@ -4,6 +4,7 @@ public class AnimEvent : MonoBehaviour
 {
     Monster monster;
     Movement player;
+    Demon demon;
     public SkillSet[] skillSet = null;
 
     private void Awake()
@@ -12,21 +13,41 @@ public class AnimEvent : MonoBehaviour
         {
             monster = GetComponent<Monster>();
         }
+
         if (GetComponentInParent<Movement>() != null)
         {
             player = GetComponentInParent<Movement>();
         }
-    }
-    /////////////MONSTER////////////////////
 
+        if (GetComponentInParent<Demon>() != null)
+        {
+            demon = GetComponentInParent<Demon>();
+        }
+
+    }
+
+    /////////////MONSTER////////////////////
     public void OnMonAttack()
     {
         monster.MonAttack();
     }
 
 
-    /////////////PLAYER//////////////////////
+    ///////////// BOSS ////////////////////
+    public void OnBossAttack1()
+    {
+        demon.DemonAtk1();
+    }
+    public void OnBossAttack2()
+    {
+        demon.DemonAtk2();
+    }
+    public void OnBossAttack3()
+    {
+       
+    }
 
+    /////////////PLAYER//////////////////////
     public void OnPlayerNormAtk() // 일반공격
     {
         player.C_OnNormAtk();

@@ -13,6 +13,7 @@ public struct MonsterStat
 
 public class Monster : CharacterProperty
 {
+    //mutual data
     [Header("Monster Data")]
     public MonsterStat monStat;
     public Transform myAttakPoint;
@@ -24,7 +25,6 @@ public class Monster : CharacterProperty
     public bool isDead;
     protected Vector3 roamPos;
     protected Vector3 IdlePos;
-    protected AttackArea myAttackArea;
 
     [Header("Target")]
     public Transform myTarget = null;
@@ -35,22 +35,22 @@ public class Monster : CharacterProperty
     protected Vector3 targetDir;
     protected float targetDist;
 
-    private bool onBattle;
+    protected bool onBattle;
 
-    Coroutine c = null;
-    Coroutine idle = null;
-    Coroutine roam = null;
-    Coroutine attack = null;
+    protected Coroutine c = null; //중복실행 방지
+    protected Coroutine idle = null; //중복실행 방지
+    protected Coroutine roam = null; //중복실행 방지
+    protected Coroutine attack = null; //중복실행 방지
 
     [Header("UI")]
-    GameObject hpObj;
-    GameObject floatingDmg;
-    Slider HPSlider;
+    protected GameObject hpObj; 
+    protected GameObject floatingDmg;
+    protected Slider HPSlider;
 
     public Transform myHpPos;
     public Transform myDmgPos;
 
-    public void ChangeState(MonsterState what)
+    public virtual void ChangeState(MonsterState what)
     {
         if (state == what) return;
         state = what;
@@ -91,7 +91,7 @@ public class Monster : CharacterProperty
         }
     }
 
-    public void StateProcess()
+    public virtual void StateProcess()
     {
         switch (state)
         {
@@ -135,12 +135,12 @@ public class Monster : CharacterProperty
         }
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
-        myAttackArea = GetComponentInChildren<AttackArea>();
+
     }
 
-    private void Start()
+    protected virtual void Start()
     {
         ChangeState(MonsterState.Idle);
         IdlePos = this.transform.position;
@@ -148,10 +148,9 @@ public class Monster : CharacterProperty
         monStat.curHP = monStat.orgData.HP;
         myAgent.speed = monStat.orgData.agentSpeed;
         myAgent.stoppingDistance = monStat.orgData.agentStopDist;
-
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (!isDead)
         {
@@ -167,7 +166,7 @@ public class Monster : CharacterProperty
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    protected virtual void OnTriggerEnter(Collider other)
     {
         //behaviorstate -> exit 할 때
         if (!isDead)
@@ -189,11 +188,6 @@ public class Monster : CharacterProperty
                 ChangeState(MonsterState.Target);
             }
         }
-    }
-
-    public virtual void Test()
-    {
-        print(this.name);
     }
 
 
@@ -235,7 +229,7 @@ public class Monster : CharacterProperty
         }
     }
 
-    public void OnDamage(float dmg)
+    public virtual void OnDamage(float dmg)
     {
         myAgent.SetDestination(transform.position);
         float damage = dmg - monStat.orgData.DP;
@@ -267,7 +261,7 @@ public class Monster : CharacterProperty
         c = StartCoroutine(Debuff(time, percents));
     }
 
-    IEnumerator Attacking(float chill)
+    protected virtual IEnumerator Attacking(float chill)
     {
 
         myAgent.SetDestination(transform.position);
@@ -294,7 +288,7 @@ public class Monster : CharacterProperty
                 myAgent.SetDestination(transform.position);
                 this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
                 myAnim.SetTrigger("Attack");
-                chill = monStat.orgData.attackSpeed;
+                chill = monStat.orgData.attackSpeed; //공격 속도
             }
 
             targetDir = myTarget.transform.position - this.transform.position;
@@ -308,13 +302,13 @@ public class Monster : CharacterProperty
         }
     }
 
-    IEnumerator DelayState(MonsterState state, float chill)
+    protected IEnumerator DelayState(MonsterState state, float chill)
     {
         yield return new WaitForSeconds(chill);
         ChangeState(state);
     }
 
-    IEnumerator DelayDead(float chill)
+    protected IEnumerator DelayDead(float chill)
     {
         myAgent.SetDestination(transform.position);
         myAnim.SetTrigger("Death");
@@ -329,7 +323,7 @@ public class Monster : CharacterProperty
         Destroy(gameObject);
     }
 
-    IEnumerator Debuff(float chill, float percents)
+    protected IEnumerator Debuff(float chill, float percents)
     {
         Color color = Color.cyan;
         this.GetComponentInChildren<Renderer>().material.color = color;

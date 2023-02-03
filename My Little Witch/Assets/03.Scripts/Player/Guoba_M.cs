@@ -53,7 +53,7 @@ public class Guoba_M : MonoBehaviour
     public void OnDmg(float dmg)
     {
         HP -= dmg;
-        if (HP < 0f)
+        if (HP <= 0f)
         {
             Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, myData.overlapRadius);
             foreach (Collider col in hitColliders)
@@ -62,7 +62,8 @@ public class Guoba_M : MonoBehaviour
                 {
                     if (!col.GetComponentInParent<Monster>().isDead) //죽지 않았다면
                     {
-                        if (Vector3.Distance(col.GetComponentInParent<Transform>().position, previousTarget.position) < 5f)
+                        print("!");
+                        if (Vector3.Distance(col.GetComponentInParent<Transform>().position, previousTarget.position) < 10f)
                         {
                             col.GetComponentInParent<Monster>().myTarget = previousTarget;
                             col.GetComponentInParent<Monster>().ChangeState(MonsterState.Target);
@@ -96,7 +97,8 @@ public class Guoba_M : MonoBehaviour
             {
                 if (!col.GetComponentInParent<Monster>().isDead) //죽지 않았다면
                 {
-                    if (Vector3.Distance(col.GetComponentInParent<Transform>().position, previousTarget.position) < 5f)
+
+                    if (Vector3.Distance(col.GetComponentInParent<Transform>().position, previousTarget.position) < 10f)
                     {
                         col.GetComponentInParent<Monster>().myTarget = previousTarget;
                         col.GetComponentInParent<Monster>().ChangeState(MonsterState.Target);
@@ -105,10 +107,11 @@ public class Guoba_M : MonoBehaviour
                     {
                         col.GetComponentInParent<Monster>().myTarget = null;
                     }
+
+
                 }
             }
         }
-
         Explosion();
         Destroy(gameObject);
     }
