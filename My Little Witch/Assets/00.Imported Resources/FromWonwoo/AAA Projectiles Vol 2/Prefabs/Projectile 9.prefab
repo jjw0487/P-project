@@ -4788,7 +4788,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: c90a3c23b0fc60244a9f3588ff9e721f, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9675,6 +9674,8 @@ MonoBehaviour:
   flash: {fileID: 1224217824244948, guid: 291223895b5952f488a6f94886872e78, type: 3}
   Detached:
   - {fileID: 1113143600131104}
+  skillData: {fileID: 0}
+  targetDir: {x: 0, y: 0, z: 0}
 --- !u!108 &108991988279912604
 Light:
   m_ObjectHideFlags: 0
@@ -14633,7 +14634,6 @@ ParticleSystemRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: f70cc5513449bfb4cb538cf5118a4189, type: 2}
-  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

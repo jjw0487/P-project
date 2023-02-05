@@ -14,36 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   Action: 1
-  level: 1
-  sprite: {fileID: 21300000, guid: cf40c27b01072a5409de662954b70835, type: 3}
-  performPos: {x: 0, y: 0.1, z: 0}
-  Effect: {fileID: 1983587375811362, guid: 4f6ad00e0aa61f34f85ab773f6aa1207, type: 3}
-  remainTime: 2
-  coolTime:
+  orientation: 0
+  Level: 1
+  RemainTime: 2
+  CoolTime:
+  - 13
   - 12
   - 11
   - 10
   - 9
-  - 8
-  consumeMP: 30
+  ConsumeMP: 30
   triggerName: ShockWave
-  dmg:
+  sprite: {fileID: 21300000, guid: cf40c27b01072a5409de662954b70835, type: 3}
+  performPos: {x: 0, y: 0.1, z: 0}
+  Effect: {fileID: 1983587375811362, guid: 4f6ad00e0aa61f34f85ab773f6aa1207, type: 3}
+  Dmg:
+  - 20
   - 30
+  - 40
   - 50
-  - 70
-  - 110
-  - 140
-  rangeOfSkill: 0
-  overlapRadius: 4
-  percentage:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  debuffTime:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 60
+  RangeOfSkill: 0
+  OverlapRadius: 5
+  Percentage: []
+  DebuffTime: []
+  Upgrade: 

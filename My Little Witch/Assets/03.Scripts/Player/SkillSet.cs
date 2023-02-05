@@ -11,9 +11,8 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public Image[] img;
 
     [Header("Object")]
-    public Skill fromSkill;
-    public Transform myCharacter;
-
+    private Skill fromSkill;
+    private Transform myCharacter;
     private Camera mainCamera;
     private Vector3 SkillHitPoint;
     private bool inCoolTime;
@@ -21,6 +20,8 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private void Awake()
     {
         mainCamera = Camera.main;
+        myCharacter = SceneData.Inst.myPlayer.transform;
+        fromSkill = SceneData.Inst.mySkill;
     }
 
     private void Start()
@@ -158,7 +159,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         }
         else
         {
-            fromSkill.myPlayer.state[2].text = "마력이 부족합니다.";
+            // 마력이 부족합니다 텍스트
         }
 
     }
@@ -275,8 +276,8 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         fromSkill.canSkill = false;
 
         fromSkill.myPlayer.curAnim[0].SetTrigger("WaitForPos"); // 대기모션
-        fromSkill.SkillLimit.SetActive(true); // 스킬 사정거리 표시 
-        fromSkill.rangeOfSkills.localScale = new Vector3(myData.rangeOfSkill, 0.01f, myData.rangeOfSkill); // 스킬 사정거리
+        fromSkill.rangeOfSkills.SetActive(true); // 스킬 사정거리 표시 
+        fromSkill.rangeOfSkills.transform.localScale = new Vector3(myData.rangeOfSkill, 0.01f, myData.rangeOfSkill); // 스킬 사정거리
 
         while (cool > 0.0f)
         {
@@ -285,7 +286,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             if (fromSkill.myPlayer.stun) // 얻어 맞으면
             {
                 StartCoroutine(CoolTime(myData.coolTime[myData.level - 1]));
-                fromSkill.SkillLimit.SetActive(false);
+                fromSkill.rangeOfSkills.SetActive(false);
                 yield break; //바로 종료
             }
 
@@ -299,7 +300,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
                     SkillHitPoint = myData.performPos + hitData.point; // 스킬힛포인트 변수를 만들고
                     myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized); // 시전 방향으로 쳐다보고
                     //SkillAttack(); // 애님이벤트에서 작동
-                    fromSkill.SkillLimit.SetActive(false); // 사정거리 끄고
+                    fromSkill.rangeOfSkills.SetActive(false); // 사정거리 끄고
                     StartCoroutine(CoolTime(myData.coolTime[myData.level - 1])); //쿨타임
                     yield break;
                 }
@@ -308,7 +309,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             if (Input.GetMouseButtonDown(1)) // 마우스 오른쪽 버튼으로 취소
             {
                 //취소
-                fromSkill.SkillLimit.SetActive(false);
+                fromSkill.rangeOfSkills.SetActive(false);
                 fromSkill.canMove = true;
                 fromSkill.canSkill = true;
                 fromSkill.myPlayer.curAnim[0].SetTrigger("Idle");
@@ -317,7 +318,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
             yield return null;
         }
-        fromSkill.SkillLimit.SetActive(false);
+        fromSkill.rangeOfSkills.SetActive(false);
         fromSkill.canMove = true; //시간이 끝나면
         fromSkill.canSkill = true;
         fromSkill.myPlayer.curAnim[0].SetTrigger("Idle");
@@ -328,8 +329,8 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         fromSkill.canMove = false;
         fromSkill.canSkill = false;
         fromSkill.myPlayer.curAnim[0].SetTrigger("WaitForPos"); // 대기모션
-        fromSkill.SkillLimit.SetActive(true); // 스킬 사정거리    
-        fromSkill.rangeOfSkills.localScale = new Vector3(myData.rangeOfSkill, 0.01f, myData.rangeOfSkill); // 스킬 사정거리
+        fromSkill.rangeOfSkills.SetActive(true); // 스킬 사정거리    
+        fromSkill.rangeOfSkills.transform.localScale = new Vector3(myData.rangeOfSkill, 0.01f, myData.rangeOfSkill); // 스킬 사정거리
 
         while (cool > 0.0f)
         {
@@ -338,7 +339,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             if (fromSkill.myPlayer.stun) // 얻어 맞으면
             {
                 StartCoroutine(CoolTime(myData.coolTime[myData.level - 1]));
-                fromSkill.SkillLimit.SetActive(false);
+                fromSkill.rangeOfSkills.SetActive(false);
                 yield break; // 바로 종료
             }
 
@@ -346,13 +347,13 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             {
                 Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hitData;
-                if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("SkillLimit")))
+                if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("SkillLimit"))) // 스킬 범위에 생긴 콜라이더
                 {
                     fromSkill.myPlayer.curAnim[0].SetTrigger(myData.triggerName); // 애니메이션
                     SkillHitPoint = myData.performPos + hitData.point; // 스킬이 나갈 포지션 값을 받아두고
                     myCharacter.transform.rotation = Quaternion.LookRotation((hitData.point - myCharacter.transform.position).normalized); // 스킬 쏜 방향으로 쳐다보고
                     //AND(); //애님이벤트에서 작동
-                    fromSkill.SkillLimit.SetActive(false); //사정거리
+                    fromSkill.rangeOfSkills.SetActive(false); //사정거리
                     StartCoroutine(CoolTime(myData.coolTime[myData.level - 1])); //쿨타임
                     yield break;
                 }
@@ -361,7 +362,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             if (Input.GetMouseButtonDown(1))
             {
                 //취소
-                fromSkill.SkillLimit.SetActive(false);
+                fromSkill.rangeOfSkills.SetActive(false);
                 fromSkill.canMove = true;
                 fromSkill.canSkill = true;
                 fromSkill.myPlayer.curAnim[0].SetTrigger("Idle");
@@ -369,7 +370,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             }
             yield return null;
         }
-        fromSkill.SkillLimit.SetActive(false);
+        fromSkill.rangeOfSkills.SetActive(false);
         fromSkill.canMove = true; //시간이 끝나면
         fromSkill.canSkill = true;
         fromSkill.myPlayer.curAnim[0].SetTrigger("Idle");

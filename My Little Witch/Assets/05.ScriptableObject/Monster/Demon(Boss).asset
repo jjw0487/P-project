@@ -13,13 +13,14 @@ MonoBehaviour:
   m_Name: Demon(Boss)
   m_EditorClassIdentifier: 
   <HP>k__BackingField: 700
-  AT: 50
+  ATK: 50
   DP: 15
-  strikingDist: 4
-  agentSpeed: 4
-  agentStopDist: 1
-  attackRadius: 0
-  attackSpeed: 3
-  HPlocalScale: {x: 3, y: 3, z: 3}
+  StrikingDist: 3
+  AgentSpeed: 4
+  AgentStopDist: 1
+  AttackRadius: 0
+  AttackSpeed: 3
   EXP: 200
-  DropItems: []
+  DropItems:
+  - {fileID: 0}
+  HPlocalScale: {x: 3, y: 3, z: 3}

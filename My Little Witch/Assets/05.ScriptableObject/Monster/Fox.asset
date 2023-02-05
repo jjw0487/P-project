@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Fox
   m_EditorClassIdentifier: 
   <HP>k__BackingField: 20
-  AT: 5
+  ATK: 5
   DP: 1
-  strikingDist: 1
-  agentSpeed: 2
-  agentStopDist: 0.5
-  attackRadius: 1
-  attackSpeed: 3
-  HPlocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  StrikingDist: 1
+  AgentSpeed: 2
+  AgentStopDist: 0.5
+  AttackRadius: 1
+  AttackSpeed: 3
   EXP: 5
   DropItems:
   - {fileID: 11400000, guid: 48611bdc6adf76448bff90a4a09c694a, type: 2}
+  HPlocalScale: {x: 0.4, y: 0.4, z: 0.4}

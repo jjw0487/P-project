@@ -5,22 +5,23 @@ using UnityEngine.UI;
 public class Skill : MonoBehaviour
 {
     [Header("Player")]
-    public GameObject myCharacter;
-    public Movement myPlayer;
-    public Transform rangeOfSkills;
-    public GameObject SkillLimit;
-    public bool canMove = true;
-    public bool canSkill = true;
-    public MagicGageBar myMagicGage;
-    public Slider myMagicCircuit;
+    public Movement myPlayer; // 'SkillSet' 이 참조
+    public GameObject rangeOfSkills; // 'SkillSet' 이 참조
+    public bool canMove = true; // 'Movement', 'SkillSet' 이 참조
+    public bool canSkill = true; // 'Movement', 'SkillSet' 이 참조
+    public MagicGageBar myMagicGage; // 'Movement', 'SkillSet' 이 참조
+    public Slider myMagicCircuit; // 'Movement', 'SkillSet' 이 참조
 
     [Header("Cursor")]
-    public ChangeCursor myCursor;
+    //public ChangeCursor myCursor;
 
     [Header("SkillSet")]
     public SkillSet[] skillSetArray;
 
+    private void Awake()
+    {
 
+    }
     void Update()
     {
         OnSkill();
@@ -60,7 +61,6 @@ public class Skill : MonoBehaviour
         //Cursor.SetCursor(myCursor.cursorImg[1], Vector2.zero, CursorMode.ForceSoftware);
         while (cool > 0.0f)
         {
-            myPlayer.state[0].text = "Chill";
             cool -= Time.deltaTime;
             if (myPlayer.stun)
             {

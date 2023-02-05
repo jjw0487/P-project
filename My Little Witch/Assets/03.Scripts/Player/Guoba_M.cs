@@ -7,12 +7,12 @@ public class Guoba_M : MonoBehaviour
     public enum GuobaMachineState { Create, Target, Attack, Delay, Destroy }
     public GuobaMachineState GuobaState = GuobaMachineState.Create;
 
-
     public SkillData myData;
-    public Transform previousTarget = null;
-    public float HP;
-    public GameObject explosion;
-    public GameObject appearance;
+    
+    [SerializeField] private float HP;
+    [SerializeField] private GameObject explosion;
+    [SerializeField] private GameObject appearance;
+    private Transform previousTarget = null;
 
     void Start()
     {
@@ -43,7 +43,7 @@ public class Guoba_M : MonoBehaviour
                         }
                     }
                 }
-                StartCoroutine(BeforeDestroy(myData.percentage[myData.level - 1]));
+                StartCoroutine(BeforeDestroy(myData.percentage[myData.level - 1])); // destroy time
                 break;
             case GuobaMachineState.Attack:
                 break;
@@ -77,7 +77,6 @@ public class Guoba_M : MonoBehaviour
             }
 
             Explosion();
-
             Destroy(gameObject);
         }
     }
@@ -127,7 +126,7 @@ public class Guoba_M : MonoBehaviour
             {
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(myData.debuffTime[myData.level - 1]);
+                    col.GetComponentInParent<Monster>().OnDamage(myData.debuffTime[myData.level - 1]); // Æø¹ß µ¥¹ÌÁö
                 }
             }
         }

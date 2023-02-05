@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "MonsData", menuName = "ScriptableObject/MonData", order = 1)]
@@ -5,15 +6,44 @@ using UnityEngine;
 public class MonData : ScriptableObject
 {
     [field: SerializeField] public float HP { get; private set; }
-    public float AT;
-    public float DP;
-    public float strikingDist;
-    public float agentSpeed;
-    public float agentStopDist;
-    public float attackRadius;
-    public float attackSpeed;
-    public Vector3 HPlocalScale;
-    public int EXP;
 
-    public ItemData[] DropItems;
+    [SerializeField]
+    private float ATK;
+    public float atk { get { return ATK; } }
+
+    [SerializeField]
+    private float DP;
+    public float dp { get { return DP; } }
+
+    [SerializeField]
+    private float StrikingDist;
+    public float strikingDist { get { return StrikingDist; } }
+
+    [SerializeField]
+    private float AgentSpeed;
+    public float agentSpeed { get { return AgentSpeed; } }
+
+    [SerializeField]
+    private float AgentStopDist;
+
+    public float agentStopDist { get { return AgentStopDist; } }
+
+    [SerializeField]
+    private float AttackRadius;
+    public float attackRadius { get { return AttackRadius; } }
+
+    [SerializeField]
+    private float AttackSpeed;
+    public float attackSpeed { get { return AttackSpeed; } }
+
+    [SerializeField]
+    private int EXP;
+    public int exp { get { return EXP; } }
+
+    [SerializeField]
+    private ItemData[] DropItems;
+    public ItemData[] dropItems { get { return DropItems; } }
+
+
+    public Vector3 HPlocalScale;
 }

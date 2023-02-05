@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: FallGuy
   m_EditorClassIdentifier: 
   <HP>k__BackingField: 30
-  AT: 8
+  ATK: 8
   DP: 2
-  strikingDist: 1
-  agentSpeed: 2
-  agentStopDist: 0.5
-  attackRadius: 0.5
-  attackSpeed: 4
-  HPlocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  StrikingDist: 1
+  AgentSpeed: 2
+  AgentStopDist: 0.5
+  AttackRadius: 0.5
+  AttackSpeed: 4
   EXP: 10
   DropItems:
   - {fileID: 11400000, guid: 48611bdc6adf76448bff90a4a09c694a, type: 2}
+  HPlocalScale: {x: 0.6, y: 0.6, z: 0.6}

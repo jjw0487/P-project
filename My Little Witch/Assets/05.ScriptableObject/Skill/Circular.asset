@@ -15,27 +15,27 @@ MonoBehaviour:
   Type: 1
   Action: 1
   orientation: 1
-  level: 1
+  Level: 1
+  RemainTime: 0.7
+  CoolTime:
+  - 15
+  - 14
+  - 13
+  - 12
+  - 11
+  ConsumeMP: 25
+  triggerName: Circular
   sprite: {fileID: 21300000, guid: 092c1e6be4a4c69468985b060b5c9fc0, type: 3}
   performPos: {x: 0, y: 0.4, z: 0}
   Effect: {fileID: 1569979447995748, guid: 99c6ff4ac9032244d844fcabe2a5d934, type: 3}
-  remainTime: 1
-  coolTime:
-  - 11
-  - 10
-  - 9
-  - 8
+  Dmg:
   - 7
-  consumeMP: 30
-  triggerName: Circular
-  dmg:
-  - 25
+  - 14
+  - 20
   - 30
-  - 35
   - 40
-  - 45
-  rangeOfSkill: 0
-  overlapRadius: 0.5
-  percentage: []
-  debuffTime: []
-  upgrade: 
+  RangeOfSkill: 0
+  OverlapRadius: 1
+  Percentage: []
+  DebuffTime: []
+  Upgrade: 

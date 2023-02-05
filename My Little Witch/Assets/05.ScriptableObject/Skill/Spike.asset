@@ -14,26 +14,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   Action: 0
-  level: 5
+  orientation: 0
+  Level: 1
+  RemainTime: 0.7
+  CoolTime:
+  - 9
+  - 8
+  - 7
+  - 6
+  - 5
+  ConsumeMP: 25
+  triggerName: Spike
   sprite: {fileID: 21300000, guid: 4a269b645bc7e8b4cae0b71f03dbcc97, type: 3}
   performPos: {x: 0, y: 0.1, z: 0}
   Effect: {fileID: 1707982869520084, guid: a015790a1ad8d3940b4fa0b89999b75c, type: 3}
-  remainTime: 0.7
-  coolTime:
-  - 6
-  - 5
-  - 4
-  - 3
-  - 2
-  consumeMP: 20
-  triggerName: Spike
-  dmg:
+  Dmg:
   - 30
   - 40
   - 50
   - 60
   - 70
-  rangeOfSkill: 8
-  overlapRadius: 1.2
-  percentage: []
-  debuffTime: []
+  RangeOfSkill: 9
+  OverlapRadius: 2
+  Percentage: []
+  DebuffTime: []
+  Upgrade: 

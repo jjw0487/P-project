@@ -14,36 +14,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 3
   Action: 0
-  level: 3
+  orientation: 0
+  Level: 1
+  RemainTime: 1
+  CoolTime:
+  - 10
+  - 9
+  - 8
+  - 7
+  - 6
+  ConsumeMP: 25
+  triggerName: FrozenCircle
   sprite: {fileID: 21300000, guid: 651efef84247f034f965947ddc87e1d2, type: 3}
   performPos: {x: 0, y: 0.8, z: 0}
   Effect: {fileID: 5318118474938795680, guid: ad86381ed1f161744b26b1784616bb5b, type: 3}
-  remainTime: 0.3
-  coolTime:
-  - 7
-  - 6
-  - 5
-  - 4
-  - 3
-  consumeMP: 20
-  triggerName: FrozenCircle
-  dmg:
+  Dmg:
   - 15
+  - 20
   - 25
-  - 35
-  - 45
-  - 55
-  rangeOfSkill: 7
-  overlapRadius: 2
-  percentage:
+  - 40
+  - 60
+  RangeOfSkill: 7
+  OverlapRadius: 2
+  Percentage:
+  - 0.9
   - 0.8
   - 0.7
+  - 0.65
   - 0.6
-  - 0.5
-  - 0.45
-  debuffTime:
+  DebuffTime:
+  - 3
   - 4
+  - 4.5
   - 5
-  - 6
-  - 7
-  - 8
+  - 5.5
+  Upgrade: 

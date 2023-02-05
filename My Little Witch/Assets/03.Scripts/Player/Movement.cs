@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,19 +15,20 @@ public struct PlayerStat
 public class Movement : CharacterProperty
 {
     [Header("Character")]
-    public ONWHAT onWhat = ONWHAT.Street;
+    [SerializeField] private ONWHAT onWhat = ONWHAT.Street;
     [SerializeField] private GameObject KK;
     [SerializeField] private GameObject BR;
-    public PlayerStat charStat;
+    [SerializeField] private PlayerStat charStat;
 
-    public int level;
-    public int curExp;
-    public GameObject eagle;
+    [SerializeField] private int level; // 인스펙터에서 변경해서 테스트 위해
+    [SerializeField] private int curExp;
+    [SerializeField] private GameObject eagle;
 
     [Header("Ray")]
+    public Camera mainCamera; // 메인 카메라 
     private Vector3 movePoint; // 이동 위치 저장
-    public Camera mainCamera; // 메인 카메라
-    Vector3 skillTarget = Vector3.zero;
+    private Transform normAtkTarget;
+    
 
     [Header("Movement")]
     public Animator[] curAnim;
@@ -36,8 +38,8 @@ public class Movement : CharacterProperty
     [SerializeField] private LayerMask layer;
     //private bool run;
     private bool canRun = true;
-    public bool stun = false; // refer to
-    public bool ground = true; //refer to
+    public bool stun = false; // 외부참조 필요
+    public bool ground = true; // 외부참조 필요
 
     [Header("BroomMovement")]
     private Vector3 dir = Vector3.zero;
@@ -48,23 +50,23 @@ public class Movement : CharacterProperty
     [SerializeField] private GameObject orgDashEffect;
 
     [Header("UI")]
-    public TMPro.TMP_Text[] state;
-    public StaminaBar myStamina;
-    public UnityEngine.UI.Slider myStaminaSlider;
-    public HPBar myHPBar;
+    [SerializeField] private TMPro.TMP_Text[] state;
+    [SerializeField] private StaminaBar myStamina;
+    [SerializeField] private UnityEngine.UI.Slider myStaminaSlider;
+    [SerializeField] private HPBar myHPBar;
     [SerializeField] private GameObject[] normAtkNums;
 
     [Header("Skill")]
-    public Skill mySkill;
-    public Transform myRightHand;
-    public SkillData normAtkData;
+    public Skill mySkill; // 외부참조 필요
+    [SerializeField] private Transform myRightHand;
+    [SerializeField] private SkillData normAtkData;
     private int coolStacks;
 
     [Header("Game Setting")]
-    public Transform AttackMark;
-    public bool OnInteraction = false;
+    //public Transform AttackMark;
+    public bool OnInteraction = false; // 외부참조 필요
 
-    public enum ONWHAT { Street, Broom }
+    public enum ONWHAT { Street, Broom } // 외부참조 필요한지 연구하자
 
     public void ChangeState(ONWHAT what)
     {
@@ -213,7 +215,8 @@ public class Movement : CharacterProperty
             LevelUp(+curExp);
         }
         Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
-        Instantiate(eagle, Camera.main.transform.position, Quaternion.identity);
+        GameObject obj = Instantiate(eagle, Camera.main.transform.position, Quaternion.identity);
+        obj.GetComponent<EagleSpiral>().GetLevel(level);
     }
 
     public void CheckGround() // 연속점프 방지, 점프를 땅에 있을 때만
@@ -390,8 +393,8 @@ public class Movement : CharacterProperty
             Quaternion target = Quaternion.LookRotation(dir.normalized);
             transform.rotation = target;
         }
-        //skillTarget = hitPoint.point;
-        skillTarget = hitPoint.transform.position;
+        normAtkTarget = hitPoint.transform;
+        //skillTarget = hitPoint.transform.position;
         //normAtkData.GetComponent<ProjectileMover>().SetTarget(hitPoint.point);
         curAnim[0].SetBool("IsWalking", false);
         curAnim[0].SetTrigger("NormAtk");
@@ -399,7 +402,8 @@ public class Movement : CharacterProperty
     public void C_OnNormAtk()
     {
         GameObject obj = Instantiate(normAtkData.Effect, myRightHand.position, transform.rotation);
-        obj.GetComponent<ProjectileMover>().SetTarget(skillTarget);
+        obj.GetComponent<Target>().SetTarget(normAtkTarget, new Vector3(0f, 0.5f, 0f));
+        //obj.GetComponent<TargetProjectile>().UpdateTarget(hitPoint.point, new Vector3(0f, 0.5f, 0f));
     }
     void Running()
     {

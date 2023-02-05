@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Golem
   m_EditorClassIdentifier: 
   <HP>k__BackingField: 300
-  AT: 40
+  ATK: 40
   DP: 10
-  strikingDist: 2
-  agentSpeed: 3
-  agentStopDist: 1
-  attackRadius: 1
-  attackSpeed: 3
-  HPlocalScale: {x: 2, y: 2, z: 2}
+  StrikingDist: 2
+  AgentSpeed: 3
+  AgentStopDist: 1
+  AttackRadius: 1
+  AttackSpeed: 3
   EXP: 100
   DropItems:
   - {fileID: 11400000, guid: 02673d5deb0cf9e469b19ff1e3b4eaf5, type: 2}
+  HPlocalScale: {x: 2, y: 2, z: 2}

@@ -6,7 +6,8 @@ public class Demon : Monster
 {
     [SerializeField] private Transform[] atkPoint;
     [SerializeField] private GameObject[] eftObj;
-    int rndNum;
+    private int rndNum;
+    private float atkDist;
 
     protected override void Awake()
     {
@@ -63,16 +64,16 @@ public class Demon : Monster
                 CreateRandomNumber();
                 //if (idle != null) { StopCoroutine(idle); idle = null; }
                 //if (roam != null) { StopCoroutine(roam); roam = null; }
-                if (attack != null) { StopCoroutine(attack); attack = null; }
+                if (attack != null) { StopCoroutine(attack); attack = null; print("중단"); }
                 break;
             case MonsterState.Attack:
                 myAgent.SetDestination(transform.position);
-                attack = StartCoroutine(Attacking(monStat.orgData.attackSpeed)); //코루틴을 시작하며, 동시에 저장한다.         
+                attack = StartCoroutine(Attacking()); //코루틴을 시작하며, 동시에 저장한다.         
                 // StartCoroutine(EnemyCheck());
                 break;
             case MonsterState.Dead:
                 StopAllCoroutines();
-                myEnemy.GetEXP(monStat.orgData.EXP);
+                myEnemy.GetEXP(monStat.orgData.exp);
                 Destroy(hpObj);
                 hpObj = null;
                 StartCoroutine(DelayDead(4f));
@@ -105,7 +106,7 @@ public class Demon : Monster
                     
                     if(rndNum == 0) { if (targetDist <= monStat.orgData.strikingDist) { ChangeState(MonsterState.Attack); } }
                     if(rndNum == 1) { if (targetDist <= 3f) { ChangeState(MonsterState.Attack); } } //스킬마다 다른 어택 범위를 갖는다.
-                    if(rndNum == 2) { if (targetDist <= 5f) { ChangeState(MonsterState.Attack); } }
+                    if(rndNum == 2) { if (targetDist <= 10f) { ChangeState(MonsterState.Attack); } }
 
                     if (Vector3.Distance(myTarget.transform.position, this.transform.position) > 20.0f) { OnExitMotion(); }
                     // 20.0f 으로 재정의
@@ -131,17 +132,17 @@ public class Demon : Monster
         {
             if (col.name == "KIKI")
             {
-                myEnemy.OnDmg(monStat.orgData.AT);
+                myEnemy.OnDmg(monStat.orgData.atk);
                 break;
             }
             if (col.name == "Broom")
             {
-                myEnemy.OnDmg(monStat.orgData.AT);
+                myEnemy.OnDmg(monStat.orgData.atk);
                 break;
             }
             if (col.name == "Guoba2(Clone)")
             {
-                myTarget.GetComponent<Guoba_M>().OnDmg(monStat.orgData.AT);
+                myTarget.GetComponent<Guoba_M>().OnDmg(monStat.orgData.atk);
                 break;
             }
         }
@@ -155,17 +156,17 @@ public class Demon : Monster
         {
             if (col.name == "KIKI")
             {
-                myEnemy.OnDmg(monStat.orgData.AT);
+                myEnemy.OnDmg(monStat.orgData.atk);
                 break;
             }
             if (col.name == "Broom")
             {
-                myEnemy.OnDmg(monStat.orgData.AT);
+                myEnemy.OnDmg(monStat.orgData.atk);
                 break;
             }
             if (col.name == "Guoba2(Clone)")
             {
-                myTarget.GetComponent<Guoba_M>().OnDmg(monStat.orgData.AT);
+                myTarget.GetComponent<Guoba_M>().OnDmg(monStat.orgData.atk);
                 break;
             }
         }
@@ -173,7 +174,8 @@ public class Demon : Monster
 
     public void DemonAtk3()
     {
-        //Instantiate();
+        GameObject obj = Instantiate(eftObj[0], atkPoint[2].position, Quaternion.identity);
+        obj.GetComponent<DemonAttack>().SetTarget(myTarget);
     }
 
 
@@ -182,11 +184,15 @@ public class Demon : Monster
     {
         rndNum = Random.Range(0, 3); // to get value from 0 to 2
         print(rndNum);
+
+        if (rndNum == 0) { atkDist = monStat.orgData.strikingDist; }
+        if (rndNum == 1) { atkDist = 5f; }
+        if (rndNum == 2) { atkDist = 10f; }
     }
     public override void OnDamage(float dmg)
     {
         myAgent.SetDestination(transform.position);
-        float damage = dmg - monStat.orgData.DP;
+        float damage = dmg - monStat.orgData.dp;
         float dmgRndVal = UnityEngine.Random.Range(damage * 0.7f, damage);
         if (damage < 0) { dmgRndVal = 0; }
         int finalDmg = (int)dmgRndVal;
@@ -207,11 +213,13 @@ public class Demon : Monster
 
 
 
-    protected override IEnumerator Attacking(float chill)
+    /*protected override IEnumerator Attacking(float chill)
     {
-
+        yield return new WaitForSeconds(1.0f);
+        float dist = 0f;
+        print("실행");
         myAgent.SetDestination(transform.position);
-        float cool = 0.3f; // 공격을 시작 전 0.3 만큼의 대기
+        float cool = 2.0f; // 공격을 시작 전 0.3 만큼의 대기
         while (cool > 0.0f)
         {
             cool -= Time.deltaTime;
@@ -221,9 +229,9 @@ public class Demon : Monster
         if (myTarget != null)
         {
             this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
-            if (rndNum == 0) { myAnim.SetTrigger("Attack"); }
-            if (rndNum == 1) { myAnim.SetTrigger("Attack2"); }
-            if (rndNum == 2) { myAnim.SetTrigger("Attack3"); }
+            if (rndNum == 0) { myAnim.SetTrigger("Attack"); dist = monStat.orgData.strikingDist; }
+            if (rndNum == 1) { myAnim.SetTrigger("Attack2"); dist = 5f; }
+            if (rndNum == 2) { myAnim.SetTrigger("Attack3"); dist = 10f; }
         }
         else { ChangeState(MonsterState.Idle); yield break; }
 
@@ -242,7 +250,37 @@ public class Demon : Monster
 
             targetDir = myTarget.transform.position - this.transform.position;
             targetDist = targetDir.magnitude; // 공격하는 중 타겟의 거리 계산
-            if (targetDist > monStat.orgData.strikingDist) // 타겟이 범위를 벗어났다면?
+            if (targetDist > dist) // 타겟이 범위를 벗어났다면?
+            {
+                ChangeState(MonsterState.Target);
+                yield break;
+            }
+            yield return null;
+        }
+    }*/
+
+    protected IEnumerator Attacking() 
+    {
+        myAgent.SetDestination(transform.position);
+        yield return new WaitForSeconds(1.0f);
+        float chill = 0f;
+        if (myTarget == null) { ChangeState(MonsterState.Idle); yield break; } // while문 전에 한 번 더 검사
+        while (myTarget != null)
+        {
+            chill -= Time.deltaTime;
+            if (chill < 0.0f)
+            {
+                myAgent.SetDestination(transform.position);
+                this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
+                if (rndNum == 0) { myAnim.SetTrigger("Attack");  }
+                if (rndNum == 1) { myAnim.SetTrigger("Attack2"); }
+                if (rndNum == 2) { myAnim.SetTrigger("Attack3"); }
+                chill = monStat.orgData.attackSpeed; //공격 속도
+            }
+            this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
+            targetDir = myTarget.transform.position - this.transform.position;
+            targetDist = targetDir.magnitude; // 공격하는 중 타겟의 거리 계산
+            if (targetDist > atkDist) // 타겟이 범위를 벗어났다면?
             {
                 ChangeState(MonsterState.Target);
                 yield break;

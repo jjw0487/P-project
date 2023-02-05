@@ -83,7 +83,7 @@ public class Monster : CharacterProperty
                 break;
             case MonsterState.Dead:
                 StopAllCoroutines();
-                myEnemy.GetEXP(monStat.orgData.EXP);
+                myEnemy.GetEXP(monStat.orgData.exp);
                 Destroy(hpObj);
                 hpObj = null;
                 StartCoroutine(DelayDead(4f));
@@ -213,17 +213,17 @@ public class Monster : CharacterProperty
         {
             if (col.name == "KIKI")
             {
-                myEnemy.OnDmg(monStat.orgData.AT);
+                myEnemy.OnDmg(monStat.orgData.atk);
                 break;
             }
             if (col.name == "Broom")
             {
-                myEnemy.OnDmg(monStat.orgData.AT);
+                myEnemy.OnDmg(monStat.orgData.atk);
                 break;
             }
             if (col.name == "Guoba2(Clone)")
             {
-                myTarget.GetComponent<Guoba_M>().OnDmg(monStat.orgData.AT);
+                myTarget.GetComponent<Guoba_M>().OnDmg(monStat.orgData.atk);
                 break;
             }
         }
@@ -232,7 +232,7 @@ public class Monster : CharacterProperty
     public virtual void OnDamage(float dmg)
     {
         myAgent.SetDestination(transform.position);
-        float damage = dmg - monStat.orgData.DP;
+        float damage = dmg - monStat.orgData.dp;
         float dmgRndVal = UnityEngine.Random.Range(damage * 0.7f, damage);
         if (damage < 0) { dmgRndVal = 0; }
         int finalDmg = (int)dmgRndVal;
@@ -319,7 +319,7 @@ public class Monster : CharacterProperty
             yield return null;
         }
         // 난수를 생성해서 랜덤하게 아이템을 switch 로 드랍되도록 만들어보자
-        GameObject DropItem = Instantiate(monStat.orgData.DropItems[0].obj, this.transform.position + Vector3.up, Quaternion.identity); // 드랍 아이템
+        GameObject DropItem = Instantiate(monStat.orgData.dropItems[0].obj, this.transform.position + Vector3.up, Quaternion.identity); // 드랍 아이템
         Destroy(gameObject);
     }
 

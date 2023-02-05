@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: Knight
   m_EditorClassIdentifier: 
   <HP>k__BackingField: 100
-  AT: 10
+  ATK: 10
   DP: 2
-  strikingDist: 1.2
-  agentSpeed: 2
-  agentStopDist: 0.7
-  attackRadius: 0.5
-  attackSpeed: 4
-  HPlocalScale: {x: 1, y: 1, z: 1}
+  StrikingDist: 1.2
+  AgentSpeed: 2
+  AgentStopDist: 0.7
+  AttackRadius: 0.5
+  AttackSpeed: 4
   EXP: 30
   DropItems:
   - {fileID: 11400000, guid: 48611bdc6adf76448bff90a4a09c694a, type: 2}
+  HPlocalScale: {x: 1, y: 1, z: 1}

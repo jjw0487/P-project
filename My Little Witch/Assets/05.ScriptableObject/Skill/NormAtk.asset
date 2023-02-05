@@ -12,38 +12,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bbd82bf677f49214890f04b0625e101d, type: 3}
   m_Name: NormAtk
   m_EditorClassIdentifier: 
-  Type: 0
+  Type: 1
   Action: 1
-  level: 1
+  orientation: 0
+  Level: 1
+  RemainTime: 0.4
+  CoolTime: []
+  ConsumeMP: 0
+  triggerName: NormAtk
   sprite: {fileID: 0}
   performPos: {x: 0, y: 0.6, z: 2}
-  Effect: {fileID: 1698648575761504, guid: cf263124cbe15f448b6a2ec0ef11bd54, type: 3}
-  remainTime: 0
-  coolTime:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  consumeMP: 0
-  triggerName: 
-  dmg:
+  Effect: {fileID: 1569979447995748, guid: cdb3bcfd751dc304a9900bddc104bf58, type: 3}
+  Dmg:
+  - 7
   - 10
+  - 15
   - 20
-  - 30
-  - 40
-  - 50
-  rangeOfSkill: 5
-  overlapRadius: 0.7
-  percentage:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
-  debuffTime:
-  - 0
-  - 0
-  - 0
-  - 0
-  - 0
+  - 25
+  RangeOfSkill: 0
+  OverlapRadius: 0
+  Percentage: []
+  DebuffTime: []
+  Upgrade: 

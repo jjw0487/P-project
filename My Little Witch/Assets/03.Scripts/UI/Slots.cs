@@ -46,15 +46,6 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         count.text = item.myItem.curNumber.ToString();
     }
 
-    void logic()
-    {
-        // 드래그에 접근한 아이템이 한 개 이상일 때
-        if (itemCount > 1)
-        {
-            // 드래그 할 아이템이 한 개 이상일 때 몇개를 이동 및 소모 할 것인지 물어보자.
-        }
-    }
-
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)

@@ -4,18 +4,18 @@ using UnityEngine.Rendering;
 
 public class EagleSpiral : MonoBehaviour
 {
-    public enum EagleMovement { Create, Forward, Spiral, Leave, Disappear }
-    public EagleMovement eagleMovement = EagleMovement.Create;
+    private enum EagleMovement { Create, Forward, Spiral, Leave, Disappear }
+    private EagleMovement eagleMovement = EagleMovement.Create;
 
-    public float speed;
-    public float rotateDuration;
-
-    public GameObject[] dropItems;
+    [SerializeField] private float speed;
+    [SerializeField] private float rotateDuration;
+    [SerializeField] private GameObject[] dropItems;
 
     // 시작하고 저장해서 위치값 바뀌지 않도록
     private Vector3 myTargetPos;
     private Vector3 myExitPos;
     private Vector3 myTargetDir;
+    private int playerLV;
 
     void Start()
     {
@@ -27,7 +27,12 @@ public class EagleSpiral : MonoBehaviour
         E_StateProcess();
     }
 
-    public void E_ChangeState(EagleMovement what)
+    public void GetLevel(int playerLevel)
+    {
+        playerLV = playerLevel;
+    }
+
+    private void E_ChangeState(EagleMovement what)
     {
         //if (eagleMovement == what) return;
         eagleMovement = what;
@@ -44,7 +49,7 @@ public class EagleSpiral : MonoBehaviour
                 StartCoroutine(RotateAround(rotateDuration));
                 break;
             case EagleMovement.Leave:
-                GameObject obj = Instantiate(dropItems[SceneData.Inst.myPlayer.level-2], this.transform.position, Quaternion.identity);
+                GameObject obj = Instantiate(dropItems[playerLV - 2], this.transform.position, Quaternion.identity);
                 StartCoroutine(Rotating((myExitPos - transform.position).normalized));
                 break;
             case EagleMovement.Disappear:
@@ -67,7 +72,7 @@ public class EagleSpiral : MonoBehaviour
         transform.rotation = end;
     }
 
-    public void E_StateProcess()
+    private void E_StateProcess()
     {
         switch (eagleMovement)
         {
