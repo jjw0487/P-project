@@ -43,7 +43,8 @@ public class Monster : CharacterProperty
     protected Coroutine attack = null; //중복실행 방지
 
     [Header("UI")]
-    protected GameObject hpObj; 
+    protected GameObject hpObj;
+    protected GameObject exObj;
     protected GameObject floatingDmg;
     protected Slider HPSlider;
 
@@ -177,9 +178,12 @@ public class Monster : CharacterProperty
                 onBattle = true;
                 if (hpObj == null)
                 {
+                    exObj = Instantiate(Resources.Load("UI/ExMark")) as GameObject;
                     hpObj = Instantiate(Resources.Load("UI/MonHP"), SceneData.Inst.HPBars) as GameObject;
                     hpObj.GetComponent<MonsterHP>().myTarget = myHpPos;
+                    exObj.GetComponent<ExclamationMark>().myTarget = myDmgPos;
                     hpObj.transform.localScale = monStat.orgData.HPlocalScale;
+                    exObj.transform.localScale = monStat.orgData.HPlocalScale * 0.5f;
                     HPSlider = hpObj.GetComponent<MonsterHP>().myBar;
                 }
                 //
