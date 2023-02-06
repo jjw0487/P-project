@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: SilverChest
   m_EditorClassIdentifier: 
   itemType: 2
-  value: 0
-  valueType: 0
-  name: Silver Tresure
-  sprite: {fileID: 21300000, guid: cc5428806c3747a4cb4b5a7b426a8597, type: 3}
-  obj: {fileID: 4571764902643027460, guid: 04fb8bd44d12a5242b84d347afc76394, type: 3}
-  count: 1
+  itemName: SilverChest
   explanation: "\uB808\uBCA8\uC5C5\uC5D0 \uB530\uB978 \uBCF4\uC0C1\uD488\uC774 \uB4E4\uC5B4\uC788\uB2E4."
+  sprite: {fileID: 21300000, guid: cc5428806c3747a4cb4b5a7b426a8597, type: 3}
+  Obj: {fileID: 4571764902643027460, guid: 04fb8bd44d12a5242b84d347afc76394, type: 3}
+  Count: 1
+  Value: 0
+  ValueType: 0

@@ -4848,7 +4848,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4909937937562004}
   - component: {fileID: 198083583485761130}
-  - component: {fileID: 114422754261059378}
   - component: {fileID: 7551875222979850864}
   - component: {fileID: 108991988279912604}
   - component: {fileID: 199561921135206354}
@@ -4856,7 +4855,7 @@ GameObject:
   - component: {fileID: 135993822685259368}
   - component: {fileID: -7914043095542653944}
   m_Layer: 0
-  m_Name: normAtk
+  m_Name: NormAtk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5130,7 +5129,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1
+      scalar: 0.3
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -9655,26 +9654,6 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
---- !u!114 &114422754261059378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1569979447995748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 605a456cfc02f6b499a64717539a27e8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 20
-  hitOffset: 0.1
-  UseFirePointRotation: 0
-  rotationOffset: {x: 0, y: 0, z: 0}
-  hit: {fileID: 1059669524233346, guid: 7bb551564a4a9a1498e0624fd34ce7d3, type: 3}
-  flash: {fileID: 1224217824244948, guid: 291223895b5952f488a6f94886872e78, type: 3}
-  Detached:
-  - {fileID: 1113143600131104}
 --- !u!114 &7551875222979850864
 MonoBehaviour:
   m_ObjectHideFlags: 0

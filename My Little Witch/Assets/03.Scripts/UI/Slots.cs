@@ -75,6 +75,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             }
 
         }
+
+    
     }
 
    

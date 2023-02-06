@@ -29,7 +29,6 @@ public class Movement : CharacterProperty
     private Vector3 movePoint; // 이동 위치 저장
     private Transform normAtkTarget;
     
-
     [Header("Movement")]
     public Animator[] curAnim;
     [SerializeField] private float C_speed = 4f;
@@ -45,8 +44,8 @@ public class Movement : CharacterProperty
     private Vector3 dir = Vector3.zero;
     [SerializeField] private float B_Speed = 10f;
     [SerializeField] private float B_RotSpeed = 3f;
-    [SerializeField] private float B_AddFloatPower = 0.2f;
-    [SerializeField] private float B_restrictedHeight = 1000f;
+    [SerializeField] private float B_AddFloatPower = 0.2f; 
+    [SerializeField] private float B_restrictedHeight = 1000f; // 최대 고도 높이
     [SerializeField] private GameObject orgDashEffect;
 
     [Header("UI")]
@@ -57,9 +56,10 @@ public class Movement : CharacterProperty
     [SerializeField] private GameObject[] normAtkNums;
 
     [Header("Skill")]
+    [SerializeField] private SkillSet normalAttack;
     public Skill mySkill; // 외부참조 필요
     [SerializeField] private Transform myRightHand;
-    [SerializeField] private SkillData normAtkData;
+    private SkillData normAtkData;
     private int coolStacks;
 
     [Header("Game Setting")]
@@ -134,6 +134,7 @@ public class Movement : CharacterProperty
 
     void Start()
     {
+        if(normalAttack != null) { normAtkData = normalAttack.myData; }
         coolStacks = 0;
         StackNumCheck(coolStacks, coolStacks + 1);
         StartCoroutine(StackingCoolStacks(5f));
@@ -315,7 +316,7 @@ public class Movement : CharacterProperty
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            //Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);            
+            Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);            
             RaycastHit hitData;
             if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")) && coolStacks > 0)
             {
@@ -328,6 +329,7 @@ public class Movement : CharacterProperty
                 else
                 {
                     C_normAtk(hitData);
+                    mySkill.Chill(normAtkData.remainTime); // 잠깐동안 움직임과 일반공격 재사용을 막음
                 }
             }
             else if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")) && coolStacks == 0)
@@ -394,8 +396,6 @@ public class Movement : CharacterProperty
             transform.rotation = target;
         }
         normAtkTarget = hitPoint.transform;
-        //skillTarget = hitPoint.transform.position;
-        //normAtkData.GetComponent<ProjectileMover>().SetTarget(hitPoint.point);
         curAnim[0].SetBool("IsWalking", false);
         curAnim[0].SetTrigger("NormAtk");
     }
@@ -403,7 +403,7 @@ public class Movement : CharacterProperty
     {
         GameObject obj = Instantiate(normAtkData.Effect, myRightHand.position, transform.rotation);
         obj.GetComponent<Target>().SetTarget(normAtkTarget, new Vector3(0f, 0.5f, 0f));
-        //obj.GetComponent<TargetProjectile>().UpdateTarget(hitPoint.point, new Vector3(0f, 0.5f, 0f));
+        normalAttack.CoolTime(normAtkData.coolTime[normAtkData.level-1]);
     }
     void Running()
     {
@@ -537,6 +537,7 @@ public class Movement : CharacterProperty
             if ((hitData.transform.position - transform.position).magnitude < 5.0f)
             {
                 C_normAtk(hitData);
+                mySkill.Chill(normAtkData.remainTime);
                 yield break;
             }
             yield return null;

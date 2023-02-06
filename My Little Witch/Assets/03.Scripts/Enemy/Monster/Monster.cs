@@ -177,7 +177,7 @@ public class Monster : CharacterProperty
                 onBattle = true;
                 if (hpObj == null)
                 {
-                    hpObj = Instantiate(Resources.Load("Monster/MonHP"), SceneData.Inst.HPBars) as GameObject;
+                    hpObj = Instantiate(Resources.Load("UI/MonHP"), SceneData.Inst.HPBars) as GameObject;
                     hpObj.GetComponent<MonsterHP>().myTarget = myHpPos;
                     hpObj.transform.localScale = monStat.orgData.HPlocalScale;
                     HPSlider = hpObj.GetComponent<MonsterHP>().myBar;

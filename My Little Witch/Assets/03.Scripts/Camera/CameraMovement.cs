@@ -8,17 +8,23 @@ public class CameraMovement : MonoBehaviour
     [SerializeField] private float ZoomSpeed;
     //[SerializeField] private float rotateSpeed = 10.0f;
 
+    private void Start()
+    {
+        lerpspeed = 5f;
+    }
     void Update()
     {
 
         if (Input.GetMouseButton(1))
         {
             transform.RotateAround(myTarget.transform.position, Vector3.up, Input.GetAxis("Mouse X") * 10f);
-            transform.position = myTarget.transform.position;
+            //transform.position = myTarget.transform.position;
+            transform.position = Vector3.Lerp(this.transform.position, myTarget.position, lerpspeed * Time.deltaTime);
         }
         else
         {
-            transform.position = myTarget.transform.position;
+            //transform.position = myTarget.transform.position;
+            transform.position = Vector3.Lerp(this.transform.position, myTarget.position, lerpspeed * Time.deltaTime);
         }
 
     }

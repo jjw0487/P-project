@@ -4,11 +4,13 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 
-public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
+public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
     [Header("Information")]
     public SkillData myData;
     public Image[] img;
+    private Sprite orgSprite;
+
 
     [Header("Object")]
     private Skill fromSkill;
@@ -17,15 +19,12 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private Vector3 SkillHitPoint;
     private bool inCoolTime;
 
-    private void Awake()
+    private void Start()
     {
+        if (orgSprite == null) { orgSprite = img[0].sprite; }
         mainCamera = Camera.main;
         myCharacter = SceneData.Inst.myPlayer.transform;
         fromSkill = SceneData.Inst.mySkill;
-    }
-
-    private void Start()
-    {
         if (myData == null)
         {
             myData = null;
@@ -38,7 +37,32 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     }
 
-    /// ////////////////////////          UI            //////////////////////////////
+    /// ////////////////////////          UI            ////////////////////////////// <summary>
+
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            if (myData.Type != SkillData.SkillType.NormalAttack) // 일반공격이 아니라면 마우스로 스킬사용
+            {
+                this.PerformSkill();
+                if(this == fromSkill.skillSetArray[0]) { print("1"); fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
+                if(this == fromSkill.skillSetArray[1]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
+                if(this == fromSkill.skillSetArray[2]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
+                if(this == fromSkill.skillSetArray[3]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
+            }
+                
+        }
+
+        if (eventData.button == PointerEventData.InputButton.Right)
+        {
+            if (myData.Type != SkillData.SkillType.NormalAttack) // 일반공격 슬롯은 항상 디폴트가 있어야 한다.
+            {
+                ClearSlot(); 
+            }
+        }
+    }
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (myData != null)
@@ -91,7 +115,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private void ClearSlot()
     {
         myData = null;
-        img[0].sprite = null;
+        img[0].sprite = orgSprite;
     }
 
     ////////////////////////////          Skill          //////////////////////////////
@@ -376,7 +400,7 @@ public class SkillSet : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         fromSkill.myPlayer.curAnim[0].SetTrigger("Idle");
     }
 
-    IEnumerator CoolTime(float cool)
+    public IEnumerator CoolTime(float cool)
     {
         float coolTime = cool;
         inCoolTime = true; //트루를 주고

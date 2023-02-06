@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Apple
   m_EditorClassIdentifier: 
   itemType: 0
-  value: 10
-  valueType: 1
-  name: Apple
-  sprite: {fileID: 21300000, guid: beed43015f0e04a45a78c8e02d7323c4, type: 3}
-  obj: {fileID: 8785237554500615155, guid: 3df126029b499c54ea97105328f95401, type: 3}
-  count: 1
+  itemName: Apple
   explanation: "\uB531\uD788 \uC2E0\uC120\uD574 \uBCF4\uC774\uC9C0 \uC54A\uB294\uB2E4."
+  sprite: {fileID: 21300000, guid: beed43015f0e04a45a78c8e02d7323c4, type: 3}
+  Obj: {fileID: 8785237554500615155, guid: 3df126029b499c54ea97105328f95401, type: 3}
+  Count: 1
+  Value: 1
+  ValueType: 15

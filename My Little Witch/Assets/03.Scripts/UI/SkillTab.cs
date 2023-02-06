@@ -58,10 +58,18 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         if (eventData.button == PointerEventData.InputButton.Left)
         {
-            for (int i = 0; i < SceneData.Inst.mySkill.skillSetArray.Length; ++i) // 슬롯 수량만큼 반복
+            for (int i = 0; i < SceneData.Inst.mySkill.skillSetArray.Length; ++i) // 슬롯 갯수만큼 반복
             {
-                if (SceneData.Inst.mySkill.skillSetArray[i].myData == null) // 자식이 하나만 있다면
+                if (SceneData.Inst.mySkill.skillSetArray[i].myData == null) 
                 {
+                    for(int n = 0; n < SceneData.Inst.mySkill.skillSetArray.Length; ++n)
+                    {
+                        if (SceneData.Inst.mySkill.skillSetArray[n].myData != null &&
+                            SceneData.Inst.mySkill.skillSetArray[n].myData.triggerName == myData.triggerName)
+                        {
+                            return;
+                        }
+                    }
                     SceneData.Inst.mySkill.skillSetArray[i].AddSkillData(this.myData);
                     break; // 조건검사에 걸린다면 반복문 탈출
                 }

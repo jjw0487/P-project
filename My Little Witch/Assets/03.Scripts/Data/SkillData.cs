@@ -17,7 +17,7 @@ public class SkillData : ScriptableObject
     [Header("Mutual Information")]
     [SerializeField]
     private int Level;
-    public int level { get { return Level; } set => Level = value; } // 레벨 setter를 막는 방법을 연구
+    public int level { get { return Level; } set => Level = value; } // 레벨 setter를 막는 방법을 연구해
 
     [SerializeField]
     private float RemainTime;

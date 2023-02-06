@@ -13,11 +13,11 @@ MonoBehaviour:
   m_Name: GoldChest
   m_EditorClassIdentifier: 
   itemType: 2
-  value: 0
-  valueType: 0
-  name: Gold Tresure
-  sprite: {fileID: 21300000, guid: cc5428806c3747a4cb4b5a7b426a8597, type: 3}
-  obj: {fileID: 1487593569942193769, guid: dd282998fa71c634393734d15484a96d, type: 3}
-  count: 1
+  itemName: GoldChest
   explanation: "\uC88B\uC740 \uBCF4\uBB3C\uC774 \uB4E4\uC5B4\uC788\uC744 \uAC83 \uB9CC
     \uAC19\uB2E4."
+  sprite: {fileID: 21300000, guid: cc5428806c3747a4cb4b5a7b426a8597, type: 3}
+  Obj: {fileID: 1487593569942193769, guid: dd282998fa71c634393734d15484a96d, type: 3}
+  Count: 1
+  Value: 0
+  ValueType: 0
