@@ -7,7 +7,7 @@ public class OnInteraction : StateMachineBehaviour
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        SceneData.Inst.myPlayer.GetInteraction(true);
+        SceneData.Inst.myPlayer.OnInteraction = true;
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
@@ -19,7 +19,7 @@ public class OnInteraction : StateMachineBehaviour
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        SceneData.Inst.myPlayer.GetInteraction(false);
+        SceneData.Inst.myPlayer.OnInteraction = false;
     }
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

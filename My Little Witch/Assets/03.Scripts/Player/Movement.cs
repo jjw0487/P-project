@@ -54,6 +54,7 @@ public class Movement : CharacterProperty
     [SerializeField] private UnityEngine.UI.Slider myStaminaSlider;
     [SerializeField] private HPBar myHPBar;
     [SerializeField] private GameObject[] normAtkNums;
+    public Transform InteractionUIPos;
 
     [Header("Skill")]
     [SerializeField] private SkillSet normalAttack;
@@ -172,15 +173,12 @@ public class Movement : CharacterProperty
     }
   
     ////////////////////////////      UI       ///////////////////////////////////////////
-    public void GetInteraction(bool trueornot)
+    public void GetInteraction(Transform lookAt)
     {
-        OnInteraction = trueornot;
-
+        transform.LookAt(lookAt);
         myAgent.SetDestination(transform.position);
-
         curAnim[0].SetBool("IsWalking", false);
         curAnim[0].SetBool("IsRunning", false);
-
         Quaternion camRot = mainCamera.transform.parent.rotation;
         Quaternion target = Quaternion.Euler(camRot.eulerAngles.x, this.transform.rotation.eulerAngles.y, camRot.eulerAngles.z);
         mainCamera.transform.parent.rotation = target;

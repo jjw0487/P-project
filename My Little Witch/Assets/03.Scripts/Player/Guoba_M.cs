@@ -62,8 +62,8 @@ public class Guoba_M : MonoBehaviour
                 {
                     if (!col.GetComponentInParent<Monster>().isDead) //죽지 않았다면
                     {
-                        print("!");
-                        if (Vector3.Distance(col.GetComponentInParent<Transform>().position, previousTarget.position) < 10f)
+                        if (Vector3.Distance(col.GetComponentInParent<Transform>().position, 
+                            previousTarget.position) < 10f)
                         {
                             col.GetComponentInParent<Monster>().myTarget = previousTarget;
                             col.GetComponentInParent<Monster>().ChangeState(MonsterState.Target);
@@ -75,7 +75,6 @@ public class Guoba_M : MonoBehaviour
                     }
                 }
             }
-
             Explosion();
             Destroy(gameObject);
         }
@@ -96,7 +95,6 @@ public class Guoba_M : MonoBehaviour
             {
                 if (!col.GetComponentInParent<Monster>().isDead) //죽지 않았다면
                 {
-
                     if (Vector3.Distance(col.GetComponentInParent<Transform>().position, previousTarget.position) < 10f)
                     {
                         col.GetComponentInParent<Monster>().myTarget = previousTarget;
@@ -106,8 +104,6 @@ public class Guoba_M : MonoBehaviour
                     {
                         col.GetComponentInParent<Monster>().myTarget = null;
                     }
-
-
                 }
             }
         }

@@ -35,7 +35,10 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         if (orgSprite == null) { orgSprite = GetComponent<Image>().sprite; }
         // 기존 이미지를 둬서 슬롯이 clear 될 때 붙여주자
         item = _item;
-        AddCount(_count);
+        if(_item.myItem.orgData.name == item.myItem.orgData.name)
+        {
+            AddCount(_count);
+        }
         img.sprite = _item.myItem.orgData.sprite;
     }
 

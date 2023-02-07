@@ -27,7 +27,7 @@ MonoBehaviour:
   triggerName: Light
   sprite: {fileID: 21300000, guid: 275b75eac56b4f9479461d5cda9133c5, type: 3}
   performPos: {x: 0, y: 0.5, z: 0}
-  Effect: {fileID: 1966937190983394, guid: db331aea270302141bab9e1c17c5b24c, type: 3}
+  Effect: {fileID: 167058, guid: 500dc3a8d0bfbe348bd6f0b95216315e, type: 3}
   Dmg:
   - 20
   - 30

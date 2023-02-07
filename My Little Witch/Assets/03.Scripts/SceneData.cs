@@ -12,7 +12,8 @@ public class SceneData : MonoBehaviour
     public Transform InvenSlot;
     public Transform EagleExitPos;
     public Inventory Inven;
-    public TMPro.TMP_Text itemExplnation;
+    public TMPro.TMP_Text itemExplnation; // 인벤토리 내에 아이템 설명 란
+    public InteractionManager interactionManager;
 
     private void Awake()
     {
