@@ -212,7 +212,6 @@ public class Monster : CharacterProperty
     public void MonAttack()
     {
         Collider[] hitColliders = Physics.OverlapSphere(myAttakPoint.position, monStat.orgData.attackRadius);
-
         foreach (Collider col in hitColliders)
         {
             if (col.name == "KIKI")

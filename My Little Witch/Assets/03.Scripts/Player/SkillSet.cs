@@ -59,7 +59,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         {
             if (myData.Type != SkillData.SkillType.NormalAttack) // 일반공격 슬롯은 항상 디폴트가 있어야 한다.
             {
-                ClearSlot(); 
+                ClearSlot();
             }
         }
     }

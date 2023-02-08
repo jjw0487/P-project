@@ -182,7 +182,6 @@ public class Movement : CharacterProperty
         Quaternion camRot = mainCamera.transform.parent.rotation;
         Quaternion target = Quaternion.Euler(camRot.eulerAngles.x, this.transform.rotation.eulerAngles.y, camRot.eulerAngles.z);
         mainCamera.transform.parent.rotation = target;
-
     }
 
     public void GetItemValue(int i, int value)

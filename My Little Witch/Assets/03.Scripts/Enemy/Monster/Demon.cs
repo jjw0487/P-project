@@ -187,7 +187,7 @@ public class Demon : Monster
 
         if (rndNum == 0) { atkDist = monStat.orgData.strikingDist; }
         if (rndNum == 1) { atkDist = 5f; }
-        if (rndNum == 2) { atkDist = 10f; }
+        if (rndNum == 2) { atkDist = 7f; }
     }
     public override void OnDamage(float dmg)
     {
