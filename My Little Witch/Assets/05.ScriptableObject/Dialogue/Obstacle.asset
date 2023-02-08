@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 740376bf20b7b0c47825450f97154292, type: 3}
+  m_Name: Obstacle
+  m_EditorClassIdentifier: 
+  npcName: "\uC54C\uC218\uC5C6\uB294 \uD798"
+  contents:
+  - "\uB418\uB3CC\uC544 \uAC00\uB294 \uAE38\uC774 \uB9C9\uD78C \uAC83 \uAC19\uB2E4."

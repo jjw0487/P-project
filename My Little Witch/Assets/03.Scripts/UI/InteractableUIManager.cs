@@ -5,7 +5,6 @@ public class InteractableUIManager : PointerCheck
     private bool inven = false;
     // private bool status = false;
     private bool skillbook = false;
-
     [SerializeField] private GameObject Inventory;
     //[SerializeField] private GameObject Status;
     [SerializeField] private GameObject SkillBook;

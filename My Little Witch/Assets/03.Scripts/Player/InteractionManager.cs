@@ -34,13 +34,15 @@ public class InteractionManager : MonoBehaviour
     {
         yield return new WaitForSeconds(cool);
 
+        print("찾아");
         // 아무키나 누르시오 메세지 화면에 호출
-        while(SceneData.Inst.myPlayer.OnInteraction == true)
-        {
+        while (SceneData.Inst.myPlayer.OnInteraction == true)
+        {            
             if(Input.anyKey)
             {
                 Camera.main.transform.parent.GetComponent<Animator>()?.SetTrigger("AsBefore");
                 interactionUI.SetActive(false);
+                SceneData.Inst.myPlayer.OnInteraction = false;
                 yield break;
             }
             yield return null;
