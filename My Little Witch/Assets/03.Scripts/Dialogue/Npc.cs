@@ -14,7 +14,7 @@ public class Npc : MonoBehaviour
             SceneData.Inst.talkSign.SetBool("IsOpen", true);
             //SceneData.Inst.myPlayer.GetInteraction(this.transform);
             
-            // 아 y축으로만 움직이게 바꾸자
+            // y축으로만 움직이게 바꾸자
 
             //transform.LookAt(other.transform);
             transform.rotation = Quaternion.LookRotation((other.transform.position - this.transform.position).normalized);
