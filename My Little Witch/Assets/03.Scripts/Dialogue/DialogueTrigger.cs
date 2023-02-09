@@ -10,7 +10,18 @@ public class DialogueTrigger : MonoBehaviour
 
     public void StartConversation()
     {
-        SceneData.Inst.dialogueManager.StartDialogue(this.dialogue[progress]);
+        if (dialogue[progress].type == DialogueData.Type.QuestGiver)
+        {
+            // 퀘스트를 체크한다 후 완료했다면 리워드 대화로 진행
+        }
+        else if (dialogue[progress].type == DialogueData.Type.Reward)
+        {
+
+        }
+        else if(dialogue[progress].type == DialogueData.Type.Dialogue)
+        {
+            SceneData.Inst.dialogueManager.StartDialogue(this.dialogue[progress], this);
+        }
     }
 
 }
