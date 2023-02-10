@@ -56,28 +56,31 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
-
         ProgressChecker();
         SceneData.Inst.myPlayer.OnInteraction = false;
         animator.SetBool("IsOpen", false);
         camAnimator.SetTrigger("AsBefore");
+        curTrigger.isTalking = false; // 대화종료, F키를 눌러 다시 대화를 할 수 있도록
     }
 
     public void ProgressChecker()
     {
         if (curData.type == DialogueData.Type.QuestGiver)
         {
-            // 퀘스트를 체크한 후 완료했다면 리워드 대화로 진행
+            curTrigger.GetComponent<DialogueTrigger>().progress += 1; // 대화 종료 후 진행도를 1 올림
         }
-        else if (curData.type == DialogueData.Type.Reward)
+        else if (curData.type == DialogueData.Type.Repeat)
         {
-
+            return;
         }
         else if (curData.type == DialogueData.Type.Dialogue)
         {
-            curTrigger.GetComponent<DialogueTrigger>().progress += 1; // 대화 종료 후 진행도를 1 올림
+            curTrigger.GetComponent<DialogueTrigger>().progress += 1;
         }
-        
+        else if (curData.type == DialogueData.Type.Reward)
+        {
+            return;
+        }
     }
 
     IEnumerator TypeSentence(string sentence)

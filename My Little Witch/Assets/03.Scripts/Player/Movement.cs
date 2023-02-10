@@ -4,57 +4,40 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-[Serializable]
-public struct PlayerStat
-{
-    public PlayerData orgData;
-    public float curHP;
-    public float curMP;
-
-}
 public class Movement : CharacterProperty
 {
-    [Header("Character")]
-    [SerializeField] private ONWHAT onWhat = ONWHAT.Street;
-    [SerializeField] private GameObject KK;
-    [SerializeField] private GameObject BR;
-    [SerializeField] private PlayerStat charStat;
-
-    [SerializeField] private int level; // 인스펙터에서 변경해서 테스트 위해
-    [SerializeField] private int curExp;
-    [SerializeField] private GameObject eagle;
+    [Header("Movement")]
+    [SerializeField] protected ONWHAT onWhat = ONWHAT.Street;
+    [SerializeField] protected GameObject KK;
+    [SerializeField] protected GameObject BR;
+    [SerializeField] protected StaminaBar myStamina;
+    [SerializeField] protected UnityEngine.UI.Slider myStaminaSlider;
 
     [Header("Ray")]
     public Camera mainCamera; // 메인 카메라 
-    private Vector3 movePoint; // 이동 위치 저장
-    private Transform normAtkTarget;
-    
-    [Header("Movement")]
+    protected Vector3 movePoint; // 이동 위치 저장
+    protected Transform normAtkTarget;
+    [SerializeField] private GameObject[] normAtkNums;
+
+    [Header("C_Movement")]
     public Animator[] curAnim;
-    [SerializeField] private float C_speed = 4f;
-    [SerializeField] private float C_dashSpeed = 7f;
-    [SerializeField] private float C_rotSpeed = 10f;
-    [SerializeField] private LayerMask layer;
+    [SerializeField] protected float C_speed = 4f;
+    [SerializeField] protected float C_dashSpeed = 7f;
+    [SerializeField] protected float C_rotSpeed = 10f;
+    [SerializeField] protected LayerMask layer;
     //private bool run;
-    private bool canRun = true;
+    protected bool canRun = true;
     public bool stun = false; // 외부참조 필요
     public bool ground = true; // 외부참조 필요
 
-    [Header("BroomMovement")]
-    private Vector3 dir = Vector3.zero;
-    [SerializeField] private float B_Speed = 10f;
-    [SerializeField] private float B_RotSpeed = 3f;
-    [SerializeField] private float B_AddFloatPower = 0.2f; 
-    [SerializeField] private float B_restrictedHeight = 1000f; // 최대 고도 높이
-    [SerializeField] private GameObject orgDashEffect;
 
-    [Header("UI")]
-    [SerializeField] private TMPro.TMP_Text[] state;
-    [SerializeField] private StaminaBar myStamina;
-    [SerializeField] private UnityEngine.UI.Slider myStaminaSlider;
-    [SerializeField] private HPBar myHPBar;
-    [SerializeField] private GameObject[] normAtkNums;
-    public Transform InteractionUIPos;
+    [Header("B_Movement")]
+    private Vector3 dir = Vector3.zero;
+    [SerializeField] protected float B_Speed = 10f;
+    [SerializeField] protected float B_RotSpeed = 3f;
+    [SerializeField] protected float B_AddFloatPower = 0.2f; 
+    [SerializeField] protected float B_restrictedHeight = 1000f; // 최대 고도 높이
+    [SerializeField] protected GameObject orgDashEffect;
 
     [Header("Skill")]
     [SerializeField] private SkillSet normalAttack;
@@ -66,7 +49,6 @@ public class Movement : CharacterProperty
     [Header("Game Setting")]
     //public Transform AttackMark;
     public bool OnInteraction = false; // 외부참조 필요
-
     public enum ONWHAT { Street, Broom } // 외부참조 필요한지 연구하자
 
     public void ChangeState(ONWHAT what)
@@ -133,21 +115,17 @@ public class Movement : CharacterProperty
         mainCamera = Camera.main;
     }
 
-    void Start()
+    protected virtual void Start()
     {
         if(normalAttack != null) { normAtkData = normalAttack.myData; }
         coolStacks = 0;
         StackNumCheck(coolStacks, coolStacks + 1);
         StartCoroutine(StackingCoolStacks(5f));
         myAgent.updateRotation = false; // 네비메시 로테이션을 막자
-        state[0].text = "Idle";
-        canRun = true; //시작할 때 바로 뛸 수 있도록
 
-        level = charStat.orgData.Level;
-        curExp = charStat.orgData.EXP[level - 1];
     }
 
-    void Update()
+    protected virtual void Update()
     {
         StateProcess();
         CheckGround();
@@ -184,38 +162,7 @@ public class Movement : CharacterProperty
         mainCamera.transform.parent.rotation = target;
     }
 
-    public void GetItemValue(int i, int value)
-    {
-        if (i == 1)
-        {
-            myHPBar.HandleHP(value);
-        }
-    }
 
-    public void GetEXP(int exp)
-    {
-        curExp -= exp;
-        if (curExp < 0)
-        {
-            curExp *= -1; //음수를 양수로
-            curExp *= -1; 
-            LevelUp(+curExp);
-        }
-    }
-    public void LevelUp(int rest)
-    {
-        ++level; // 일단 스크립터블에 영향이 안가도록 데이터는 건드리지 말고 이렇게 두자
-        curExp = charStat.orgData.EXP[level - 1];
-        curExp -= rest;
-        if (curExp < 0)
-        {
-            curExp *= -1;
-            LevelUp(+curExp);
-        }
-        Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
-        GameObject obj = Instantiate(eagle, Camera.main.transform.position, Quaternion.identity);
-        obj.GetComponent<EagleSpiral>().GetLevel(level);
-    }
 
     public void CheckGround() // 연속점프 방지, 점프를 땅에 있을 때만
     {
@@ -226,12 +173,10 @@ public class Movement : CharacterProperty
             //발끝에서 0.2만큼 올려서 아랫방향으로 0.4만큼 쏜다
             {
                 ground = true;
-                state[1].text = "Ground";
             }
             else
             {
                 ground = false;
-                state[1].text = "InAir";
             }
         }
         else
@@ -240,12 +185,10 @@ public class Movement : CharacterProperty
             if (Physics.Raycast(this.transform.localPosition, Vector3.down, out hit, 0.3f, layer))
             {
                 ground = true;
-                state[1].text = "Ground";
             }
             else
             {
                 ground = false;
-                state[1].text = "InAir";
             }
         }
 
@@ -263,27 +206,6 @@ public class Movement : CharacterProperty
             ChangeState(ONWHAT.Street);
         }
     }
-
-    public void OnDmg(float dmg)
-    {
-        myHPBar.HandleHP(dmg);
-        StartCoroutine(Stunned(0.7f));
-        curAnim[0].SetTrigger("IsHit");
-    }
-
-    void StateNotice()
-    {
-        if (curAnim[0].GetBool("IsWalking"))
-        {
-            state[0].text = "Walk";
-        }
-
-        if (curAnim[0].GetBool("IsRunning"))
-        {
-            state[0].text = "Run";
-        }
-    }
-
 
     /////////////////////////////////Character/////////////////////////////////////////////////
 
@@ -540,20 +462,18 @@ public class Movement : CharacterProperty
             yield return null;
         }
     }
-    IEnumerator Stunned(float cool) // 못 움직이게 하는 스킬들
+    protected IEnumerator Stunned(float cool) // 못 움직이게 하는 스킬들
     {
 
         stun = true;
         while (cool > 0.0f)
         {
-            state[0].text = "Stun";
             cool -= Time.deltaTime;
             yield return null;
         }
         stun = false;
         mySkill.canMove = true;
         mySkill.canSkill = true;
-        state[0].text = "Idle";
     }
 
     IEnumerator C_Dash()

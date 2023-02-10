@@ -3,20 +3,18 @@ using UnityEngine;
 
 public class Tower : MonoBehaviour
 {
-    public Movement myEnemy;
-
-    public Transform myNeck;
-    public Transform myArrowStand;
-    public GameObject orgArrow;
+    public Player myEnemy;
+    [SerializeField] private Transform myNeck;
+    [SerializeField] private Transform myArrowStand;
+    [SerializeField] private GameObject orgArrow;
     public LayerMask enemyMask;
-    public Transform myTarget;
 
     private void OnTriggerEnter(Collider other)
     {
 
         if ((enemyMask & 1 << other.gameObject.layer) != 0)
         {
-            myEnemy = other.transform.parent.GetComponent<Movement>();
+            myEnemy = other.transform.parent.GetComponent<Player>();
             StartCoroutine(Targetting());
             StartCoroutine(Attacking(2f, 3f));
         }

@@ -29,7 +29,7 @@ public class Monster : CharacterProperty
     [Header("Target")]
     public Transform myTarget = null;
     public LayerMask enemyMask;
-    public Movement myEnemy = null;
+    public Player myEnemy = null;
 
     protected Vector3 targetPos;
     protected Vector3 targetDir;
@@ -188,7 +188,7 @@ public class Monster : CharacterProperty
                 }
                 //
                 if (myTarget == null) { myTarget = other.transform.parent.GetComponent<Transform>(); }
-                if (myEnemy == null) { myEnemy = other.transform.parent.GetComponent<Movement>(); }
+                if (myEnemy == null) { myEnemy = other.transform.parent.GetComponent<Player>(); }
                 ChangeState(MonsterState.Target);
             }
         }

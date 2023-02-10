@@ -4,10 +4,17 @@ using UnityEngine;
 
 public class InteractionManager : MonoBehaviour
 {
-    [SerializeField] private Movement plyer;
+    private Player myPlyer;
     [SerializeField] private GameObject interactionUI;
     public TMPro.TMP_Text[] dialogue;
     private GameObject exObj;
+
+
+    private void Start()
+    {
+        myPlyer = SceneData.Inst.myPlayer;
+    }
+
     public void GetType(float cool, int type, Transform lookAt)
     {
         
@@ -17,8 +24,8 @@ public class InteractionManager : MonoBehaviour
         {
             // type 1번 -> n초 후 anykey 받고 화면 풀어줌
             exObj = Instantiate(Resources.Load("UI/ExMark")) as GameObject;
-            exObj.GetComponent<ExclamationMark>().myTarget = plyer.InteractionUIPos;
-            plyer.GetInteraction(lookAt);
+            exObj.GetComponent<ExclamationMark>().myTarget = myPlyer.InteractionUIPos;
+            myPlyer.GetInteraction(lookAt);
             Camera.main.transform.parent.GetComponent<Animator>().SetTrigger("Interaction");
             StartCoroutine(OnInteration(cool));
         }

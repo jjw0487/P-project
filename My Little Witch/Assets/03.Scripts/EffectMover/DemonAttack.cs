@@ -40,12 +40,12 @@ public class DemonAttack : ProjectileMover
             {
                 if (col.name == "KIKI")
                 {
-                    col.GetComponentInParent<Movement>().OnDmg(40f);
+                    col.GetComponentInParent<Player>().OnDmg(40f);
                     break;
                 }
                 if (col.name == "Broom")
                 {
-                    col.GetComponentInParent<Movement>().OnDmg(40f);
+                    col.GetComponentInParent<Player>().OnDmg(40f);
                     break;
                 }
                 if (col.name == "Guoba2(Clone)")

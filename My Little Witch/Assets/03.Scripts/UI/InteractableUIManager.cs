@@ -3,17 +3,16 @@ using UnityEngine;
 public class InteractableUIManager : PointerCheck
 {
     private bool inven = false;
-    // private bool status = false;
+    private bool questBook = false;
     private bool skillbook = false;
     [SerializeField] private GameObject Inventory;
-    //[SerializeField] private GameObject Status;
+    [SerializeField] private GameObject QuestBook;
     [SerializeField] private GameObject SkillBook;
 
     private void Update()
     {
         KeyCodes();
     }
-
     private void KeyCodes()
     {
         if (Input.GetKeyDown(KeyCode.I))
@@ -32,11 +31,11 @@ public class InteractableUIManager : PointerCheck
             else { Close(SkillBook); }
         }
 
-        if (Input.GetKeyDown(KeyCode.L))
+        if (Input.GetKeyDown(KeyCode.J))
         {
-            //status = !status;
-            //if (status) { Open(Status); }
-            //else { Close(Status); }
+            questBook = !questBook;
+            if (questBook) { Open(QuestBook); }
+            else { Close(QuestBook); }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))
@@ -57,7 +56,7 @@ public class InteractableUIManager : PointerCheck
     private void CloseAll()
     {
         Close(Inventory);
-        //Close(Status);
+        Close(QuestBook);
         Close(SkillBook);
     }
 

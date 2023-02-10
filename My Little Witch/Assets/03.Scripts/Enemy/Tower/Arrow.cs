@@ -4,13 +4,13 @@ using UnityEngine;
 public class Arrow : MonoBehaviour
 {
     public float speed;
-    Movement myTarget = null;
+    Player myTarget = null;
     private void OnTriggerEnter(Collider other)
     {
         myTarget.OnDmg(20f);
         Destroy(gameObject);
     }
-    public void OnFire(Movement target)
+    public void OnFire(Player target)
     {
         myTarget = target;
         StartCoroutine(Attacking());

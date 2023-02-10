@@ -2,11 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Npc : MonoBehaviour
+public class Npc : DialogueTrigger
 {
-    [SerializeField] protected LayerMask layerMask;
-    [SerializeField] protected DialogueTrigger dialogue;
 
+    // 퀘스트 포기했을 시 npc의 trigger를 찾아 progress를 다시 차감시켜줘야 함
+    [SerializeField] protected LayerMask layerMask;
+    
+    private void Start()
+    {
+        isTalking = false;
+    }
     protected virtual void OnTriggerEnter(Collider other)
     {
         if ((layerMask & 1 << other.gameObject.layer) != 0)
@@ -23,13 +28,13 @@ public class Npc : MonoBehaviour
 
     protected virtual void OnTriggerStay(Collider other)
     {
-        if(Input.GetKeyDown(KeyCode.F))
+        if(Input.GetKeyDown(KeyCode.F) && !isTalking)
         {
+            isTalking = true;
             //DialogueSign.NextAction(); sign을 대화시작하면 지워주자
             transform.LookAt(other.transform);
-            dialogue.StartConversation();
+            StartConversation();
             SceneData.Inst.myPlayer.GetInteraction(this.transform);
-
         }
     }
 
