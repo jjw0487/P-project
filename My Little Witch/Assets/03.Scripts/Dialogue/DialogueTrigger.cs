@@ -7,6 +7,7 @@ public class DialogueTrigger : MonoBehaviour
 {
     public DialogueData[] dialogue;
     public GameObject minimapPin;
+    public Transform talkMarkSignPos;
     public int progress;
     public bool isTalking;
 

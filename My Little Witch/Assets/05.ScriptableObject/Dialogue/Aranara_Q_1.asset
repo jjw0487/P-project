@@ -13,8 +13,10 @@ MonoBehaviour:
   m_Name: Aranara_Q_1
   m_EditorClassIdentifier: 
   type: 0
+  npcId: 0
   npcName: Aranara
   questName: Fox Hunting
   contents:
   - "\uC5EC\uC6B0\uC0AC\uB0E5 \uD574\uBCF4\uC790"
   - "\uBE68\uB9AC\uAC00"
+  questObj: {fileID: 5641945185802802662, guid: e368ef467e94fc94283ad4cfb3246a90, type: 3}

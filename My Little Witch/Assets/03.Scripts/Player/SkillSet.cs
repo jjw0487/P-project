@@ -11,7 +11,6 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
     public Image[] img;
     private Sprite orgSprite;
 
-
     [Header("Object")]
     private Skill fromSkill;
     private Transform myCharacter;
@@ -37,9 +36,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
 
     }
 
-    /// ////////////////////////          UI            ////////////////////////////// <summary>
-
-
+    /// ////////////////////////          UI            //////////////////////////////
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Left)
@@ -51,8 +48,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
                 if(this == fromSkill.skillSetArray[1]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
                 if(this == fromSkill.skillSetArray[2]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
                 if(this == fromSkill.skillSetArray[3]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
-            }
-                
+            }  
         }
 
         if (eventData.button == PointerEventData.InputButton.Right)
@@ -128,7 +124,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
 
     public void PerformSkill()
     {
-        if (!inCoolTime && fromSkill.myMagicCircuit.value > myData.consumeMP && !fromSkill.myPlayer.stun)
+        if (!inCoolTime && fromSkill.myPlayer.CurMP > myData.consumeMP && !fromSkill.myPlayer.stun)
         {
             if (myData.Type == SkillData.SkillType.Buff) // 버프
             {
@@ -192,7 +188,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
     {
         GameObject obj = Instantiate(myData.Effect, myCharacter.transform.position + myData.performPos, Quaternion.identity);
         fromSkill.myPlayer.curAnim[0].SetTrigger(myData.triggerName);
-        fromSkill.myMagicGage.HandleMP(myData.consumeMP);
+        fromSkill.myPlayer.HandleMP(myData.consumeMP,0f);
         StartCoroutine(fromSkill.Chill(myData.remainTime));
     }
 
@@ -200,13 +196,13 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
     {
         if (myData.orientation == SkillData.Orientation.immediate)
         {
-            fromSkill.myMagicGage.HandleMP(myData.consumeMP);
+            fromSkill.myPlayer.HandleMP(myData.consumeMP, 0f);
             GameObject obj = Instantiate(myData.Effect, myCharacter.transform.position + myData.performPos, Quaternion.identity);
             SkillOverlapColWithoutWaitMotion();
         }
         else if (myData.orientation == SkillData.Orientation.Remain)
         {
-            fromSkill.myMagicGage.HandleMP(myData.consumeMP);
+            fromSkill.myPlayer.HandleMP(myData.consumeMP, 0f);
             GameObject obj = Instantiate(myData.Effect, myCharacter.transform.position + new Vector3(1, 0.5f, 0), Quaternion.identity);
             GameObject obj2 = Instantiate(myData.Effect, myCharacter.transform.position + new Vector3(-1, 0.5f, 0), Quaternion.identity);
             GameObject obj3 = Instantiate(myData.Effect, myCharacter.transform.position + new Vector3(0, 0.5f, 1), Quaternion.identity);
@@ -227,7 +223,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
     {
         if (myData.orientation == SkillData.Orientation.immediate)
         {
-            fromSkill.myMagicGage.HandleMP(myData.consumeMP);
+            fromSkill.myPlayer.HandleMP(myData.consumeMP, 0f);
             GameObject obj = Instantiate(myData.Effect, SkillHitPoint, Quaternion.identity);
             StartCoroutine(fromSkill.Chill(myData.remainTime));
             SkillOverlapCol();
@@ -238,7 +234,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
 
     public void AND() // 어택 N 디버프 with Waiting Motion <- 애님이벤트에서 실행 OnPlayerANDSkill()
     {
-        fromSkill.myMagicGage.HandleMP(myData.consumeMP);
+        fromSkill.myPlayer.HandleMP(myData.consumeMP, 0f);
         GameObject obj = Instantiate(myData.Effect, SkillHitPoint, Quaternion.identity);
         StartCoroutine(fromSkill.Chill(myData.remainTime));
         SkillOverlapCol_AND();

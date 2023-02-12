@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Q_Aranara_1
   m_EditorClassIdentifier: 
   questName: Fox Hunting
+  npcId: 0
   contents: ' Hunt five foxes out there.'
   obj: {fileID: 0}
   restrictedLV: 2
-  npcName: 
   reward: {fileID: 0}
   currency: 0
   exp: 0

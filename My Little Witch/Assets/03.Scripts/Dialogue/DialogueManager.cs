@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Networking.Types;
 using UnityEngine.UI;
 
 
@@ -11,6 +12,8 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text nameText;
     [SerializeField] private TMPro.TMP_Text dialogueText;
     [SerializeField] private Animator animator;
+    [SerializeField] private GameObject askAWill;
+    [SerializeField] private QuestBook questBook;
     private Animator camAnimator;
     public Queue<string> sentences;
 
@@ -25,12 +28,13 @@ public class DialogueManager : MonoBehaviour
     
     public void StartDialogue(DialogueData _curData, DialogueTrigger _curTrigger = null)
     {
-        camAnimator.SetTrigger("Interaction");
-        SceneData.Inst.talkSign.SetBool("IsOpen", false);
         //
-        if(_curTrigger != null) curTrigger = _curTrigger;
+        if (_curTrigger != null) curTrigger = _curTrigger;
         curData = _curData;
         //
+        camAnimator.SetTrigger("Interaction");
+        SceneData.Inst.talkSign.SetBool("IsOpen", false);
+        
         animator.SetBool("IsOpen", true);
         sentences.Clear(); // 처음 읽기전에 이전 컨텐츠를 클리어
         nameText.text = curData.npcName;
@@ -56,31 +60,69 @@ public class DialogueManager : MonoBehaviour
 
     public void EndDialogue()
     {
-        ProgressChecker();
-        SceneData.Inst.myPlayer.OnInteraction = false;
-        animator.SetBool("IsOpen", false);
-        camAnimator.SetTrigger("AsBefore");
-        curTrigger.isTalking = false; // 대화종료, F키를 눌러 다시 대화를 할 수 있도록
+        if (curData.type == DialogueData.Type.QuestGiver) //퀘스트 타입일 시 수락여부 물음
+        {
+            ProgressChecker(); // 대화 타입 검사
+            askAWill.SetActive(true); // 퀘스트 수락할지 물음
+        }
+        else
+        {
+            ProgressChecker(); // 대화 타입 검사
+            SceneData.Inst.myPlayer.OnInteraction = false; // 플레이어 다시 움직임
+            animator.SetBool("IsOpen", false); // 패널 닫음
+            camAnimator.SetTrigger("AsBefore"); // 카메라 원복
+
+            // 대화종료, F키를 눌러 다시 대화를 할 수 있도록
+            if (!SceneData.Inst.talkSign.GetBool("IsOpen")) SceneData.Inst.talkSign.SetBool("IsOpen", true);
+            curTrigger.isTalking = false;
+        }
     }
 
     public void ProgressChecker()
     {
         if (curData.type == DialogueData.Type.QuestGiver)
-        {
-            curTrigger.GetComponent<DialogueTrigger>().progress += 1; // 대화 종료 후 진행도를 1 올림
-        }
-        else if (curData.type == DialogueData.Type.Repeat)
-        {
-            return;
+        { 
         }
         else if (curData.type == DialogueData.Type.Dialogue)
         {
-            curTrigger.GetComponent<DialogueTrigger>().progress += 1;
+            curTrigger.progress += 1;
         }
         else if (curData.type == DialogueData.Type.Reward)
         {
             return;
         }
+        else { return; }
+    }
+
+    public void IfAccepted()
+    {
+        curTrigger.progress += 1; // 진행도를 1 올림
+        if (curData.questObj != null) { GameObject obj = Instantiate(curData.questObj, questBook.content); } // 퀘스트북에 퀘스트를 추가해줌
+        // 퀘스트북에 퀘스트를 추가해야함
+        SceneData.Inst.myPlayer.OnInteraction = false; // 플레이어 다시 움직임
+        animator.SetBool("IsOpen", false); // 패널 닫음
+        camAnimator.SetTrigger("AsBefore"); // 카메라 원복
+        // 대화종료, F키를 눌러 다시 대화를 할 수 있도록
+        if (!SceneData.Inst.talkSign.GetBool("IsOpen")) SceneData.Inst.talkSign.SetBool("IsOpen", true);
+        curTrigger.isTalking = false;
+        curTrigger.minimapPin.SetActive(false); // 미니맵 핀 false
+
+        askAWill.SetActive(false); // 수락여부팝업 닫아줌
+    }
+
+    public void IfDenied()
+    {
+        // 대화 진행도를 올리지 않음
+        SceneData.Inst.myPlayer.OnInteraction = false; // 플레이어 다시 움직임
+        animator.SetBool("IsOpen", false); // 패널 닫음
+        camAnimator.SetTrigger("AsBefore"); // 카메라 원복
+        // 대화종료, F키를 눌러 다시 대화를 할 수 있도록
+        if (!SceneData.Inst.talkSign.GetBool("IsOpen")) SceneData.Inst.talkSign.SetBool("IsOpen", true);
+        curTrigger.isTalking = false;
+        curTrigger.minimapPin.SetActive(false); // 미니맵 핀 false, true는 <QuestManager->QM_SetNpcTrigger()> 에서
+
+        askAWill.SetActive(false); // 수락여부팝업 닫아줌
+
     }
 
     IEnumerator TypeSentence(string sentence)

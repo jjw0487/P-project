@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SkillBook : MonoBehaviour
+public class SkillBook : PointerCheck
 {
     public TMPro.TMP_Text point;
 

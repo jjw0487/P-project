@@ -29,7 +29,7 @@ public class Movement : CharacterProperty
     protected bool canRun = true;
     public bool stun = false; // 외부참조 필요
     public bool ground = true; // 외부참조 필요
-
+    protected bool isDead = false;
 
     [Header("B_Movement")]
     private Vector3 dir = Vector3.zero;
@@ -48,8 +48,9 @@ public class Movement : CharacterProperty
 
     [Header("Game Setting")]
     //public Transform AttackMark;
-    public bool OnInteraction = false; // 외부참조 필요
-    public enum ONWHAT { Street, Broom } // 외부참조 필요한지 연구하자
+    public bool OnInteraction = false; // 외부참조 필요 => ui, 
+    public bool OnUI = false;
+    public enum ONWHAT { Street, Broom, Dead } // 외부참조 필요한지 연구하자
 
     public void ChangeState(ONWHAT what)
     {
@@ -72,6 +73,9 @@ public class Movement : CharacterProperty
                 BR.SetActive(true);
                 KK.SetActive(false);
                 break;
+            case ONWHAT.Dead:
+                isDead = true;
+                break;
         }
     }
     public void StateProcess()
@@ -79,7 +83,7 @@ public class Movement : CharacterProperty
         switch (onWhat)
         {
             case ONWHAT.Street:
-                if (mySkill.canMove && !stun && !OnInteraction)
+                if (mySkill.canMove && !stun && !OnInteraction && !OnUI)
                 {
                     C_Ray();
                     Running();
@@ -105,6 +109,8 @@ public class Movement : CharacterProperty
             case ONWHAT.Broom:
                 B_Movement();
                 B_DashnHeight(); //대시와 높이제한
+                break;
+            case ONWHAT.Dead:
                 break;
         }
     }
@@ -161,9 +167,6 @@ public class Movement : CharacterProperty
         Quaternion target = Quaternion.Euler(camRot.eulerAngles.x, this.transform.rotation.eulerAngles.y, camRot.eulerAngles.z);
         mainCamera.transform.parent.rotation = target;
     }
-
-
-
     public void CheckGround() // 연속점프 방지, 점프를 땅에 있을 때만
     {
         if (onWhat == ONWHAT.Street)

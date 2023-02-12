@@ -28,7 +28,8 @@ public class Npc : DialogueTrigger
 
     protected virtual void OnTriggerStay(Collider other)
     {
-        if(Input.GetKeyDown(KeyCode.F) && !isTalking)
+        
+        if (Input.GetKeyDown(KeyCode.F) && !isTalking)
         {
             isTalking = true;
             //DialogueSign.NextAction(); sign을 대화시작하면 지워주자

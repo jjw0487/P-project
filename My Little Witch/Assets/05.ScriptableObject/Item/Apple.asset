@@ -18,5 +18,5 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: beed43015f0e04a45a78c8e02d7323c4, type: 3}
   Obj: {fileID: 8785237554500615155, guid: 3df126029b499c54ea97105328f95401, type: 3}
   Count: 1
-  Value: 1
-  ValueType: 15
+  ValueType: 1
+  Value: 20

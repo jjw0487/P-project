@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: Q_Test_1
   m_EditorClassIdentifier: 
   questName: Food Delivery
+  npcId: 1
   contents: ' Deliver some bread to Sara in the village.'
-  obj: {fileID: 0}
-  restrictedLV: 2
-  npcName: 
+  questObj: {fileID: 0}
+  restrictedLV: 3
   reward: {fileID: 0}
   currency: 0
   exp: 0

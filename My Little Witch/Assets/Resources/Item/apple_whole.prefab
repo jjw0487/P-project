@@ -99,8 +99,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myItem:
     orgData: {fileID: 11400000, guid: 48611bdc6adf76448bff90a4a09c694a, type: 2}
-    curNumber: 0
-  inventory: {fileID: 0}
+    curNumber: 1
+  contents: []
 --- !u!135 &4803039712051785467
 SphereCollider:
   m_ObjectHideFlags: 0

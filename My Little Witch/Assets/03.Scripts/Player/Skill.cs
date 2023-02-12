@@ -5,12 +5,10 @@ using UnityEngine.UI;
 public class Skill : MonoBehaviour
 {
     [Header("Player")]
-    public Movement myPlayer; // 'SkillSet' 이 참조
+    public Player myPlayer; // 'SkillSet' 이 참조
     public GameObject rangeOfSkills; // 'SkillSet' 이 참조
     public bool canMove = true; // 'Movement', 'SkillSet' 이 참조
     public bool canSkill = true; // 'Movement', 'SkillSet' 이 참조
-    public MagicGageBar myMagicGage; // 'Movement', 'SkillSet' 이 참조
-    public Slider myMagicCircuit; // 'Movement', 'SkillSet' 이 참조
 
     [Header("Cursor")]
     //public ChangeCursor myCursor;
@@ -18,10 +16,6 @@ public class Skill : MonoBehaviour
     [Header("SkillSet")]
     public SkillSet[] skillSetArray;
 
-    private void Awake()
-    {
-
-    }
     void Update()
     {
         OnSkill();

@@ -19,4 +19,9 @@ public class DecisionReturn : MonoBehaviour
         _slot = null;
         this.gameObject.SetActive(false);
     }
+
+    public void CancelSaving()
+    {
+        this.gameObject.SetActive(false);
+    }
 }

@@ -3,7 +3,19 @@ guid: a1a752dadba7e994a86f7b5382db4406
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - myPlayer: {instanceID: 0}
+  - mySkill: {instanceID: 0}
+  - HPBars: {instanceID: 0}
+  - FloatingDmg: {instanceID: 0}
+  - InvenSlot: {instanceID: 0}
+  - EagleExitPos: {instanceID: 0}
+  - Inven: {instanceID: 0}
+  - itemExplnation: {instanceID: 0}
+  - interactionManager: {instanceID: 0}
+  - dialogueManager: {instanceID: 0}
+  - talkSign: {instanceID: 0}
+  - questManager: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
