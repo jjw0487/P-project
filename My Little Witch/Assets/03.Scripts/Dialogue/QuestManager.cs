@@ -30,6 +30,7 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
+
     void QM_SetNpcTrigger(int npcId) // id를 이용하여 해당 npc에 접근하여
     {
         for(int i = npc[npcId].progress; i < npc[npcId].dialogue.Length; i++)

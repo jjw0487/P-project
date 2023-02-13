@@ -11,8 +11,6 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     public TMPro.TMP_Text count;
     private int itemCount = 0;
     private Sprite orgSprite;
-    private GameObject itemNotice;
-    private Transform pItemNotice;
 
     void Start()
     {
@@ -21,11 +19,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             item = GetComponentInChildren<Item>();
             itemCount = GetComponentInChildren<Item>().myItem.curNumber;
         }
-
-        pItemNotice = SceneData.Inst.Inven.eventNotice;
     }
-
-
     /*public void ShowingSprite()
     {
         img.sprite = GetComponentInChildren<Item>().myItem.orgData.sprite; // 사진파일을 표현
@@ -86,8 +80,6 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             }
 
         }
-
-    
     }
 
    
@@ -164,7 +156,6 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
 
     private void ChangeSlot()
     {
-
         Item temp = item; // 아이템을 담을 공간을 만들고
         int tempItemCount = itemCount;
         AddItem(DragImage.Inst.dragSlot.item, DragImage.Inst.dragSlot.itemCount);
@@ -177,7 +168,6 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         {
             DragImage.Inst.dragSlot.ClearSlot();
         }
-
     }
 
     private void ClearSlot()
