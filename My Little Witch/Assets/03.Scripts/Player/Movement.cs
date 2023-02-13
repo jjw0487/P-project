@@ -3,6 +3,7 @@ using System.Collections;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using static CameraMovement;
 
 public class Movement : CharacterProperty
 {
@@ -14,8 +15,8 @@ public class Movement : CharacterProperty
     [SerializeField] protected UnityEngine.UI.Slider myStaminaSlider;
 
     [Header("Ray")]
-    public Camera mainCamera; // ¸ÞÀÎ Ä«¸Þ¶ó 
-    protected Vector3 movePoint; // ÀÌµ¿ À§Ä¡ ÀúÀå
+    public Camera mainCamera; 
+    protected Vector3 movePoint; 
     protected Transform normAtkTarget;
     [SerializeField] private GameObject[] normAtkNums;
 
@@ -27,8 +28,8 @@ public class Movement : CharacterProperty
     [SerializeField] protected LayerMask layer;
     //private bool run;
     protected bool canRun = true;
-    public bool stun = false; // ¿ÜºÎÂüÁ¶ ÇÊ¿ä
-    public bool ground = true; // ¿ÜºÎÂüÁ¶ ÇÊ¿ä
+    public bool stun = false; // ï¿½Üºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
+    public bool ground = true; // ï¿½Üºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
     protected bool isDead = false;
 
     [Header("B_Movement")]
@@ -36,21 +37,22 @@ public class Movement : CharacterProperty
     [SerializeField] protected float B_Speed = 10f;
     [SerializeField] protected float B_RotSpeed = 3f;
     [SerializeField] protected float B_AddFloatPower = 0.2f; 
-    [SerializeField] protected float B_restrictedHeight = 1000f; // ÃÖ´ë °íµµ ³ôÀÌ
+    [SerializeField] protected float B_restrictedHeight = 1000f; // ìµœëŒ€ë†’ì´ ì œí•œ
     [SerializeField] protected GameObject orgDashEffect;
+    [SerializeField] protected CameraMovement followCam;
 
     [Header("Skill")]
     [SerializeField] private SkillSet normalAttack;
-    public Skill mySkill; // ¿ÜºÎÂüÁ¶ ÇÊ¿ä
+    public Skill mySkill; // ï¿½Üºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½
     [SerializeField] private Transform myRightHand;
     private SkillData normAtkData;
     private int coolStacks;
 
     [Header("Game Setting")]
     //public Transform AttackMark;
-    public bool OnInteraction = false; // ¿ÜºÎÂüÁ¶ ÇÊ¿ä => ui, 
+    public bool OnInteraction = false; // ï¿½Üºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ => ui, 
     public bool OnUI = false;
-    public enum ONWHAT { Street, Broom, Dead } // ¿ÜºÎÂüÁ¶ ÇÊ¿äÇÑÁö ¿¬±¸ÇÏÀÚ
+    public enum ONWHAT { Street, Broom, Dead } // ï¿½Üºï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¿ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 
     public void ChangeState(ONWHAT what)
     {
@@ -94,21 +96,20 @@ public class Movement : CharacterProperty
                     }
                 }
 
-                if (!mySkill.canMove || stun) //½ºÅ³ÀÌ³ª ½ºÅÏÀÌ °É¸®¸é ¿òÁ÷ÀÓ Á¤Áö
+                if (!mySkill.canMove || stun) //ï¿½ï¿½Å³ï¿½Ì³ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½É¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 {
                     curAnim[0].SetBool("IsWalking", false);
                     myAgent.SetDestination(transform.position);
                 }
 
-                if (Input.GetKeyDown(KeyCode.S)) // SÅ°¸¦ ´­·¯ Á¤Áö
+                if (Input.GetKeyDown(KeyCode.S)) // SÅ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 {
                     curAnim[0].SetBool("IsWalking", false);
                     myAgent.SetDestination(transform.position);
                 }
                 break;
             case ONWHAT.Broom:
-                B_Movement();
-                B_DashnHeight(); //´ë½Ã¿Í ³ôÀÌÁ¦ÇÑ
+    
                 break;
             case ONWHAT.Dead:
                 break;
@@ -127,7 +128,7 @@ public class Movement : CharacterProperty
         coolStacks = 0;
         StackNumCheck(coolStacks, coolStacks + 1);
         StartCoroutine(StackingCoolStacks(5f));
-        myAgent.updateRotation = false; // ³×ºñ¸Þ½Ã ·ÎÅ×ÀÌ¼ÇÀ» ¸·ÀÚ
+        myAgent.updateRotation = false; // ï¿½×ºï¿½Þ½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 
     }
 
@@ -143,15 +144,23 @@ public class Movement : CharacterProperty
 
     private void FixedUpdate()
     {
-        dir.x = Input.GetAxis("Horizontal");
-        dir.z = Input.GetAxis("Vertical");
         //totalDist = dir.magnitude;
 
-        // ¿òÁ÷ÀÓ °ü·ÃÇØ¼­´Â ³ªÁß¿¡ ¿Å°ÜÁÖÀÚ
         if (onWhat == ONWHAT.Broom)
         {
+            dir.x = Input.GetAxis("Horizontal");
+            dir.z = Input.GetAxis("Vertical");
+            dir = followCam.transform.rotation * dir;
+            dir.y = 0.0f;
+            dir.Normalize();
+
             myRigid.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
-            transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
+            //transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
+
+            B_Movement();
+            B_DashnHeight(); 
+            
+
         }
 
     }
@@ -167,13 +176,13 @@ public class Movement : CharacterProperty
         Quaternion target = Quaternion.Euler(camRot.eulerAngles.x, this.transform.rotation.eulerAngles.y, camRot.eulerAngles.z);
         mainCamera.transform.parent.rotation = target;
     }
-    public void CheckGround() // ¿¬¼ÓÁ¡ÇÁ ¹æÁö, Á¡ÇÁ¸¦ ¶¥¿¡ ÀÖÀ» ¶§¸¸
+    public void CheckGround()
     {
         if (onWhat == ONWHAT.Street)
         {
             RaycastHit hit;
             if (Physics.Raycast(this.transform.localPosition + (Vector3.up * 0.2f), Vector3.down, out hit, 0.4f, layer))
-            //¹ß³¡¿¡¼­ 0.2¸¸Å­ ¿Ã·Á¼­ ¾Æ·§¹æÇâÀ¸·Î 0.4¸¸Å­ ½ð´Ù
+           
             {
                 ground = true;
             }
@@ -202,11 +211,13 @@ public class Movement : CharacterProperty
         {
             onWhat = ONWHAT.Broom;
             ChangeState(ONWHAT.Broom);
+            followCam.ChangeState(CAMTYPE.OnBroom);
         }
         else
         {
             onWhat = ONWHAT.Street;
             ChangeState(ONWHAT.Street);
+            followCam.ChangeState(CAMTYPE.OnStreet);
         }
     }
 
@@ -246,12 +257,12 @@ public class Movement : CharacterProperty
                 if ((hitData.transform.position - transform.position).magnitude > 5f)
                 {
                     StartCoroutine(SteppingBeforeNormAtk(hitData));
-                    // ÄÚ·çÆ¾ ½ÇÇàÇÏ°í ´ÙÀ½¹ø ÇÇÅ·¶§´Â ±× ÄÚ·çÆ¾À» ½ºÅ¾ÇÏÀÚ 
+                    // ï¿½Ú·ï¿½Æ¾ ï¿½ï¿½ï¿½ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å·ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ú·ï¿½Æ¾ï¿½ï¿½ ï¿½ï¿½Å¾ï¿½ï¿½ï¿½ï¿½ 
                 }
                 else
                 {
                     C_normAtk(hitData);
-                    mySkill.Chill(normAtkData.remainTime); // Àá±ñµ¿¾È ¿òÁ÷ÀÓ°ú ÀÏ¹Ý°ø°Ý Àç»ç¿ëÀ» ¸·À½
+                    mySkill.Chill(normAtkData.remainTime); // ï¿½ï¿½ñµ¿¾ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ó°ï¿½ ï¿½Ï¹Ý°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 }
             }
             else if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")) && coolStacks == 0)
@@ -280,8 +291,8 @@ public class Movement : CharacterProperty
         else if (myAgent.desiredVelocity.sqrMagnitude >= 0.1f * 0.1f)
         {
             curAnim[0].SetBool("IsWalking", true);
-            Vector3 direction = myAgent.desiredVelocity; // ¿¡ÀÌÀüÆ®ÀÇ ÀÌµ¿¹æÇâ
-            Quaternion targetAngle = Quaternion.LookRotation(direction); //È¸Àü°¢µµ
+            Vector3 direction = myAgent.desiredVelocity; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½
+            Quaternion targetAngle = Quaternion.LookRotation(direction); //È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * C_rotSpeed);
         }
     }
@@ -295,7 +306,7 @@ public class Movement : CharacterProperty
             normAtkNums[n].SetActive(false);
         }
 
-        if (coolStacks == 0) // 0ÀÏ ¶§ ¿¹¿ÜÃ³¸®
+        if (coolStacks == 0) // 0ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½
         {
             normAtkNums[1].SetActive(false);
         }
@@ -330,7 +341,7 @@ public class Movement : CharacterProperty
     void Running()
     {
         if (Mathf.Approximately(myStaminaSlider.value, 0.0f))
-        //½ºÅÂ¹Ì³Ê ¹ÙÀÇ ¹ë·ù°¡ 0¿¡ ±Ù»çÄ¡¿¡ ´êÀ» ¶§
+        //ï¿½ï¿½ï¿½Â¹Ì³ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ ï¿½Ù»ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
         {
             canRun = false;
             /*if (myAgent.remainingDistance > 0.1f)
@@ -349,8 +360,8 @@ public class Movement : CharacterProperty
             else if (myAgent.desiredVelocity.sqrMagnitude >= 0.1f * 0.1f)
             {
                 curAnim[0].SetBool("IsWalking", true);
-                Vector3 direction = myAgent.desiredVelocity; // ¿¡ÀÌÀüÆ®ÀÇ ÀÌµ¿¹æÇâ
-                Quaternion targetAngle = Quaternion.LookRotation(direction); //È¸Àü°¢µµ
+                Vector3 direction = myAgent.desiredVelocity; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½
+                Quaternion targetAngle = Quaternion.LookRotation(direction); //È¸ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetAngle, Time.deltaTime * 8.0f);
             }
             myAgent.speed = C_speed;
@@ -362,14 +373,14 @@ public class Movement : CharacterProperty
         {
             //canRun= true;
             if (Input.GetKey(KeyCode.LeftShift) && myAgent.remainingDistance > 0.1f && canRun)
-            // ½ÃÇÁÆ®¸¦ ´­·¶°í, ÀÌµ¿°Å¸®°¡ ÀÖÀ¸¸ç canRun ÀÌ false°¡ ¾Æ´Ò ¶§
+            // ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, ï¿½Ìµï¿½ï¿½Å¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ canRun ï¿½ï¿½ falseï¿½ï¿½ ï¿½Æ´ï¿½ ï¿½ï¿½
             {
                 // run = true;
                 myAgent.speed = C_dashSpeed;
                 curAnim[0].SetBool("IsRunning", true);
                 //rigidbody.position = Vector3.MoveTowards(transform.position, movePoint, dashSpeed * Time.deltaTime);
             }
-            else // ÀÌµ¿°Å¸®°ªÀÌ 0º¸´Ù ÀÛÀ» ¶§ shift·Î ´Þ¸®±â ¹ßµ¿ ¾ÈÇÒ ¼ö ÀÖµµ·Ï
+            else // ï¿½Ìµï¿½ï¿½Å¸ï¿½ï¿½ï¿½ï¿½ï¿½ 0ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ shiftï¿½ï¿½ ï¿½Þ¸ï¿½ï¿½ï¿½ ï¿½ßµï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Öµï¿½ï¿½ï¿½
             {
                 // run = false;
                 myAgent.speed = C_speed;
@@ -378,7 +389,7 @@ public class Movement : CharacterProperty
         }
 
         if (Input.GetKeyUp(KeyCode.LeftShift) && !canRun)
-        // ½ÃÇÁÆ® Å°¸¦ ¶¼¾ú°í, canRun ÀÌ falseÀÏ ¶§
+        // ï¿½ï¿½ï¿½ï¿½Æ® Å°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½, canRun ï¿½ï¿½ falseï¿½ï¿½ ï¿½ï¿½
         {
             canRun = true;
             myAgent.speed = C_speed;
@@ -429,12 +440,12 @@ public class Movement : CharacterProperty
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Vector3 dashPower = this.transform.forward * -Mathf.Log(1 / myRigid.drag) * 10f;
-            // drag °ø±âÀúÇ×°ªÀ» ¿ª¼ö·Î µÚÁý¾î¼­ ·Î±×·Î ¹Ù²Ù°í - ¸¦ ³Ö¾îÁà¼­ °ªÀ» ±¸ÇÑ ÈÄ ¿ì¸®°¡ ±¸ÇÑ ´ë½Ã¾çÀ» °öÇØÁØ´Ù < ÀÚ¿¬½º·¯¿î ´ë½Ã¸¦ À§ÇØ(¹«½¼ ¼Ò¸®ÀÎÁö ¸ð¸£°Ú´Ù.)
+            // drag ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½î¼­ ï¿½Î±×·ï¿½ ï¿½Ù²Ù°ï¿½ - ï¿½ï¿½ ï¿½Ö¾ï¿½ï¿½à¼­ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ì¸®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¾ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø´ï¿½ < ï¿½Ú¿ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¸ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ ï¿½Ò¸ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ð¸£°Ú´ï¿½.)
             myRigid.AddForce(dashPower, ForceMode.VelocityChange);
             Instantiate(orgDashEffect, this.transform.position, this.transform.rotation);
         }
 
-        if (this.transform.position.y < B_restrictedHeight) // ³ôÀÌÁ¦ÇÑ
+        if (this.transform.position.y < B_restrictedHeight) // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         {
             if (Input.GetKey(KeyCode.Space))
             {
@@ -465,7 +476,7 @@ public class Movement : CharacterProperty
             yield return null;
         }
     }
-    protected IEnumerator Stunned(float cool) // ¸ø ¿òÁ÷ÀÌ°Ô ÇÏ´Â ½ºÅ³µé
+    protected IEnumerator Stunned(float cool) // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ì°ï¿½ ï¿½Ï´ï¿½ ï¿½ï¿½Å³ï¿½ï¿½
     {
 
         stun = true;

@@ -15,6 +15,6 @@ public class DialogueData : ScriptableObject
     public string[] contents;
 
     [Header("Selective")]
-    public GameObject questObj;
-    
+    public GameObject questObj; // Äù½ºÆ®ºÏ¿¡ µé¾î°¥ object
+
 }

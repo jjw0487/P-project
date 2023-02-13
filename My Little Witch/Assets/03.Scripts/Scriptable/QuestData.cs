@@ -11,7 +11,7 @@ public class QuestData : ScriptableObject
     public int npcId;
     [TextArea(3, 10)]
     public string contents;
-    public GameObject questObj; // Äù½ºÆ®ºÏ¿¡ µé¾î°¥ object
+    //public GameObject questObj; // Äù½ºÆ®ºÏ¿¡ µé¾î°¥ object
 
     [Header("Selective")]
     public int restrictedLV;
