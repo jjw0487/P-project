@@ -18,11 +18,12 @@ public class Npc : DialogueTrigger
         {
             SceneData.Inst.talkSign.SetBool("IsOpen", true);
             //SceneData.Inst.myPlayer.GetInteraction(this.transform);
-            
+
             // y축으로만 움직이게 바꾸자
 
             //transform.LookAt(other.transform);
-            transform.rotation = Quaternion.LookRotation((other.transform.position - this.transform.position).normalized);
+            Quaternion dir = Quaternion.LookRotation((other.transform.position - this.transform.position).normalized);
+            transform.rotation = Quaternion.Euler(0f, dir.eulerAngles.y, 0f);
         }
     }
 
@@ -33,7 +34,8 @@ public class Npc : DialogueTrigger
         {
             isTalking = true;
             //DialogueSign.NextAction(); sign을 대화시작하면 지워주자
-            transform.LookAt(other.transform);
+            Quaternion dir = Quaternion.LookRotation((other.transform.position - this.transform.position).normalized);
+            transform.rotation = Quaternion.Euler(0f, dir.eulerAngles.y, 0f);
             StartConversation();
             SceneData.Inst.myPlayer.GetInteraction(this.transform);
         }

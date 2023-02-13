@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Playables;
 using UnityEngine.UI;
 
 public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
@@ -10,7 +11,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     public TMPro.TMP_Text count;
     private int itemCount = 0;
     private Sprite orgSprite;
-
+    private GameObject itemNotice;
+    private Transform pItemNotice;
 
     void Start()
     {
@@ -19,6 +21,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             item = GetComponentInChildren<Item>();
             itemCount = GetComponentInChildren<Item>().myItem.curNumber;
         }
+
+        pItemNotice = SceneData.Inst.Inven.eventNotice;
     }
 
 
@@ -29,7 +33,11 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         itemCount = GetComponentInChildren<Item>().myItem.curNumber; // 스크립트 안에서 사용 할 수량 확인
         item = GetComponentInChildren<Item>();
     }*/
-
+    public void FloatNotice(string itemName)
+    {
+        GameObject obj = Instantiate(SceneData.Inst.Inven.floatingItemNotice, SceneData.Inst.Inven.eventNotice);
+        SceneData.Inst.Inven.floatingItemNotice.GetComponent<NotificationController>().GetText(itemName);
+    }
     public void AddItem(Item _item, int _count)
     {
         if (orgSprite == null) { orgSprite = GetComponent<Image>().sprite; }
