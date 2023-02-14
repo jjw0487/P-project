@@ -49,7 +49,7 @@ public class EagleSpiral : MonoBehaviour
                 StartCoroutine(RotateAround(rotateDuration));
                 break;
             case EagleMovement.Leave:
-                GameObject obj = Instantiate(dropItems[playerLV - 2], this.transform.position, Quaternion.identity);
+                GameObject obj = Instantiate(dropItems[playerLV - 2], this.transform.position + new Vector3(0f,2f,0f), Quaternion.identity);
                 StartCoroutine(Rotating((myExitPos - transform.position).normalized));
                 break;
             case EagleMovement.Disappear:

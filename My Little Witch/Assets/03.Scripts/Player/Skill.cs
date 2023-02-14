@@ -26,24 +26,29 @@ public class Skill : MonoBehaviour
         {
             skillSetArray[0].PerformSkill();
             myPlayer.curAnim[0].SetInteger("SkillNum", 0);
+
+            
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2) && canSkill && skillSetArray[1].myData != null)
         {
             skillSetArray[1].PerformSkill();
             myPlayer.curAnim[0].SetInteger("SkillNum", 1);
+
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3) && canSkill && skillSetArray[2].myData != null)
         {
             skillSetArray[2].PerformSkill();
             myPlayer.curAnim[0].SetInteger("SkillNum", 2);
+
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha4) && canSkill && skillSetArray[3].myData != null)
         {
             skillSetArray[3].PerformSkill();
             myPlayer.curAnim[0].SetInteger("SkillNum", 3);
+
         }
     }
 

@@ -64,7 +64,6 @@ public class InteractableUIManager : MonoBehaviour
     {
         if(stack.Count != 0) // 스택에 카운트가 0이 아닐 경우에만
         {
-            print("closeall");
             GameObject obj = values.Pop();
             obj.SetActive(false);
             SceneData.Inst.myPlayer.OnUI = false;

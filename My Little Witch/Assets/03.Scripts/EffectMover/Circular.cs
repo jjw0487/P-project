@@ -31,7 +31,7 @@ public class Circular : ProjectileMover
     private void FixedUpdate()
     {
         // 캐릭터 주위로 공전
-        transform.position = SceneData.Inst.myPlayer.transform.position + offset; 
+        transform.position = SceneData.Inst.myPlayer.transform.position + offset;
         transform.RotateAround(SceneData.Inst.myPlayer.transform.position, Vector3.up, -120f * Time.deltaTime);
         offset = transform.position - SceneData.Inst.myPlayer.transform.position;
 

@@ -40,7 +40,7 @@ public class Player : Movement
     public float CurMP { get { return curMP; } } // 게터, 스킬셋에서 참조
     [SerializeField] private float maxMP;
 
-    private Coroutine handleSlider;
+    public Coroutine handleSlider; // skill에서 참조
 
     [Header("UI")]
     [SerializeField] private Slider hPBar;
@@ -148,7 +148,7 @@ public class Player : Movement
         curMP += increase; // 증가
     }
 
-    IEnumerator SliderValue()
+    public IEnumerator SliderValue()
     {
         while (!isDead)
         {
@@ -161,8 +161,6 @@ public class Player : Movement
             if (curHP >= maxHP && curMP >= maxMP) { print("fef"); handleSlider = null; yield break; }
             yield return null;
         }
-
-        print("fef");
         handleSlider = null;
     }
 }

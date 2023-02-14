@@ -189,6 +189,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         GameObject obj = Instantiate(myData.Effect, myCharacter.transform.position + myData.performPos, Quaternion.identity);
         fromSkill.myPlayer.curAnim[0].SetTrigger(myData.triggerName);
         fromSkill.myPlayer.HandleMP(myData.consumeMP,0f);
+        if (fromSkill.myPlayer.handleSlider == null) { fromSkill.myPlayer.handleSlider = StartCoroutine(fromSkill.myPlayer.SliderValue()); }
         StartCoroutine(fromSkill.Chill(myData.remainTime));
     }
 
@@ -197,12 +198,14 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         if (myData.orientation == SkillData.Orientation.immediate)
         {
             fromSkill.myPlayer.HandleMP(myData.consumeMP, 0f);
+            if (fromSkill.myPlayer.handleSlider == null) { fromSkill.myPlayer.handleSlider = StartCoroutine(fromSkill.myPlayer.SliderValue()); }
             GameObject obj = Instantiate(myData.Effect, myCharacter.transform.position + myData.performPos, Quaternion.identity);
             SkillOverlapColWithoutWaitMotion();
         }
         else if (myData.orientation == SkillData.Orientation.Remain)
         {
             fromSkill.myPlayer.HandleMP(myData.consumeMP, 0f);
+            if (fromSkill.myPlayer.handleSlider == null) { fromSkill.myPlayer.handleSlider = StartCoroutine(fromSkill.myPlayer.SliderValue()); }
             GameObject obj = Instantiate(myData.Effect, myCharacter.transform.position + new Vector3(1, 0.5f, 0), Quaternion.identity);
             GameObject obj2 = Instantiate(myData.Effect, myCharacter.transform.position + new Vector3(-1, 0.5f, 0), Quaternion.identity);
             GameObject obj3 = Instantiate(myData.Effect, myCharacter.transform.position + new Vector3(0, 0.5f, 1), Quaternion.identity);
@@ -224,6 +227,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
         if (myData.orientation == SkillData.Orientation.immediate)
         {
             fromSkill.myPlayer.HandleMP(myData.consumeMP, 0f);
+            if (fromSkill.myPlayer.handleSlider == null) { fromSkill.myPlayer.handleSlider = StartCoroutine(fromSkill.myPlayer.SliderValue()); }
             GameObject obj = Instantiate(myData.Effect, SkillHitPoint, Quaternion.identity);
             StartCoroutine(fromSkill.Chill(myData.remainTime));
             SkillOverlapCol();
@@ -235,6 +239,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
     public void AND() // 어택 N 디버프 with Waiting Motion <- 애님이벤트에서 실행 OnPlayerANDSkill()
     {
         fromSkill.myPlayer.HandleMP(myData.consumeMP, 0f);
+        if (fromSkill.myPlayer.handleSlider == null) { fromSkill.myPlayer.handleSlider = StartCoroutine(fromSkill.myPlayer.SliderValue()); }
         GameObject obj = Instantiate(myData.Effect, SkillHitPoint, Quaternion.identity);
         StartCoroutine(fromSkill.Chill(myData.remainTime));
         SkillOverlapCol_AND();
