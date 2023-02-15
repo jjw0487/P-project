@@ -22,6 +22,7 @@ public class MonsterSpawner : MonoBehaviour
     void Start()
     {
         InvokeRepeating("spawnInitialMonsters", 0, 1f);
+        monCounter = 5;
     }
     public void spawnInitialMonsters()
     {
@@ -48,7 +49,7 @@ public class MonsterSpawner : MonoBehaviour
 
     public void spawnFox()
     {
-        if (--monCounter == 0) { CancelInvoke("spawnFox"); monCounter = 5; }
+        if (--monCounter <= 0) { CancelInvoke("spawnFox"); monCounter = 5; }
 
         GameObject foxObj = Instantiate(monsters[0], spawnPos[0].position + new Vector3(UnityEngine.Random.Range(-15.0f, 15.0f), 0f, UnityEngine.Random.Range(-15.0f, 15.0f)), Quaternion.identity);
         aliveFoxes.Add(foxObj);

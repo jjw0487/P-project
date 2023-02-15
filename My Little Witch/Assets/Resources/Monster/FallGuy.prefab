@@ -945,7 +945,7 @@ GameObject:
   - component: {fileID: -1259523756423765103}
   - component: {fileID: 3486806400482870024}
   - component: {fileID: 3486806400482870025}
-  - component: {fileID: 6992131283689026899}
+  - component: {fileID: 8116903346021715901}
   m_Layer: 2
   m_Name: FallGuy
   m_TagString: Untagged
@@ -1053,8 +1053,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skillSet: []
---- !u!136 &6992131283689026899
-CapsuleCollider:
+--- !u!135 &8116903346021715901
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -1063,9 +1063,8 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
+  serializedVersion: 2
   m_Radius: 5
-  m_Height: 1
-  m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4471495035041784244
 GameObject:

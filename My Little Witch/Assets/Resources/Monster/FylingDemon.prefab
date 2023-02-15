@@ -936,10 +936,10 @@ GameObject:
   m_Component:
   - component: {fileID: 566946886190871333}
   - component: {fileID: 566946886183640265}
-  - component: {fileID: 566946886190903044}
   - component: {fileID: 566946886190903040}
   - component: {fileID: 566946886190903042}
   - component: {fileID: 566946886190903068}
+  - component: {fileID: -8853720301818159394}
   m_Layer: 2
   m_Name: FylingDemon
   m_TagString: Untagged
@@ -987,20 +987,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!136 &566946886190903044
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 566946886190903045}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 9.89
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &566946886190903040
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1067,6 +1053,19 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!135 &-8853720301818159394
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 566946886190903045}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 10
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &566946886190903047
 GameObject:
   m_ObjectHideFlags: 0

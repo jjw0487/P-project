@@ -685,10 +685,10 @@ GameObject:
   m_Component:
   - component: {fileID: 6545647671992945797}
   - component: {fileID: 6727382363518934691}
-  - component: {fileID: 7276815257964030214}
   - component: {fileID: -2944869954227395360}
   - component: {fileID: 6545647671992945802}
   - component: {fileID: 6545647671992945800}
+  - component: {fileID: 1582724861012708700}
   m_Layer: 2
   m_Name: Fox
   m_TagString: Untagged
@@ -736,20 +736,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!136 &7276815257964030214
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5880891099705300543}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 100
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &-2944869954227395360
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -810,6 +796,19 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
+--- !u!135 &1582724861012708700
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5880891099705300543}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 100
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6103877511946174715
 GameObject:
   m_ObjectHideFlags: 0
@@ -1585,7 +1584,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 5
+  m_Radius: 11.3
   m_Height: 26.49
   m_Direction: 1
   m_Center: {x: -0.000005357765, y: 3.552315, z: 8.435143}
