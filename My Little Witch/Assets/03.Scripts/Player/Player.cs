@@ -22,7 +22,6 @@ public class Player : Movement
     private int ValueType;
     public int valueType { get { return ValueType; } }
 
-
     [Header("Player")]
     [SerializeField] protected PlayerStat charStat;
     [SerializeField] protected int curExp;
@@ -86,7 +85,7 @@ public class Player : Movement
     protected override void Update()
     {
         base.Update();
-        if(Input.GetKeyDown(KeyCode.Space))
+        if(Input.GetKeyDown(KeyCode.P))
         {
             GetEXP(20);
         }
@@ -158,7 +157,8 @@ public class Player : Movement
             curMP += 1 * Time.deltaTime; // 시간당 회복
             hPBar.value = Mathf.Lerp(hPBar.value, curHP / maxHP * 100f, 0.2f);
             mPBar.value = Mathf.Lerp(mPBar.value, curMP / maxMP * 100f, 0.2f);
-            if (curHP >= maxHP && curMP >= maxMP) { print("fef"); handleSlider = null; yield break; }
+            if (curHP >= maxHP && curMP >= maxMP) { handleSlider = null; yield break; } 
+            // 체력,마력에 변동 없을 때 더이상 돌지 않도록
             yield return null;
         }
         handleSlider = null;

@@ -148,14 +148,7 @@ public class Movement : CharacterProperty
 
         if (onWhat == ONWHAT.Broom)
         {
-            dir.x = Input.GetAxis("Horizontal");
-            dir.z = Input.GetAxis("Vertical");
-            dir = followCam.transform.rotation * dir;
-            dir.y = 0.0f;
-            dir.Normalize();
-
-            myRigid.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
-            //transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
+            
 
             B_Movement();
             B_DashnHeight(); 
@@ -401,16 +394,48 @@ public class Movement : CharacterProperty
 
     void B_Movement()
     {
-        //Vector3 characterDir = transform.rotation * dir;
+
+        dir.x = Input.GetAxis("Horizontal");
+        dir.z = Input.GetAxis("Vertical");
+        dir = followCam.transform.rotation * dir;
+        dir.y = 0.0f;
+        dir.Normalize();
+        curAnim[1].SetFloat("xDir", dir.x);
+        myRigid.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
+
+        if (dir != Vector3.zero) //벡터의 제로가 아니라면 키 입력이 됨
+        {
+            // 앞으로 나아갈 때 + 방향으로 나아가는데 반대방향으로 나가가는 키를 눌렀을 때 -방향으로 회전하면서 생기는 오류를 방지하기위해 (부호가 서로 반대일 경우를 체크해서 살짝만 미리 돌려주는 코드) 어렵네요... 
+            // 지금 바라보는 방향의 부호 != 나아갈 방향 부호
+            if (Mathf.Sign(transform.forward.x) != Mathf.Sign(dir.x) ||
+                Mathf.Sign(transform.forward.z) != Mathf.Sign(dir.z))
+            {
+                //우리는 이동할 때 x 와 z 밖에 사용을 안하므로
+                transform.Rotate(0, 1, 0); // 살짝만 회전
+                                           //정 반대방향을 눌러도 회전안하는 버그 방지
+                                           //미리 회전을 조금 시켜서 정반대인 경우를 제거
+            }
+
+            transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
+            // Slerp를 쓸지 Lerp를 쓸지 상의를 해봐야 할 것 같아용 
+            // 캐릭터의 앞방향은 dir 키보드를 누른 방향으로 캐릭터 회전
+            //Lerp를 쓰면 원하는 방향까지 서서히 회전
+        }
+        //transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
+
+
+        
+
+
         if (dir.z < 0)
         {
             if (dir.x < 0)//left
             {
-                curAnim[1].SetBool("IsTurningRight", true);
+                curAnim[1].SetBool("IsTurningLeft", true);
             }
             if (dir.x > 0) //right
             {
-                curAnim[1].SetBool("IsTurningLeft", true);
+                curAnim[1].SetBool("IsTurningRight", true);
 
             }
         }
@@ -420,11 +445,11 @@ public class Movement : CharacterProperty
 
             if (dir.x < 0)//left
             {
-                curAnim[1].SetBool("IsTurningLeft", true);
+                curAnim[1].SetBool("IsTurningRight", true);
             }
             if (dir.x > 0) //right
             {
-                curAnim[1].SetBool("IsTurningRight", true);
+                curAnim[1].SetBool("IsTurningLeft", true);
             }
         }
 
@@ -440,12 +465,11 @@ public class Movement : CharacterProperty
         if (Input.GetKeyDown(KeyCode.LeftShift))
         {
             Vector3 dashPower = this.transform.forward * -Mathf.Log(1 / myRigid.drag) * 10f;
-            // drag �������װ��� ������ ����� �α׷� �ٲٰ� - �� �־��༭ ���� ���� �� �츮�� ���� ��þ��� �����ش� < �ڿ������� ��ø� ����(���� �Ҹ����� �𸣰ڴ�.)
             myRigid.AddForce(dashPower, ForceMode.VelocityChange);
             Instantiate(orgDashEffect, this.transform.position, this.transform.rotation);
         }
 
-        if (this.transform.position.y < B_restrictedHeight) // ��������
+        if (this.transform.position.y < B_restrictedHeight)
         {
             if (Input.GetKey(KeyCode.Space))
             {

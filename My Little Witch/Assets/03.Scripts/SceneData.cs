@@ -21,6 +21,8 @@ public class SceneData : MonoBehaviour
     public Animator talkSign;
     public QuestManager questManager;
 
+    public MonsterSpawner monSpawner;
+
 
     private void Awake()
     {

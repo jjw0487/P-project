@@ -5,6 +5,10 @@ using UnityEngine;
 
 public class MonData : ScriptableObject
 {
+
+    [SerializeField]
+    private string MonsterName;
+    public string monsterName { get { return MonsterName; } }
     [field: SerializeField] public float HP { get; private set; }
 
     [SerializeField]

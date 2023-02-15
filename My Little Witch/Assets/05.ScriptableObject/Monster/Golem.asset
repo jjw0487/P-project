@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41368326d879bfd49b98246552f5ed64, type: 3}
   m_Name: Golem
   m_EditorClassIdentifier: 
+  MonsterName: Golem
   <HP>k__BackingField: 300
   ATK: 40
   DP: 10

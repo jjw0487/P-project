@@ -50,7 +50,7 @@ public class Monster : CharacterProperty
 
     public Transform myHpPos;
     public Transform myDmgPos;
-
+ 
     public virtual void ChangeState(MonsterState what)
     {
         if (state == what) return;
@@ -311,7 +311,7 @@ public class Monster : CharacterProperty
         ChangeState(state);
     }
 
-    protected IEnumerator DelayDead(float chill)
+    protected virtual IEnumerator DelayDead(float chill)
     {
         myAgent.SetDestination(transform.position);
         myAnim.SetTrigger("Death");

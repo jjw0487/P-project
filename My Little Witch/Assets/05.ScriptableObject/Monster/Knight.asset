@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41368326d879bfd49b98246552f5ed64, type: 3}
   m_Name: Knight
   m_EditorClassIdentifier: 
+  MonsterName: Kinght
   <HP>k__BackingField: 100
   ATK: 10
   DP: 2

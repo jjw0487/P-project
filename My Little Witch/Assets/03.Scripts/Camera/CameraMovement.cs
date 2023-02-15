@@ -49,7 +49,7 @@ public class CameraMovement : MonoBehaviour
             case CAMTYPE.OnBroom:
                 CameraRotation();
                 //transform.position = Vector3.MoveTowards(transform.position, myTarget.position, lerpspeed * Time.deltaTime);
-                transform.position = Vector3.Lerp(this.transform.position, myTarget.position, lerpspeed * Time.deltaTime);
+                transform.position = Vector3.Lerp(this.transform.position, myTarget.position, 1f);
                 break;
             case CAMTYPE.Dead:
                 break;

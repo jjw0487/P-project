@@ -20,10 +20,6 @@ public class Tower : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-
-    }
 
     private void OnTriggerExit(Collider other)
     {

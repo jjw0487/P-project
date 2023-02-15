@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41368326d879bfd49b98246552f5ed64, type: 3}
   m_Name: FallGuy
   m_EditorClassIdentifier: 
+  MonsterName: Fallguy
   <HP>k__BackingField: 30
   ATK: 8
   DP: 2
