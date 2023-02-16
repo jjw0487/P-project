@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Q_Test_1
   m_EditorClassIdentifier: 
   type: 1
+  questIndex: 1
   questName: Food Delivery
   npcId: 1
   contents: ' Deliver some bread to Sara in the village.'
