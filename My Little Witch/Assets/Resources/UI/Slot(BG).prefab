@@ -245,8 +245,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   item: {fileID: 0}
+  img: {fileID: 0}
   count: {fileID: 8843518714165793332}
-  P: {fileID: 0}
 --- !u!1 &8843518714165793334
 GameObject:
   m_ObjectHideFlags: 0
@@ -315,8 +315,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: ee07472d0ea2fe64f920a8a04d410d14, type: 2}
-  m_sharedMaterial: {fileID: -7819943987466733568, guid: ee07472d0ea2fe64f920a8a04d410d14, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9ba5d6aa5dde88446baba7b323b16794, type: 2}
+  m_sharedMaterial: {fileID: -5364705113039935791, guid: 9ba5d6aa5dde88446baba7b323b16794, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

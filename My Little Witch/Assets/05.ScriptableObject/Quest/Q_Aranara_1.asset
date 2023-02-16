@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae0b1d20c0df6e34485e3c18928ca587, type: 3}
   m_Name: Q_Aranara_1
   m_EditorClassIdentifier: 
+  type: 0
   questName: Fox Hunting
   npcId: 0
   contents: ' Hunt five foxes out there.'
-  obj: {fileID: 0}
-  restrictedLV: 2
-  reward: {fileID: 0}
-  currency: 0
-  exp: 0
+  Reward: {fileID: 0}
+  Currency: 20
+  Exp: 20

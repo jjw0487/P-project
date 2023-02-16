@@ -21,7 +21,7 @@ public class Monster : CharacterProperty
     {
         Create, Idle, Roam, Target, Attack, Dead
     }
-    public MonsterState state = MonsterState.Create;
+    public MonsterState state;
     public bool isDead;
     protected Vector3 roamPos;
     protected Vector3 IdlePos;
@@ -41,6 +41,7 @@ public class Monster : CharacterProperty
     protected Coroutine idle = null; //중복실행 방지
     protected Coroutine roam = null; //중복실행 방지
     protected Coroutine attack = null; //중복실행 방지
+    protected Coroutine isAlive = null;
 
     [Header("UI")]
     protected GameObject hpObj;
@@ -53,7 +54,7 @@ public class Monster : CharacterProperty
  
     public virtual void ChangeState(MonsterState what)
     {
-        if (state == what) return;
+        if (state == what) { return; }
         state = what;
         switch (state)
         {
@@ -62,6 +63,7 @@ public class Monster : CharacterProperty
             case MonsterState.Idle:
                 onBattle = false;
                 myAgent.SetDestination(IdlePos);
+                StartCoroutine(IfAlive());
                 roam = StartCoroutine(DelayState(MonsterState.Roam, 5f));
                 break;
             case MonsterState.Roam:
@@ -121,10 +123,8 @@ public class Monster : CharacterProperty
                 }
                 else { ChangeState(MonsterState.Idle); }
 
-
                 if (myAgent.remainingDistance > 0.2f) { myAnim.SetBool("IsRunning", true); }
                 else { myAnim.SetBool("IsRunning", false); }
-
 
                 break;
             case MonsterState.Attack:
@@ -136,35 +136,15 @@ public class Monster : CharacterProperty
         }
     }
 
-    protected virtual void Awake()
-    {
-
-    }
-
     protected virtual void Start()
     {
-        ChangeState(MonsterState.Idle);
         IdlePos = this.transform.position;
         isDead = false;
+        ChangeState(MonsterState.Idle);
         monStat.curHP = monStat.orgData.HP;
         myAgent.speed = monStat.orgData.agentSpeed;
         myAgent.stoppingDistance = monStat.orgData.agentStopDist;
-    }
-
-    protected virtual void Update()
-    {
-        if (!isDead)
-        {
-            if (onBattle)
-            {
-                HPSlider.value = Mathf.Lerp(HPSlider.value, monStat.curHP / monStat.orgData.HP * 100.0f, 10.0f * Time.deltaTime);
-            }
-
-            if (myAnim.GetBool("IsAttacking") == false)
-            {
-                StateProcess();
-            }
-        }
+        
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -244,16 +224,10 @@ public class Monster : CharacterProperty
         floatingDmg.GetComponent<FloatingDamage>().myPos = myDmgPos;
         floatingDmg.GetComponent<FloatingDamage>().dmg.text = finalDmg.ToString();
 
-        if (monStat.curHP < 0.0f)
-        {
-            ChangeState(MonsterState.Dead);
-        }
-        else
-        {
-            myAnim.SetTrigger("IsHit");
-        }
+        if (monStat.curHP < 0.0f) ChangeState(MonsterState.Dead);
+        else myAnim.SetTrigger("IsHit");
     }
-
+    
     public void OnDebuff(float time, float percents)
     {
         if (c != null)
@@ -339,5 +313,25 @@ public class Monster : CharacterProperty
         }
         myAgent.speed = monStat.orgData.agentSpeed;
         this.GetComponentInChildren<Renderer>().material.color = Color.white;
+    }
+
+    protected IEnumerator IfAlive()
+    {
+        while(true)
+        {
+            if (!isDead)
+            {
+                if (onBattle)
+                {
+                    HPSlider.value = Mathf.Lerp(HPSlider.value, monStat.curHP / monStat.orgData.HP * 100.0f, 10.0f * Time.deltaTime);
+                }
+
+                if (myAnim.GetBool("IsAttacking") == false)
+                {
+                    StateProcess();
+                }
+            }
+            yield return null;
+        }
     }
 }

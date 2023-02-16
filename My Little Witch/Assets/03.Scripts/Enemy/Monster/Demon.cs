@@ -9,20 +9,10 @@ public class Demon : Monster
     private int rndNum;
     private float atkDist;
 
-    protected override void Awake()
-    {
-        base.Awake();
-    }
-
     protected override void Start()
     {
         base.Start();
         rndNum = 0;
-    }
-
-    protected override void Update()
-    {
-        base.Update();
     }
 
     protected override void OnTriggerEnter(Collider other)
@@ -46,6 +36,8 @@ public class Demon : Monster
         switch (state)
         {
             case MonsterState.Create:
+                if (isAlive == null) isAlive = StartCoroutine(IfAlive());
+                ChangeState(MonsterState.Idle);
                 break;
             case MonsterState.Idle:
                 onBattle = false;
@@ -210,54 +202,6 @@ public class Demon : Monster
             myAnim.SetTrigger("IsHit");
         }
     }
-
-
-
-    /*protected override IEnumerator Attacking(float chill)
-    {
-        yield return new WaitForSeconds(1.0f);
-        float dist = 0f;
-        print("실행");
-        myAgent.SetDestination(transform.position);
-        float cool = 2.0f; // 공격을 시작 전 0.3 만큼의 대기
-        while (cool > 0.0f)
-        {
-            cool -= Time.deltaTime;
-            yield return null;
-        }
-
-        if (myTarget != null)
-        {
-            this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
-            if (rndNum == 0) { myAnim.SetTrigger("Attack"); dist = monStat.orgData.strikingDist; }
-            if (rndNum == 1) { myAnim.SetTrigger("Attack2"); dist = 5f; }
-            if (rndNum == 2) { myAnim.SetTrigger("Attack3"); dist = 10f; }
-        }
-        else { ChangeState(MonsterState.Idle); yield break; }
-
-        while (myTarget != null)
-        {
-            chill -= Time.deltaTime;
-            if (chill < 0.0f)
-            {
-                myAgent.SetDestination(transform.position);
-                this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
-                if (rndNum == 0) { myAnim.SetTrigger("Attack"); }
-                if (rndNum == 1) { myAnim.SetTrigger("Attack2"); }
-                if (rndNum == 2) { myAnim.SetTrigger("Attack3"); }
-                chill = monStat.orgData.attackSpeed; //공격 속도
-            }
-
-            targetDir = myTarget.transform.position - this.transform.position;
-            targetDist = targetDir.magnitude; // 공격하는 중 타겟의 거리 계산
-            if (targetDist > dist) // 타겟이 범위를 벗어났다면?
-            {
-                ChangeState(MonsterState.Target);
-                yield break;
-            }
-            yield return null;
-        }
-    }*/
 
     protected IEnumerator Attacking() 
     {

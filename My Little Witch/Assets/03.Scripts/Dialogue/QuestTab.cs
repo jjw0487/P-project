@@ -10,4 +10,7 @@ public class QuestTab : MonoBehaviour
     {
         contents.text = questData.contents;
     }
+
+
+
 }

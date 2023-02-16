@@ -3,8 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+using System;
+using UnityEngine.Events;
+
 public class MonsterSpawner : MonoBehaviour
 {
+    Func<bool> Quest;
+    public bool isTrue;
     public int D_foxCounter;
     public int D_fallguyCounter;
 
@@ -61,7 +66,9 @@ public class MonsterSpawner : MonoBehaviour
     {
         if (name == "Fox")
         {
+            
             D_foxCounter++;
+            Quest?.Invoke();
             aliveFoxes.Remove(obj);
             if(aliveFoxes.Count < 5)
             {
@@ -80,6 +87,11 @@ public class MonsterSpawner : MonoBehaviour
         }
 
 
+    }
+
+    public bool GetKilledFoxCounter2(bool tre)
+    {
+        return true;
     }
 
 }

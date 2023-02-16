@@ -148,12 +148,8 @@ public class Movement : CharacterProperty
 
         if (onWhat == ONWHAT.Broom)
         {
-            
-
             B_Movement();
             B_DashnHeight(); 
-            
-
         }
 
     }

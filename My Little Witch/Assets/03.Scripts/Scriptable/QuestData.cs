@@ -7,6 +7,8 @@ using UnityEngine.Rendering;
 
 public class QuestData : ScriptableObject
 {
+    public enum QuestType { Hunting, Delivery }
+    public QuestType type;
     public string questName;
     public int npcId;
     [TextArea(3, 10)]
@@ -14,8 +16,18 @@ public class QuestData : ScriptableObject
     //public GameObject questObj; // Äù½ºÆ®ºÏ¿¡ µé¾î°¥ object
 
     [Header("Selective")]
-    public int restrictedLV;
-    public GameObject reward;
-    public int currency;
-    public int exp;
+    private int RestrictedLV;
+    public int restrictedLV { get { return RestrictedLV; } }
+
+    [SerializeField]
+    private GameObject Reward;
+    public GameObject reward { get { return Reward; } }
+
+    [SerializeField]
+    private int Currency;
+    public int currency { get { return Currency; } }
+
+    [SerializeField]
+    private int Exp;
+    public int exp { get { return Exp; } }
 }

@@ -103,7 +103,7 @@ public class Player : Movement
     {
         if (i == 1) {  HandleHP(0f, value); } // 1번타입, hp회복
         if (i == 2) { HandleMP(0f, value); } // 2번타입, mp회복
-        if (handleSlider == null) { print("코루틴"); handleSlider = StartCoroutine(SliderValue()); }
+        if (handleSlider == null) { handleSlider = StartCoroutine(SliderValue()); }
     }
 
     public void GetEXP(int exp)

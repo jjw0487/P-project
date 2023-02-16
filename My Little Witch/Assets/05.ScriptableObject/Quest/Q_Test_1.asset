@@ -12,11 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae0b1d20c0df6e34485e3c18928ca587, type: 3}
   m_Name: Q_Test_1
   m_EditorClassIdentifier: 
+  type: 1
   questName: Food Delivery
   npcId: 1
   contents: ' Deliver some bread to Sara in the village.'
-  questObj: {fileID: 0}
-  restrictedLV: 3
-  reward: {fileID: 0}
-  currency: 0
-  exp: 0
+  Reward: {fileID: 0}
+  Currency: 0
+  Exp: 0
