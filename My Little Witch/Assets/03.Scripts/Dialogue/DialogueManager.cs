@@ -13,7 +13,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text dialogueText;
     [SerializeField] private Animator animator;
     [SerializeField] private GameObject askAWill;
-    [SerializeField] private QuestBook questBook;
+    public QuestBook questBook; //세이브로드 할 때 참조
     private Animator camAnimator;
     public Queue<string> sentences;
 
@@ -98,7 +98,8 @@ public class DialogueManager : MonoBehaviour
     {
         curTrigger.progress += 1; // 진행도를 1 올림
         if (curData.questObj != null) { GameObject obj = Instantiate(curData.questObj, questBook.content); } // 퀘스트북에 퀘스트를 추가해줌
-        // 퀘스트북에 퀘스트를 추가해야함
+        SceneData.Inst.questManager.questInProgress.Add(curData.questObj.GetComponent<QuestTab>().questData.questIndex); // 퀘스트북 '진행중' 리스트에 인덱스를 추가
+        print(SceneData.Inst.questManager.questInProgress.Count);
         SceneData.Inst.myPlayer.OnInteraction = false; // 플레이어 다시 움직임
         animator.SetBool("IsOpen", false); // 패널 닫음
         camAnimator.SetTrigger("AsBefore"); // 카메라 원복
@@ -120,9 +121,7 @@ public class DialogueManager : MonoBehaviour
         if (!SceneData.Inst.talkSign.GetBool("IsOpen")) SceneData.Inst.talkSign.SetBool("IsOpen", true);
         curTrigger.isTalking = false;
         curTrigger.minimapPin.SetActive(false); // 미니맵 핀 false, true는 <QuestManager->QM_SetNpcTrigger()> 에서
-
         askAWill.SetActive(false); // 수락여부팝업 닫아줌
-
     }
 
     IEnumerator TypeSentence(string sentence)

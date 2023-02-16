@@ -9,6 +9,8 @@ public class QuestData : ScriptableObject
 {
     public enum QuestType { Hunting, Delivery }
     public QuestType type;
+
+    public int questIndex;
     public string questName;
     public int npcId;
     [TextArea(3, 10)]

@@ -8,7 +8,7 @@ public class Fox : Monster
 
     protected override IEnumerator DelayDead(float chill)
     {
-        SceneData.Inst.monSpawner.KilledMonsterCounter(this.monStat.orgData.monsterName, this.gameObject);
+        MonsterSpawner.Inst.KilledMonsterCounter(this.monStat.orgData.monsterName, this.gameObject);
         myAgent.SetDestination(transform.position);
         myAnim.SetTrigger("Death");
         isDead = true;

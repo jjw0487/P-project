@@ -5,11 +5,13 @@ using UnityEngine;
 
 using System;
 using UnityEngine.Events;
+using UnityEditor.PackageManager.Requests;
 
 public class MonsterSpawner : MonoBehaviour
 {
-    Func<bool> Quest;
-    public bool isTrue;
+    //업데이트 문 없이 몬스터에서 몬스터가 죽을 때 counter를 증가시켜 몬스터 생성
+    public static MonsterSpawner Inst = null;
+
     public int D_foxCounter;
     public int D_fallguyCounter;
 
@@ -18,12 +20,19 @@ public class MonsterSpawner : MonoBehaviour
 
     public GameObject[] monsters;
     public Transform[] spawnPos;
-
     public Coroutine spawn;
+
+    private QuestData curQuestData;
 
     List<GameObject> aliveFoxes = new List<GameObject> ();
     List<GameObject> aliveFallguys = new List<GameObject> ();
 
+    public Action<string, int> addedQuest;
+
+    private void Awake()
+    {
+        Inst = this;
+    }
     void Start()
     {
         InvokeRepeating("spawnInitialMonsters", 0, 1f);
@@ -61,37 +70,41 @@ public class MonsterSpawner : MonoBehaviour
         foxObj.transform.SetParent(this.transform);
     }
 
-
     public void KilledMonsterCounter(string name, GameObject obj) //<= 몬스터에서 준다.
     {
         if (name == "Fox")
         {
-            
-            D_foxCounter++;
-            Quest?.Invoke();
+            //D_foxCounter++;
+            if (addedQuest != null) AddedQuestKilledMonsterCounter(name);
             aliveFoxes.Remove(obj);
             if(aliveFoxes.Count < 5)
             {
-                print("fox");
                 InvokeRepeating("spawnFox", 0, 1f);
             }
         }
         else if(name == "Fallguy")
         {
-            D_fallguyCounter++;
+            //D_fallguyCounter++;
+            if (addedQuest != null) AddedQuestKilledMonsterCounter(name);
             aliveFallguys.Remove(obj);
             if (aliveFallguys.Count < 5)
             {
                 InvokeRepeating("spawnFallguy", 0, 1f);
             }
         }
+    }
 
+
+    public void GetQuestData(QuestData questData)
+    {
 
     }
 
-    public bool GetKilledFoxCounter2(bool tre)
+    public void AddedQuestKilledMonsterCounter(string name , int count = 0)
     {
-        return true;
+        // 0217 오늘 학원에서 하자
+        //if (name == "Fox") { D_foxCounter++; if (D_foxCounter >= count) Scen }  
+        //if (name == "Fallguy") { D_fallguyCounter++; }
     }
 
 }

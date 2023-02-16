@@ -11,27 +11,23 @@ public class QuestManager : MonoBehaviour
     [SerializeField] private GameObject floatingQuestNotice;
     [SerializeField] private Transform eventNotice;
 
-    Dictionary<int, int> questDictionary = new Dictionary<int, int>();
-
+    // 딕셔너리 단점 => 키값으로 받을 퀘스트의 레벨제한이 중복이 되면 안된다.
+    public List<int> questInProgress = new List<int>();
 
     // 플레이어의 레벨을 받아 NPC의 DialogueTrigger.progress를 증가하여 퀘스트를 해금한다.
-    // 퀘스트 정보를 List나 dictionary로 받아 필요할 때 퀘스트북에 전달하고 해당 인덱스의 값을 삭제하는 로직을 가져야함
-    private void Start()
-    {
-        
-    }
+
     public void QM_GetPlayerLevel(int lv)
     {
         for(int i = 0; i < quests.Length; i++)
         {
             if (quests[i].GetComponent<QuestTab>().questData.restrictedLV <= lv)
             {
-                QM_SetNpcTrigger(quests[i].GetComponent<QuestTab>().questData.npcId);
+                QM_SetNpcTrigger(quests[i].GetComponent<QuestTab>().questData.npcId, i);
             }
         }
     }
 
-    void QM_SetNpcTrigger(int npcId) // id를 이용하여 해당 npc에 접근하여
+    void QM_SetNpcTrigger(int npcId, int index) // id를 이용하여 해당 npc에 접근하여
     {
         for(int i = npc[npcId].progress; i < npc[npcId].dialogue.Length; i++)
         {// 현재 진행도부터 배열검사하여 가장 가까운 퀘스트부터 실행하도록 진행도 올림
@@ -40,8 +36,27 @@ public class QuestManager : MonoBehaviour
                 npc[npcId].minimapPin.SetActive(true); // 미니맵 핀 false는 <DialogueManager->EndDialogue()>에서
                 npc[npcId].progress = i;
                 GameObject obj = Instantiate(floatingQuestNotice, eventNotice);
+                // 다이얼로그에서 퀘스트 리스트에 담아 저장, 로드 할 때 진행중인 퀘스트만 꺼내주자
                 break;
             }
         }
     }
+    public void reward(int questIndex)
+    {
+        questInProgress.Remove(questIndex);
+    }
+
+    public void SaveQuestProgress()
+    {
+        /*for(int i = 0; i < questInProgress.Count; i++)
+        {
+
+        }*/
+    }
+
+    public void LoadQuestData()
+    {
+        //Instantiate(quests[index], SceneData.Inst.dialogueManager.questBook.transform);
+    }
+
 }
