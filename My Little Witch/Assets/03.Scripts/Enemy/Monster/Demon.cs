@@ -66,6 +66,7 @@ public class Demon : Monster
             case MonsterState.Dead:
                 StopAllCoroutines();
                 myEnemy.GetEXP(monStat.orgData.exp);
+                SceneData.Inst.Inven.SetGold(monStat.orgData.currency);
                 Destroy(hpObj);
                 hpObj = null;
                 StartCoroutine(DelayDead(4f));

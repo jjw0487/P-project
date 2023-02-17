@@ -45,7 +45,6 @@ public class EagleSpiral : MonoBehaviour
                 myTargetPos = SceneData.Inst.myPlayer.transform.position;
                 myExitPos = SceneData.Inst.EagleExitPos.transform.position;
                 E_ChangeState(EagleMovement.Forward);
-                
                 break;
             case EagleMovement.Forward:
                 break;

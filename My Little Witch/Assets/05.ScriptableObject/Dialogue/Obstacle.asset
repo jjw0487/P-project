@@ -12,6 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 740376bf20b7b0c47825450f97154292, type: 3}
   m_Name: Obstacle
   m_EditorClassIdentifier: 
+  type: 0
+  npcId: 99
   npcName: "\uC54C\uC218\uC5C6\uB294 \uD798"
+  questName: 
   contents:
   - "\uB418\uB3CC\uC544 \uAC00\uB294 \uAE38\uC774 \uB9C9\uD78C \uAC83 \uAC19\uB2E4."
+  questObj: {fileID: 0}
+  questRewardData: {fileID: 0}

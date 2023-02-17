@@ -29,4 +29,9 @@ public class ItemData : ScriptableObject
     private int Value;
     public int value { get { return Value; } } // È¸º¹·®
 
+    [SerializeField]
+    private int CurrencyInStore;
+    public int currencyInStore { get { return CurrencyInStore; } }
+
+
 }

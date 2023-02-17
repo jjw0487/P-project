@@ -20,5 +20,5 @@ MonoBehaviour:
   GoalNumber: 0
   RestrictedLV: 2
   Reward: {fileID: 0}
-  Currency: 0
-  Exp: 0
+  Currency: 20
+  Exp: 20

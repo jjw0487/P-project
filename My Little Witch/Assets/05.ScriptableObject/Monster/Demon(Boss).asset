@@ -24,4 +24,5 @@ MonoBehaviour:
   EXP: 200
   DropItems:
   - {fileID: 11400000, guid: 40b10102935a60c4b89848c4e7136d90, type: 2}
+  Currency: 100
   HPlocalScale: {x: 3, y: 3, z: 3}

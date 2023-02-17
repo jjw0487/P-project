@@ -48,6 +48,11 @@ public class MonData : ScriptableObject
     private ItemData[] DropItems;
     public ItemData[] dropItems { get { return DropItems; } }
 
+    [SerializeField]
+    private int Currency;
+    public int currency { get { return Currency; } }
+
+
 
     public Vector3 HPlocalScale;
 }

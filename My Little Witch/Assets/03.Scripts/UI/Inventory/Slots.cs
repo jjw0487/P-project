@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Playables;
@@ -168,17 +169,17 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
                 if(SceneData.Inst.ItemPool.GetChild(i).GetComponent<Item>().myItem.orgData.itemName 
                     == item.myItem.orgData.itemName)
                 {
-                    SceneData.Inst.ItemPool.GetChild(i).transform.position = SceneData.Inst.myPlayer.transform.position;
+                    SceneData.Inst.ItemPool.GetChild(i).transform.position = SceneData.Inst.myPlayer.transform.position + new Vector3(0f, 1f, 0.5f);
                     ClearSlot();
                     return;
                 }
             }
-            GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position, Quaternion.identity);
+            GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position + new Vector3(0f, 1f, 0.5f), Quaternion.identity);
             obj.transform.SetParent(SceneData.Inst.ItemPool);
         }
         else
         {
-            GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position, Quaternion.identity);
+            GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position + new Vector3(0f, 1f, 0.5f), Quaternion.identity);
             obj.transform.SetParent(SceneData.Inst.ItemPool);
         }
         ClearSlot();
@@ -194,7 +195,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
                 if (SceneData.Inst.ItemPool.GetChild(i).GetComponent<Item>().myItem.orgData.itemName
                     == item.myItem.orgData.itemName)
                 {
-                    SceneData.Inst.ItemPool.GetChild(i).transform.position = SceneData.Inst.myPlayer.transform.position;
+                    SceneData.Inst.ItemPool.GetChild(i).transform.position = SceneData.Inst.myPlayer.transform.position + new Vector3(0f, 1f, 0.5f);
                     SceneData.Inst.ItemPool.GetChild(i).GetComponent<Item>().myItem.curNumber = howmany;
                     isDone = true;
                     break;
@@ -202,14 +203,16 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             }
             if(!isDone)
             {
-                GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position, Quaternion.identity);
+                GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position + new Vector3(0f, 1f, 0.5f), Quaternion.identity);
+                obj.GetComponent<Item>().myItem.curNumber = howmany;
                 obj.transform.SetParent(SceneData.Inst.ItemPool);
             }
             
         }
         else
         {
-            GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position, Quaternion.identity);
+            GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position + new Vector3(0f, 1f, 0.5f), Quaternion.identity);
+            obj.GetComponent<Item>().myItem.curNumber = howmany;
             obj.transform.SetParent(SceneData.Inst.ItemPool);
         }
 
@@ -249,7 +252,6 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             // 매터리얼 타입은 반응 안하도록
         }
     }
-
     public virtual void OnDrop(PointerEventData eventData)
     { // 다른 슬롯 위치에 놓였을 때
 

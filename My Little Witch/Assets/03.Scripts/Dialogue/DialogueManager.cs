@@ -101,6 +101,10 @@ public class DialogueManager : MonoBehaviour
             DM_GetPlayerReward(); //대화 종료 후 보상 지급
             curTrigger.progress += 1;
         }
+        else if(curData.type == DialogueData.Type.OpenStore)
+        {
+            SceneData.Inst.interactableUIManager.OpenStore();
+        }
         else { return; }
     }
 

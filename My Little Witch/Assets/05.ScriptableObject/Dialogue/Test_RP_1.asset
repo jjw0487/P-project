@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Test_RP_1
   m_EditorClassIdentifier: 
   type: 1
+  npcId: 1
   npcName: Test
   questName: 
   contents:
   - "\uC544\uC9C1 \uC784\uBB34\uAC00 \uC644\uB8CC\uB418\uC9C0 \uC54A\uC558\uC5B4"
+  questObj: {fileID: 0}
+  questRewardData: {fileID: 0}

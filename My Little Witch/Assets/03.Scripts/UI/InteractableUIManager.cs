@@ -9,10 +9,12 @@ public class InteractableUIManager : MonoBehaviour
     private bool questBook = false;
     private bool skillbook = false;
     private bool gameMenu = false;
+    private bool store = false;
     [SerializeField] private GameObject Inventory;
     [SerializeField] private GameObject QuestBook;
     [SerializeField] private GameObject SkillBook;
     [SerializeField] private GameObject GameMenu;
+    public GameObject Store; // npc 상호작용 참조
 
     private Stack<GameObject> stack;
 
@@ -88,6 +90,15 @@ public class InteractableUIManager : MonoBehaviour
         QuestBook.SetActive(true);
         QuestBook.GetComponent<Transform>().SetAsLastSibling();
         if (!stack.Contains(QuestBook)) { stack.Push(QuestBook); } // 두 번 이상 스택에 안쌓이도록
+    }
+
+    public void OpenStore() // 퀘스트 창을 띄워서 퀘스트북에 퀘스트가 start 될 수 있도록
+    {
+        Store.SetActive(true);
+        Inventory.SetActive(true);
+        Store.GetComponent<Transform>().SetAsLastSibling();
+        if (!stack.Contains(Store)) { stack.Push(Store); } // 두 번 이상 스택에 안쌓이도록
+        if (!stack.Contains(Inventory)) { stack.Push(Inventory); }
     }
 
 }

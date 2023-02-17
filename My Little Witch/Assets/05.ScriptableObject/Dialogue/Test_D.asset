@@ -13,8 +13,11 @@ MonoBehaviour:
   m_Name: Test_D
   m_EditorClassIdentifier: 
   type: 4
+  npcId: 1
   npcName: Test
   questName: 
   contents:
   - "\u314E\u3147\u314E\u3147\n"
   - "\u3142\u3147\u3142\u3147"
+  questObj: {fileID: 0}
+  questRewardData: {fileID: 0}
