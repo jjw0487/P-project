@@ -16,5 +16,6 @@ public class DialogueData : ScriptableObject
 
     [Header("Selective")]
     public GameObject questObj; // 퀘스트북에 들어갈 object
+    public QuestData questRewardData; // 보상데이터
 
 }

@@ -24,4 +24,11 @@ public class DecisionReturn : MonoBehaviour
     {
         this.gameObject.SetActive(false);
     }
+
+    // 아이템 버릴 때
+    public void ReturnThrowItemValue()
+    {
+        _slot.ThrowAwaySingleItem();
+        this.gameObject.SetActive(false);
+    }
 }

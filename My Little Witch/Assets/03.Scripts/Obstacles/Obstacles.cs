@@ -9,6 +9,6 @@ public class Obstacles : MonoBehaviour
     {
         GameObject obj = Instantiate(stonPile, this.transform.position, Quaternion.identity);
         SceneData.Inst.interactionManager.GetType(3f, 1, this.transform);
-        SceneData.Inst.dialogueManager.StartDialogue(this.dialogue[0]);
+        SceneData.Inst.dialogueManager.DM_StartDialogue(this.dialogue[0]);
     }
 }

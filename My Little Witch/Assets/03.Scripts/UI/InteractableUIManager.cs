@@ -81,7 +81,13 @@ public class InteractableUIManager : MonoBehaviour
     {
         obj.SetActive(false);
         SceneData.Inst.myPlayer.OnUI = false; // 마우스가 ui 위에 존재할 때 클로즈 할 경우 false 가 미처 안될때를 대비
+    }
 
+    public void OpenQuestBookAfterDialogue() // 퀘스트 창을 띄워서 퀘스트북에 퀘스트가 start 될 수 있도록
+    {
+        QuestBook.SetActive(true);
+        QuestBook.GetComponent<Transform>().SetAsLastSibling();
+        if (!stack.Contains(QuestBook)) { stack.Push(QuestBook); } // 두 번 이상 스택에 안쌓이도록
     }
 
 }

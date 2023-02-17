@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Aranara_RW_1
   m_EditorClassIdentifier: 
   type: 2
+  npcId: 0
   npcName: Aranara
   questName: 
   contents:
   - "\uBCF4\uC0C1"
+  questObj: {fileID: 0}
+  questRewardData: {fileID: 11400000, guid: 47127a7fd6b3cf840ab81d57a4595bbd, type: 2}

@@ -45,4 +45,14 @@ public class ItemAmountReturn : MonoBehaviour
         numCount.text = "";
         this.gameObject.SetActive(false);
     }
+
+    // 버리기
+    public void ReturnThrownItemValue() //버튼
+    {
+        _slot.ThrowItemsAway(_itemCount);
+        _slot = null;
+        _itemCount = 0;
+        numCount.text = "";
+        this.gameObject.SetActive(false);
+    }
 }

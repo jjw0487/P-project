@@ -17,6 +17,8 @@ MonoBehaviour:
   questName: Fox Hunting
   npcId: 0
   contents: ' Hunt five foxes out there.'
+  GoalNumber: 5
+  RestrictedLV: 4
   Reward: {fileID: 0}
   Currency: 20
   Exp: 20

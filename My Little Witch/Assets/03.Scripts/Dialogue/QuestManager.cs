@@ -41,7 +41,13 @@ public class QuestManager : MonoBehaviour
             }
         }
     }
-    public void reward(int questIndex)
+
+    public void QM_GetQuestSuccess(int npcId)
+    {
+        npc[npcId].progress++; // 대화 진행도를 올려 리워드로 진행 할 수 있도록
+    }
+
+    public void reward(int questIndex) // 보상 진행 후 진행중인 퀘스트 목록에서 지워줘야 한다.
     {
         questInProgress.Remove(questIndex);
     }

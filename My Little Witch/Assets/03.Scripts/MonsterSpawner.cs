@@ -6,6 +6,8 @@ using UnityEngine;
 using System;
 using UnityEngine.Events;
 using UnityEditor.PackageManager.Requests;
+using UnityEngine.UIElements;
+using Unity.VisualScripting;
 
 public class MonsterSpawner : MonoBehaviour
 {
@@ -22,12 +24,11 @@ public class MonsterSpawner : MonoBehaviour
     public Transform[] spawnPos;
     public Coroutine spawn;
 
-    private QuestData curQuestData;
+    private QuestTab curQuestTabData;
 
     List<GameObject> aliveFoxes = new List<GameObject> ();
     List<GameObject> aliveFallguys = new List<GameObject> ();
 
-    public Action<string, int> addedQuest;
 
     private void Awake()
     {
@@ -35,12 +36,13 @@ public class MonsterSpawner : MonoBehaviour
     }
     void Start()
     {
-        InvokeRepeating("spawnInitialMonsters", 0, 1f);
+        InvokeRepeating("MS_spawnInitialMonsters", 0, 1f);
         monCounter = 5;
+        curQuestTabData = null;
     }
-    public void spawnInitialMonsters()
+    public void MS_spawnInitialMonsters()
     {
-        if (--initialMonCounter <= 0) { CancelInvoke("spawnInitialMonsters"); }
+        if (--initialMonCounter <= 0) { CancelInvoke("MS_spawnInitialMonsters"); }
 
         GameObject fallguyObj = Instantiate(monsters[1], spawnPos[1].position + new Vector3(UnityEngine.Random.Range(-15.0f, 15.0f), 0f, UnityEngine.Random.Range(-15.0f, 15.0f)), Quaternion.identity);
         fallguyObj.transform.SetParent(this.transform);
@@ -51,9 +53,9 @@ public class MonsterSpawner : MonoBehaviour
         aliveFoxes.Add(foxObj);
     }
 
-    public void spawnFallguy()
+    public void MS_spawnFallguy()
     {
-        if (--monCounter <= 0) { CancelInvoke("spawnFallguy"); monCounter = 5; }
+        if (--monCounter <= 0) { CancelInvoke("MS_spawnFallguy"); monCounter = 5; }
 
         GameObject fallguyObj = Instantiate(monsters[1], spawnPos[1].position + new Vector3(UnityEngine.Random.Range(-15.0f, 15.0f), 0f, UnityEngine.Random.Range(-15.0f, 15.0f)), Quaternion.identity);
         aliveFallguys.Add(fallguyObj);
@@ -61,9 +63,9 @@ public class MonsterSpawner : MonoBehaviour
 
     }
 
-    public void spawnFox()
+    public void MS_spawnFox()
     {
-        if (--monCounter <= 0) { CancelInvoke("spawnFox"); monCounter = 5; }
+        if (--monCounter <= 0) { CancelInvoke("MS_spawnFox"); monCounter = 5; }
 
         GameObject foxObj = Instantiate(monsters[0], spawnPos[0].position + new Vector3(UnityEngine.Random.Range(-15.0f, 15.0f), 0f, UnityEngine.Random.Range(-15.0f, 15.0f)), Quaternion.identity);
         aliveFoxes.Add(foxObj);
@@ -74,37 +76,43 @@ public class MonsterSpawner : MonoBehaviour
     {
         if (name == "Fox")
         {
-            //D_foxCounter++;
-            if (addedQuest != null) AddedQuestKilledMonsterCounter(name);
+            if (curQuestTabData != null && curQuestTabData.questData.questName.Contains("Fox Hunting"))
+            {
+                D_foxCounter++;
+                MS_ReturnQuestProgress(D_foxCounter);
+            }
             aliveFoxes.Remove(obj);
             if(aliveFoxes.Count < 5)
             {
-                InvokeRepeating("spawnFox", 0, 1f);
+                InvokeRepeating("MS_spawnFox", 0, 1f);
             }
         }
         else if(name == "Fallguy")
         {
             //D_fallguyCounter++;
-            if (addedQuest != null) AddedQuestKilledMonsterCounter(name);
+            //if (curQuestTabData != null)
             aliveFallguys.Remove(obj);
             if (aliveFallguys.Count < 5)
             {
-                InvokeRepeating("spawnFallguy", 0, 1f);
+                InvokeRepeating("MS_spawnFallguy", 0, 1f);
             }
         }
     }
 
-
-    public void GetQuestData(QuestData questData)
+    public void MS_GetQuestData(QuestTab questData) // 퀘스트탭이 생성될 때 여기로 데이터를 전달
     {
-
+        curQuestTabData = questData;
     }
 
-    public void AddedQuestKilledMonsterCounter(string name , int count = 0)
+    public void MS_ReturnQuestProgress(int count)
     {
-        // 0217 오늘 학원에서 하자
-        //if (name == "Fox") { D_foxCounter++; if (D_foxCounter >= count) Scen }  
-        //if (name == "Fallguy") { D_fallguyCounter++; }
+        curQuestTabData.QT_GetProgressNum(count); // 퀘스트 화면에 보여줄 진행도
+        
+        if (curQuestTabData.questData.goalNumber <= D_foxCounter)
+        {
+            curQuestTabData.QT_GetSuccess();
+            curQuestTabData = null; // 퀘스트 종료 후 null로 만들어 더이상 카운트 하지 않도록
+        }
     }
 
 }

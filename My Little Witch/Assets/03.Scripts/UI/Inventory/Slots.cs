@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Playables;
@@ -11,6 +12,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     public TMPro.TMP_Text count;
     protected int itemCount = 0;
     protected Sprite orgSprite;
+
+    private bool isDone = false;
 
     void Start()
     {
@@ -88,7 +91,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     {
         SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value*howmany);
         itemCount -= howmany;
-        if (itemCount == 0) { Destroy(item.gameObject); ClearSlot(); }
+        if (itemCount == 0) { if (item.gameObject != null) { Destroy(item.gameObject); } ClearSlot(); }
         else
         {
             item.myItem.curNumber = itemCount;
@@ -101,7 +104,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         if (item.myItem.orgData.itemType == ItemData.ItemType.Consumable)
         {
             SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value);
-            Destroy(item.gameObject);
+            if(item.gameObject != null) Destroy(item.gameObject);
             ClearSlot();
         }
         else if (item.myItem.orgData.itemType == ItemData.ItemType.Interactable)
@@ -147,6 +150,104 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     {
         DragImage.Inst.SetColor(0);
         DragImage.Inst.dragSlot = null;
+        if(SceneData.Inst.myPlayer.OnUI == false)
+        {
+            ThrowItemAway();
+        }
+
+    }
+
+    public void ThrowAwaySingleItem()
+    {
+
+        if(SceneData.Inst.ItemPool.GetComponentInChildren<Item>()) // 아이템풀에 아이템이 하나도 없을 때
+        {
+            // 아이템을 찾아보고 이름이 같은 아이템이 있다면 SceneData.Inst.myPlayer.transform.position;
+            for(int i = 0; i< SceneData.Inst.ItemPool.childCount; i++)
+            {
+                if(SceneData.Inst.ItemPool.GetChild(i).GetComponent<Item>().myItem.orgData.itemName 
+                    == item.myItem.orgData.itemName)
+                {
+                    SceneData.Inst.ItemPool.GetChild(i).transform.position = SceneData.Inst.myPlayer.transform.position;
+                    ClearSlot();
+                    return;
+                }
+            }
+            GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position, Quaternion.identity);
+            obj.transform.SetParent(SceneData.Inst.ItemPool);
+        }
+        else
+        {
+            GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position, Quaternion.identity);
+            obj.transform.SetParent(SceneData.Inst.ItemPool);
+        }
+        ClearSlot();
+    }
+
+    public void ThrowItemsAway(int howmany)
+    {
+        if (SceneData.Inst.ItemPool.GetComponentInChildren<Item>()) // 아이템풀에 아이템이 하나도 없을 때
+        {
+            isDone = false;
+            for (int i = 0; i < SceneData.Inst.ItemPool.childCount; i++)
+            {
+                if (SceneData.Inst.ItemPool.GetChild(i).GetComponent<Item>().myItem.orgData.itemName
+                    == item.myItem.orgData.itemName)
+                {
+                    SceneData.Inst.ItemPool.GetChild(i).transform.position = SceneData.Inst.myPlayer.transform.position;
+                    SceneData.Inst.ItemPool.GetChild(i).GetComponent<Item>().myItem.curNumber = howmany;
+                    isDone = true;
+                    break;
+                }
+            }
+            if(!isDone)
+            {
+                GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position, Quaternion.identity);
+                obj.transform.SetParent(SceneData.Inst.ItemPool);
+            }
+            
+        }
+        else
+        {
+            GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position, Quaternion.identity);
+            obj.transform.SetParent(SceneData.Inst.ItemPool);
+        }
+
+        itemCount -= howmany;
+
+        if (itemCount == 0) { ClearSlot(); }
+        else
+        {
+            item.myItem.curNumber = itemCount;
+            count.text = item.myItem.curNumber.ToString();
+        }
+    }
+
+    private void ThrowItemAway()
+    {
+        if (item != null)
+        {
+            if (item.myItem.orgData.itemType == ItemData.ItemType.Consumable)
+            {
+                if (itemCount > 1)
+                {
+                    SceneData.Inst.Inven.usePanel[3].SetActive(true);
+                    SceneData.Inst.Inven.usePanel[3].GetComponent<ItemAmountReturn>().GetItemInfo(this, itemCount);
+                }
+                else
+                {
+                    SceneData.Inst.Inven.usePanel[2].SetActive(true);
+                    SceneData.Inst.Inven.usePanel[2].GetComponent<DecisionReturn>().ReturnDecision(this);
+                }
+            }
+            else if (item.myItem.orgData.itemType == ItemData.ItemType.Interactable)
+            {
+                SceneData.Inst.Inven.usePanel[2].SetActive(true);
+                SceneData.Inst.Inven.usePanel[2].GetComponent<DecisionReturn>().ReturnDecision(this);
+            }
+
+            // 매터리얼 타입은 반응 안하도록
+        }
     }
 
     public virtual void OnDrop(PointerEventData eventData)

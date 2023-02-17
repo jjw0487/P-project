@@ -20,6 +20,7 @@ public class FallGuy : Monster
         }
         // 난수를 생성해서 랜덤하게 아이템을 switch 로 드랍되도록 만들어보자
         GameObject DropItem = Instantiate(monStat.orgData.dropItems[0].obj, this.transform.position + Vector3.up, Quaternion.identity); // 드랍 아이템
+        DropItem.transform.SetParent(SceneData.Inst.ItemPool);
         Destroy(gameObject);
     }
 }

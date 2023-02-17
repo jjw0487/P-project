@@ -396,7 +396,7 @@ public class Movement : CharacterProperty
         dir = followCam.transform.rotation * dir;
         dir.y = 0.0f;
         dir.Normalize();
-        curAnim[1].SetFloat("xDir", dir.x);
+        //curAnim[1].SetFloat("xDir", dir.x);
         myRigid.MovePosition(this.transform.position + dir * B_Speed * Time.deltaTime);
 
         if (dir != Vector3.zero) //벡터의 제로가 아니라면 키 입력이 됨

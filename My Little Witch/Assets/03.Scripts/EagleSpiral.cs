@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -16,10 +17,12 @@ public class EagleSpiral : MonoBehaviour
     private Vector3 myExitPos;
     private Vector3 myTargetDir;
     private int playerLV;
+    private Quaternion dir;
 
     void Start()
     {
         E_ChangeState(EagleMovement.Create);
+        dir = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
     }
 
     void Update()
@@ -42,6 +45,7 @@ public class EagleSpiral : MonoBehaviour
                 myTargetPos = SceneData.Inst.myPlayer.transform.position;
                 myExitPos = SceneData.Inst.EagleExitPos.transform.position;
                 E_ChangeState(EagleMovement.Forward);
+                
                 break;
             case EagleMovement.Forward:
                 break;
@@ -50,6 +54,7 @@ public class EagleSpiral : MonoBehaviour
                 break;
             case EagleMovement.Leave:
                 GameObject obj = Instantiate(dropItems[playerLV - 2], this.transform.position + new Vector3(0f,2f,0f), Quaternion.identity);
+                obj.transform.SetParent(SceneData.Inst.ItemPool);
                 StartCoroutine(Rotating((myExitPos - transform.position).normalized));
                 break;
             case EagleMovement.Disappear:
@@ -79,10 +84,24 @@ public class EagleSpiral : MonoBehaviour
             case EagleMovement.Create:
                 break;
             case EagleMovement.Forward:
-                myTargetDir = (myTargetPos - transform.position).normalized;
-                transform.position += myTargetDir * (speed * Time.deltaTime);
-                if (Vector3.Distance(myTargetPos, transform.position) < 1f)
+                
+                if (Vector3.Distance(myTargetPos, transform.position) > 5f)
+                {
+                    transform.rotation = Quaternion.LookRotation((myTargetPos - transform.position).normalized);
+                    myTargetDir = (myTargetPos - transform.position).normalized;
+                    transform.position += myTargetDir * (speed * Time.deltaTime);
+                }
+                else if(Vector3.Distance(myTargetPos, transform.position) < 5f && 
+                    Vector3.Distance(myTargetPos, transform.position) > 1.5f)
+                {
+                    dir = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
+                    transform.rotation = Quaternion.Lerp(transform.rotation, dir, 0.15f);
+                    myTargetDir = (myTargetPos - transform.position).normalized;
+                    transform.position += myTargetDir * (speed * Time.deltaTime);
+                }
+                else if(Vector3.Distance(myTargetPos, transform.position) < 1.5f)
                 { E_ChangeState(EagleMovement.Spiral); }
+
                 break;
             case EagleMovement.Spiral:
                 break;

@@ -25,7 +25,7 @@ MonoBehaviour:
   - 0.2
   ConsumeMP: 0
   triggerName: NormAtk
-  sprite: {fileID: 21300000, guid: 055e0c9f04fcc5b4f9693ee0351143af, type: 3}
+  sprite: {fileID: 21300000, guid: 75ce632c6cc5236458faff9bbb6b33e5, type: 3}
   performPos: {x: 0, y: 0.3, z: 2}
   Effect: {fileID: 1698648575761504, guid: 222be12d5fed8a44e9415a42134c1533, type: 3}
   Dmg:

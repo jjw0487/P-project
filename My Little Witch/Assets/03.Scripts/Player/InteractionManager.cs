@@ -9,7 +9,6 @@ public class InteractionManager : PointerCheck
     public TMPro.TMP_Text[] dialogue;
     private GameObject exObj;
 
-
     private void Start()
     {
         myPlyer = SceneData.Inst.myPlayer;
@@ -44,7 +43,7 @@ public class InteractionManager : PointerCheck
         {            
             if(Input.anyKey)
             {
-                SceneData.Inst.dialogueManager.EndDialogue();
+                SceneData.Inst.dialogueManager.DM_EndDialogue();
                 yield break;
             }
             yield return null;

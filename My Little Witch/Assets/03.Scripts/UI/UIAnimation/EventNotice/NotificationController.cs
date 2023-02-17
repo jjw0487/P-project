@@ -8,6 +8,7 @@ public class NotificationController : MonoBehaviour
     public TMPro.TMP_Text content;
     void Start()
     {
+        content = null;
         Destroy(this.gameObject, 4f);
     }
 

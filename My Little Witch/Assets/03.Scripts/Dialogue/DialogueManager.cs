@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer.Internal;
 using UnityEngine;
 using UnityEngine.Networking.Types;
 using UnityEngine.UI;
@@ -26,7 +27,7 @@ public class DialogueManager : MonoBehaviour
         camAnimator = Camera.main.transform.parent.GetComponent<Animator>();
     }
     
-    public void StartDialogue(DialogueData _curData, DialogueTrigger _curTrigger = null)
+    public void DM_StartDialogue(DialogueData _curData, DialogueTrigger _curTrigger = null)
     {
         //
         if (_curTrigger != null) curTrigger = _curTrigger;
@@ -42,32 +43,32 @@ public class DialogueManager : MonoBehaviour
         {
             sentences.Enqueue(sentence);
         }
-        DisplayNextSentence();
+        DM_DisplayNextSentence();
     }
 
-    public void DisplayNextSentence()
+    public void DM_DisplayNextSentence()
     {
         if(sentences.Count == 0)
         {
-            EndDialogue();
+            DM_EndDialogue();
             return;
         }
         string sentence = sentences.Dequeue();
         //dialogueText.text = sentence;
         this.StopAllCoroutines(); // 이전 코루틴에서 실행중인 대사를 모두 중지하고 새로 시작하기 위해
-        StartCoroutine(TypeSentence(sentence));
+        StartCoroutine(DM_TypeSentence(sentence));
     }
 
-    public void EndDialogue()
+    public void DM_EndDialogue()
     {
         if (curData.type == DialogueData.Type.QuestGiver) //퀘스트 타입일 시 수락여부 물음
         {
-            ProgressChecker(); // 대화 타입 검사
+            //ProgressChecker(); // 대화 타입 검사
             askAWill.SetActive(true); // 퀘스트 수락할지 물음
         }
         else
         {
-            ProgressChecker(); // 대화 타입 검사
+            DM_ProgressChecker(); // 대화 타입 검사
             SceneData.Inst.myPlayer.OnInteraction = false; // 플레이어 다시 움직임
             animator.SetBool("IsOpen", false); // 패널 닫음
             camAnimator.SetTrigger("AsBefore"); // 카메라 원복
@@ -77,19 +78,28 @@ public class DialogueManager : MonoBehaviour
             curTrigger.isTalking = false;
         }
     }
-
-    public void ProgressChecker()
+    public void DM_GetPlayerReward() // 플레이어에게 보상 전달
     {
-        if (curData.type == DialogueData.Type.QuestGiver)
-        { 
+        print("보상") ;
+        SceneData.Inst.myPlayer.GetEXP(curData.questRewardData.exp); // 플레이어 경험치
+        //SceneData.Inst.myPlayer.GetGold(curData.questRewardData.currency);// 플레이어 골드
+        if (curData.questRewardData.reward != null)
+        {
+            GameObject obj = Instantiate(curData.questRewardData.reward);
+            obj.GetComponent<Item>().GetItem();
         }
-        else if (curData.type == DialogueData.Type.Dialogue)
+
+    }
+    public void DM_ProgressChecker()
+    {
+        if (curData.type == DialogueData.Type.Dialogue)
         {
             curTrigger.progress += 1;
         }
         else if (curData.type == DialogueData.Type.Reward)
         {
-            return;
+            DM_GetPlayerReward(); //대화 종료 후 보상 지급
+            curTrigger.progress += 1;
         }
         else { return; }
     }
@@ -97,9 +107,12 @@ public class DialogueManager : MonoBehaviour
     public void IfAccepted()
     {
         curTrigger.progress += 1; // 진행도를 1 올림
-        if (curData.questObj != null) { GameObject obj = Instantiate(curData.questObj, questBook.content); } // 퀘스트북에 퀘스트를 추가해줌
-        SceneData.Inst.questManager.questInProgress.Add(curData.questObj.GetComponent<QuestTab>().questData.questIndex); // 퀘스트북 '진행중' 리스트에 인덱스를 추가
-        print(SceneData.Inst.questManager.questInProgress.Count);
+        if (curData.questObj != null) { GameObject obj = Instantiate(curData.questObj, questBook.content); } 
+        // 퀘스트북에 퀘스트를 추가해줌
+        SceneData.Inst.interactableUIManager.OpenQuestBookAfterDialogue();
+        // 퀘스트창을 띄워 퀘스트 프리팹이 진행을 가능하게 해줌
+        SceneData.Inst.questManager.questInProgress.Add(curData.questObj.GetComponent<QuestTab>().questData.questIndex); 
+        // 퀘스트북 '진행중' 리스트에 인덱스를 추가
         SceneData.Inst.myPlayer.OnInteraction = false; // 플레이어 다시 움직임
         animator.SetBool("IsOpen", false); // 패널 닫음
         camAnimator.SetTrigger("AsBefore"); // 카메라 원복
@@ -124,7 +137,7 @@ public class DialogueManager : MonoBehaviour
         askAWill.SetActive(false); // 수락여부팝업 닫아줌
     }
 
-    IEnumerator TypeSentence(string sentence)
+    IEnumerator DM_TypeSentence(string sentence)
     {
         dialogueText.text = "";
         foreach(char letter in sentence.ToCharArray())
