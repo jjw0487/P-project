@@ -33,10 +33,10 @@ RectTransform:
   m_Father: {fileID: 4608967593460770775}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: -5.4, y: -13.2}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &629983508831893501
 CanvasRenderer:
@@ -66,7 +66,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Quest Success !!
+  m_text: 't Suc
+
+    s       c
+
+    e          e
+
+    u             s
+
+    Q               
+    s!'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9ba5d6aa5dde88446baba7b323b16794, type: 2}
   m_sharedMaterial: {fileID: -5364705113039935791, guid: 9ba5d6aa5dde88446baba7b323b16794, type: 2}
@@ -93,8 +102,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 36
-  m_fontSizeBase: 36
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -105,7 +114,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 0
+  m_lineSpacing: -76
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -174,7 +183,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 100}
+  m_SizeDelta: {x: 233.81, y: 52.8}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2011186568931791155
 CanvasRenderer:
@@ -204,8 +213,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
+  m_Sprite: {fileID: 21300000, guid: 1023c71afe8e1e24eaf797f8d4da40a5, type: 3}
+  m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -224,7 +233,7 @@ Animator:
   m_GameObject: {fileID: 3192292150829030959}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1231bab4e5fc4b5409818399fa2b0da6, type: 2}
+  m_Controller: {fileID: 9100000, guid: 55b342ac73c066b4f8f4dcfdbd322853, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

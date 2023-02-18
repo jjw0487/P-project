@@ -80,13 +80,21 @@ public class DialogueManager : MonoBehaviour
     }
     public void DM_GetPlayerReward() // 플레이어에게 보상 전달
     {
-        print("보상") ;
         SceneData.Inst.myPlayer.GetEXP(curData.questRewardData.exp); // 플레이어 경험치
-        //SceneData.Inst.myPlayer.GetGold(curData.questRewardData.currency);// 플레이어 골드
+        SceneData.Inst.interactableUIManager.SetGold(curData.questRewardData.currency); // 플레이어 골드
         if (curData.questRewardData.reward != null)
         {
             GameObject obj = Instantiate(curData.questRewardData.reward);
             obj.GetComponent<Item>().GetItem();
+        }
+
+        for (int i = 0; i < questBook.content.childCount; i++)
+        {
+            if(questBook.content.GetChild(i).GetComponent<QuestTab>().questData.npcId == curData.npcId)
+            {
+                questBook.content.GetChild(i).GetComponent<QuestTab>().QT_DestroyQuestTab();
+                break;
+            }
         }
 
     }
@@ -100,6 +108,7 @@ public class DialogueManager : MonoBehaviour
         {
             DM_GetPlayerReward(); //대화 종료 후 보상 지급
             curTrigger.progress += 1;
+            SceneData.Inst.questManager.QM_TurnMarkOff(curData.npcId);
         }
         else if(curData.type == DialogueData.Type.OpenStore)
         {
@@ -123,7 +132,7 @@ public class DialogueManager : MonoBehaviour
         // 대화종료, F키를 눌러 다시 대화를 할 수 있도록
         if (!SceneData.Inst.talkSign.GetBool("IsOpen")) SceneData.Inst.talkSign.SetBool("IsOpen", true);
         curTrigger.isTalking = false;
-        curTrigger.minimapPin.SetActive(false); // 미니맵 핀 false
+        curTrigger.minimapPin[0].SetActive(false); // 미니맵 핀 false, true는 <QuestManager->QM_SetNpcTrigger()> 에서
 
         askAWill.SetActive(false); // 수락여부팝업 닫아줌
     }
@@ -137,7 +146,6 @@ public class DialogueManager : MonoBehaviour
         // 대화종료, F키를 눌러 다시 대화를 할 수 있도록
         if (!SceneData.Inst.talkSign.GetBool("IsOpen")) SceneData.Inst.talkSign.SetBool("IsOpen", true);
         curTrigger.isTalking = false;
-        curTrigger.minimapPin.SetActive(false); // 미니맵 핀 false, true는 <QuestManager->QM_SetNpcTrigger()> 에서
         askAWill.SetActive(false); // 수락여부팝업 닫아줌
     }
 

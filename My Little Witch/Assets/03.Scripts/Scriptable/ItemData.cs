@@ -33,5 +33,7 @@ public class ItemData : ScriptableObject
     private int CurrencyInStore;
     public int currencyInStore { get { return CurrencyInStore; } }
 
+    public string itemNameInStore;
+
 
 }

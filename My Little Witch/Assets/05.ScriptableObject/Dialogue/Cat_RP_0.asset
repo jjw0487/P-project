@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: Cat_RP_0
   m_EditorClassIdentifier: 
   type: 1
-  npcId: 2
+  npcId: 98
   npcName: "\uACE0\uC591\uC774"
   questName: 
   contents:
-  - ................................
+  - ..................
   questObj: {fileID: 0}
+  questRewardData: {fileID: 0}

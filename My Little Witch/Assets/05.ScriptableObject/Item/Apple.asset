@@ -20,3 +20,5 @@ MonoBehaviour:
   Count: 1
   ValueType: 1
   Value: 20
+  CurrencyInStore: 0
+  itemNameInStore: 

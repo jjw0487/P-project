@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: Aranara_RP_0
   m_EditorClassIdentifier: 
   type: 1
-  npcName: Aranara
+  npcId: 0
+  npcName: "\uC544\uB780\uB098\uB77C"
   questName: 
   contents:
   - "\uB808\uBCA8\uC5C5\uC880 \uD558\uACE0 \uC640~"
+  questObj: {fileID: 0}
+  questRewardData: {fileID: 0}

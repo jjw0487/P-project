@@ -41,6 +41,7 @@ public class Target : ProjectileMover
                 }
             }
         }
+
         base.OnCollisionEnter(collision);
     }
 }

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 2
   npcId: 0
-  npcName: Aranara
+  npcName: "\uC544\uB780\uB098\uB77C"
   questName: 
   contents:
   - "\uBCF4\uC0C1"

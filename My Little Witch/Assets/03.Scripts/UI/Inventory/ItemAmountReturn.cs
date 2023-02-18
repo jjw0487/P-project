@@ -5,7 +5,7 @@ using static UnityEditor.Progress;
 
 public class ItemAmountReturn : MonoBehaviour
 {
-
+    public TMPro.TMP_Text itemName; // 스토어에서 아이템 이름을 띄움
     public TMPro.TMP_Text numCount;
     private Slots _slot = null;
     private int _itemCount;
@@ -17,8 +17,9 @@ public class ItemAmountReturn : MonoBehaviour
     public void GetStoreItemInfo(ItemData item) // StoreTab 에서 데이터를 받고
     {
         _itemTemp = item;
+        itemName.text = item.itemNameInStore;
         _itemCount = 0;
-        maxCount = SceneData.Inst.Inven.gold / item.currencyInStore;
+        maxCount = SceneData.Inst.interactableUIManager.gold / item.currencyInStore;
         numCount.text = _itemCount.ToString();
     }
 
@@ -41,7 +42,7 @@ public class ItemAmountReturn : MonoBehaviour
             GameObject obj = Instantiate(_itemTemp.obj, new Vector3(999f, 999f, 999f), Quaternion.identity);
             obj.transform.SetParent(SceneData.Inst.ItemPool);
             obj.GetComponent<Item>().GetItem(_itemCount);
-            SceneData.Inst.Inven.PurchaseItem(_itemCount * _itemTemp.currencyInStore);
+            SceneData.Inst.interactableUIManager.PurchaseItem(_itemCount * _itemTemp.currencyInStore);
         }
 
         _itemTemp = null;

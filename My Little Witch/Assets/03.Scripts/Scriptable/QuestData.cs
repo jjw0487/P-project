@@ -13,11 +13,18 @@ public class QuestData : ScriptableObject
     public int questIndex;
     public string questName;
     public int npcId;
+    
     [TextArea(3, 10)]
     public string contents;
     //public GameObject questObj; // 퀘스트북에 들어갈 object
 
     [Header("Selective")]
+    public int targetNpcId; // 퀘스트리시버 
+
+    [SerializeField]
+    private string GoalKeyword;
+    public string goalKeyword { get { return GoalKeyword; } }
+
     [SerializeField]
     private int GoalNumber; // 퀘스트 최종 성공 reach값
     public int goalNumber { get { return GoalNumber; } }

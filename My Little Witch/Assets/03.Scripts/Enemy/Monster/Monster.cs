@@ -87,7 +87,7 @@ public class Monster : CharacterProperty
             case MonsterState.Dead:
                 StopAllCoroutines();
                 if(myEnemy != null)myEnemy.GetEXP(monStat.orgData.exp);
-                SceneData.Inst.Inven.SetGold(monStat.orgData.currency);
+                SceneData.Inst.interactableUIManager.SetGold(monStat.orgData.currency);
                 if (hpObj != null) Destroy(hpObj);
                 hpObj = null;
                 StartCoroutine(DelayDead(4f));

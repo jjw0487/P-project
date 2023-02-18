@@ -56,11 +56,9 @@ public class MonsterSpawner : MonoBehaviour
     public void MS_spawnFallguy()
     {
         if (--monCounter <= 0) { CancelInvoke("MS_spawnFallguy"); monCounter = 5; }
-
         GameObject fallguyObj = Instantiate(monsters[1], spawnPos[1].position + new Vector3(UnityEngine.Random.Range(-15.0f, 15.0f), 0f, UnityEngine.Random.Range(-15.0f, 15.0f)), Quaternion.identity);
         aliveFallguys.Add(fallguyObj);
         fallguyObj.transform.SetParent(this.transform);
-
     }
 
     public void MS_spawnFox()

@@ -282,19 +282,19 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         count.text = "";
     }
 
-    public void OnPointerEnter(PointerEventData eventData) // 마우스가 아이템 위에 있을 때
+    public virtual void OnPointerEnter(PointerEventData eventData) // 마우스가 아이템 위에 있을 때
     {
         if (item != null)
         {
-            SceneData.Inst.itemExplnation.text = item.myItem.orgData.explanation;
+            SceneData.Inst.Inven.itemExplnation.text = item.myItem.orgData.explanation;
         }
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public virtual void OnPointerExit(PointerEventData eventData)
     {
         if (item != null)
         {
-            SceneData.Inst.itemExplnation.text = "";
+            SceneData.Inst.Inven.itemExplnation.text = "";
         }
     }
 }

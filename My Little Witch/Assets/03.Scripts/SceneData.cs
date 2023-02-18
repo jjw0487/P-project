@@ -1,8 +1,11 @@
 using UnityEngine;
+using System;
 
 public class SceneData : MonoBehaviour
 {
     public static SceneData Inst = null;
+
+    public Action questItemCheckEvent;
 
     public Player myPlayer;
     public Skill mySkill;
@@ -13,7 +16,6 @@ public class SceneData : MonoBehaviour
     public Transform InvenSlot;
     public Transform EagleExitPos;
     public Inventory Inven;
-    public TMPro.TMP_Text itemExplnation; // 인벤토리 내에 아이템 설명 란
     public InteractionManager interactionManager;
     public InteractableUIManager interactableUIManager;
     public DialogueManager dialogueManager;

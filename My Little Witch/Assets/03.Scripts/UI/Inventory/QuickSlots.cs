@@ -50,4 +50,14 @@ public class QuickSlots : Slots
         else return;
     }
 
+    public override void OnPointerEnter(PointerEventData eventData) // 마우스가 아이템 위에 있을 때
+    {
+        SceneData.Inst.myPlayer.OnUI = true;
+    }
+
+    public override void OnPointerExit(PointerEventData eventData)
+    {
+        SceneData.Inst.myPlayer.OnUI = false;
+    }
+
 }

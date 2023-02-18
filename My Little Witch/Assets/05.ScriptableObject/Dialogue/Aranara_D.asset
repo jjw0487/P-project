@@ -13,9 +13,18 @@ MonoBehaviour:
   m_Name: Aranara_D
   m_EditorClassIdentifier: 
   type: 4
-  npcName: Aranara
+  npcId: 0
+  npcName: "\uC544\uB780\uB098\uB77C"
   questName: 
   contents:
-  - Hello, this is the first default dialogue we make together.
-  - Of course, you are not saying anything
-  - it is just a test part of making your first game. Cheer Up, mate!
+  - "\uC548\uB155, \uC5EC\uD589\uC790? \uC6B0\uB9AC \uB9C8\uC744\uC5D0 \uC628\uAC83\uC744
+    \uD658\uC601\uD574!"
+  - "\uBC14\uAE65\uC5D0 \uB098\uAC00 \uBAAC\uC2A4\uD130\uB97C \uC0AC\uB0E5\uD574\uC11C
+    \uB808\uBCA8\uC744 \uB192\uC774\uBA74\n\uB808\uBCA8\uC5D0 \uB530\uB978 \uD018\uC2A4\uD2B8\uB97C
+    \uC9C4\uD589\uD560 \uC218 \uC788\uC5B4!"
+  - "\uBAAC\uC2A4\uD130\uB97C \uC7A1\uC73C\uBA74 \uC77C\uC815\uB7C9\uC758 \uACE8\uB4DC\uB3C4
+    \uC5BB\uC744 \uC218 \uC788\uC73C\uB2C8\n\uAC74\uB108\uD3B8\uC5D0 \uC0C1\uC810\uC744
+    \uC774\uC6A9\uD574 \uBAA8\uD5D8\uC5D0 \uD544\uC694\uD55C \uC544\uC774\uD15C\uC744\n\uBBF8\uB9AC
+    \uAD6C\uC785\uD558\uBA74 \uC88B\uC744\uAC70\uC57C!"
+  questObj: {fileID: 0}
+  questRewardData: {fileID: 0}

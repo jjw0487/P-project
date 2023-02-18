@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 752bbd610381815439151a00d19c64d9, type: 3}
+  m_Name: Bread
+  m_EditorClassIdentifier: 
+  itemType: 1
+  itemName: Bread
+  explanation: "\uAC13 \uAD6C\uC6CC\uC9C4 \uBE75, \uBA39\uC74C\uC9C1 \uC2A4\uB7EC\uC6CC
+    \uBCF4\uC778\uB2E4."
+  sprite: {fileID: 21300000, guid: 91e1f01feaa94ea48927d292edb2ab60, type: 3}
+  Obj: {fileID: 4947706533103860154, guid: b180f6d9fd6b49144bda16393e2cee50, type: 3}
+  Count: 1
+  ValueType: 0
+  Value: 0
+  CurrencyInStore: 5
+  itemNameInStore: "\uAC13 \uAD6C\uC6B4 \uBE75"

@@ -5,11 +5,16 @@ using UnityEngine;
 
 public class InteractableUIManager : MonoBehaviour
 {
+    [Header("Gold")]
+    [SerializeField] private int Gold;
+    public int gold { get { return Gold; } }
+    [SerializeField] private TMPro.TMP_Text text;
+
+    [Header("GameUI")]
     private bool inven = false;
     private bool questBook = false;
     private bool skillbook = false;
     private bool gameMenu = false;
-    private bool store = false;
     [SerializeField] private GameObject Inventory;
     [SerializeField] private GameObject QuestBook;
     [SerializeField] private GameObject SkillBook;
@@ -21,11 +26,36 @@ public class InteractableUIManager : MonoBehaviour
     private void Start()
     {
         stack = new Stack<GameObject>();
+        Gold = 0;
+        text.text = Gold.ToString();
     }
     private void Update()
     {
         KeyCodes();
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Gold += 1000;
+            text.text = Gold.ToString();
+        }
     }
+
+
+    // 게임재화 관리
+    public void SetGold(int gold)
+    {
+        Gold += gold;
+        text.text = Gold.ToString();
+    }
+
+    public void PurchaseItem(int paid)
+    {
+        Gold -= paid;
+        text.text = Gold.ToString();
+    }
+
+
+
+    // ui 관리
     private void KeyCodes()
     {
         if (Input.GetKeyDown(KeyCode.I))
@@ -100,5 +130,8 @@ public class InteractableUIManager : MonoBehaviour
         if (!stack.Contains(Store)) { stack.Push(Store); } // 두 번 이상 스택에 안쌓이도록
         if (!stack.Contains(Inventory)) { stack.Push(Inventory); }
     }
+
+
+
 
 }

@@ -7,6 +7,7 @@ public class PointerCheck : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     public void OnPointerEnter(PointerEventData eventData)
     {
         SceneData.Inst.myPlayer.OnUI = true;
+        SceneData.Inst.myPlayer.SetPlayerStop();
     }
 
     public void OnPointerExit(PointerEventData eventData)

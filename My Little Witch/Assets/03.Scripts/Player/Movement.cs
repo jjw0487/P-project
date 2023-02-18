@@ -50,8 +50,8 @@ public class Movement : CharacterProperty
 
     [Header("Game Setting")]
     //public Transform AttackMark;
-    public bool OnInteraction = false; // �ܺ����� �ʿ� => ui, 
-    public bool OnUI = false;
+    public bool OnInteraction = false; // => ui, 
+    public bool OnUI = false; // 마우스 UI위에 호버된 상태
     public enum ONWHAT { Street, Broom, Dead } // �ܺ����� �ʿ����� ��������
 
     public void ChangeState(ONWHAT what)
@@ -102,10 +102,9 @@ public class Movement : CharacterProperty
                     myAgent.SetDestination(transform.position);
                 }
 
-                if (Input.GetKeyDown(KeyCode.S)) // SŰ�� ���� ����
+                if (Input.GetKeyDown(KeyCode.S)) // 캐릭터 정지
                 {
-                    curAnim[0].SetBool("IsWalking", false);
-                    myAgent.SetDestination(transform.position);
+                    SetPlayerStop();
                 }
                 break;
             case ONWHAT.Broom:
@@ -128,8 +127,7 @@ public class Movement : CharacterProperty
         coolStacks = 0;
         StackNumCheck(coolStacks, coolStacks + 1);
         StartCoroutine(StackingCoolStacks(5f));
-        myAgent.updateRotation = false; // �׺�޽� �����̼��� ����
-
+        myAgent.updateRotation = false; // navAgent 기본제공 로테이션 기능 false
     }
 
     protected virtual void Update()
@@ -145,13 +143,11 @@ public class Movement : CharacterProperty
     private void FixedUpdate()
     {
         //totalDist = dir.magnitude;
-
         if (onWhat == ONWHAT.Broom)
         {
             B_Movement();
             B_DashnHeight(); 
         }
-
     }
   
     ////////////////////////////      UI       ///////////////////////////////////////////
@@ -212,6 +208,12 @@ public class Movement : CharacterProperty
 
     /////////////////////////////////Character/////////////////////////////////////////////////
 
+    public void SetPlayerStop()
+    {
+        curAnim[0].SetBool("IsWalking", false);
+        myAgent.SetDestination(transform.position);
+    }
+
     void C_Ray()
     {
         /*Ray monCheck = mainCamera.ScreenPointToRay(Input.mousePosition);
@@ -246,7 +248,7 @@ public class Movement : CharacterProperty
                 if ((hitData.transform.position - transform.position).magnitude > 5f)
                 {
                     StartCoroutine(SteppingBeforeNormAtk(hitData));
-                    // �ڷ�ƾ �����ϰ� ������ ��ŷ���� �� �ڷ�ƾ�� ��ž���� 
+                    // 사정거리 내까지 이동 후 공격으로 전환될 수 있도록
                 }
                 else
                 {
@@ -295,7 +297,7 @@ public class Movement : CharacterProperty
             normAtkNums[n].SetActive(false);
         }
 
-        if (coolStacks == 0) // 0�� �� ����ó��
+        if (coolStacks == 0)
         {
             normAtkNums[1].SetActive(false);
         }
@@ -413,7 +415,6 @@ public class Movement : CharacterProperty
             }
 
             transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
-            // Slerp를 쓸지 Lerp를 쓸지 상의를 해봐야 할 것 같아용 
             // 캐릭터의 앞방향은 dir 키보드를 누른 방향으로 캐릭터 회전
             //Lerp를 쓰면 원하는 방향까지 서서히 회전
         }

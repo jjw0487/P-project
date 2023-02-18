@@ -7,7 +7,13 @@ public class QuestManager : MonoBehaviour
 {
     
     [SerializeField] private GameObject[] quests; //퀘스트의 restricted lv 을 검사
-    [SerializeField] private Npc[] npc;
+
+
+
+    [Header("NPCID 순서 배열로 나열하시오.")]
+    [SerializeField] private Npc[] npc; // npcId 순서 배열로 나열하시오.
+
+
     [SerializeField] private GameObject floatingQuestNotice;
     [SerializeField] private Transform eventNotice;
 
@@ -33,7 +39,7 @@ public class QuestManager : MonoBehaviour
         {// 현재 진행도부터 배열검사하여 가장 가까운 퀘스트부터 실행하도록 진행도 올림
             if (npc[npcId].dialogue[i].type == DialogueData.Type.QuestGiver)
             {
-                npc[npcId].minimapPin.SetActive(true); // 미니맵 핀 false는 <DialogueManager->EndDialogue()>에서
+                npc[npcId].minimapPin[0].SetActive(true); // 미니맵 핀 false는 <DialogueManager->EndDialogue()>에서
                 npc[npcId].progress = i;
                 GameObject obj = Instantiate(floatingQuestNotice, eventNotice);
                 // 다이얼로그에서 퀘스트 리스트에 담아 저장, 로드 할 때 진행중인 퀘스트만 꺼내주자
@@ -45,14 +51,39 @@ public class QuestManager : MonoBehaviour
     public void QM_GetQuestSuccess(int npcId)
     {
         npc[npcId].progress++; // 대화 진행도를 올려 리워드로 진행 할 수 있도록
+        npc[npcId].minimapPin[1].SetActive(true); //exmark on
     }
 
-    public void reward(int questIndex) // 보상 진행 후 진행중인 퀘스트 목록에서 지워줘야 한다.
+    public void QM_GetTargetNpcQuestSuccess(int targetNpcId)
+    {
+        for(int i = 0; i< npc[targetNpcId].dialogue.Length; i++)
+        {
+            if (npc[targetNpcId].dialogue[i].type == DialogueData.Type.Reward)
+            {
+                npc[targetNpcId].progress = i; // 대화 진행도를 올려 리워드로 진행 할 수 있도록
+                npc[targetNpcId].minimapPin[1].SetActive(true); //exmark on
+                break;
+            }
+        }
+    }
+
+    /*public void QM_GetBackToQuest(int npcId) // <<<<<<<<<<<<<<<<아직 안함
+    {
+        npc[npcId].progress--; // 대화 진행도를 올려 리워드로 진행 할 수 있도록
+        npc[npcId].minimapPin[1].SetActive(false); //exmark on
+    }*/
+
+    public void QM_TurnMarkOff(int npcId) //리워드 대화 시작 시 미니맵 핀 off
+    {
+        npc[npcId].minimapPin[1].SetActive(false);
+    }
+
+    public void QM_Reward(int questIndex) // 보상 진행 후 진행중인 퀘스트 목록에서 지워줘야 한다.
     {
         questInProgress.Remove(questIndex);
     }
 
-    public void SaveQuestProgress()
+    public void QM_SaveQuestProgress()
     {
         /*for(int i = 0; i < questInProgress.Count; i++)
         {
@@ -60,7 +91,7 @@ public class QuestManager : MonoBehaviour
         }*/
     }
 
-    public void LoadQuestData()
+    public void QM_LoadQuestData()
     {
         //Instantiate(quests[index], SceneData.Inst.dialogueManager.questBook.transform);
     }

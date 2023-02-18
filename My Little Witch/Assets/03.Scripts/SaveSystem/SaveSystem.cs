@@ -18,6 +18,8 @@ public static class SaveSystem
         Debug.Log(path);
     }
 
+    // 슬롯마다 폴더를 여러개 두고 <- 선택 파일에서 파일을 땡겨올 수 있도록.
+
     public static SaveData LoadPlayer()
     {
         string path = Application.persistentDataPath + "/player.chase";

@@ -70,6 +70,7 @@ public class Item : MonoBehaviour
                             if (count != 0) { SceneData.Inst.Inven.slots[n].GetComponent<Slots>().AddCount(count); }
                             else { SceneData.Inst.Inven.slots[n].GetComponent<Slots>().AddCount(this.myItem.curNumber); }
                             SceneData.Inst.Inven.slots[n].GetComponent<Slots>().FloatNotice(this.myItem.orgData.itemName); // 이름플러팅
+                            SceneData.Inst.questItemCheckEvent?.Invoke();
                             break;
                         }
                     }
@@ -83,6 +84,7 @@ public class Item : MonoBehaviour
                     if (count != 0) { SceneData.Inst.Inven.slots[i].GetComponent<Slots>().AddItem(this.GetComponent<Item>(), count); }
                     else { SceneData.Inst.Inven.slots[i].GetComponent<Slots>().AddItem(this.GetComponent<Item>(), myItem.curNumber); }
                     SceneData.Inst.Inven.slots[i].GetComponent<Slots>().FloatNotice(this.myItem.orgData.itemName); // 이름플러팅
+                    SceneData.Inst.questItemCheckEvent?.Invoke();
                 }
 
                 moveOn = false;
