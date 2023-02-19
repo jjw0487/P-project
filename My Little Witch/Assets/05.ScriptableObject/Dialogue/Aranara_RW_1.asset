@@ -18,5 +18,5 @@ MonoBehaviour:
   questName: 
   contents:
   - "\uBCF4\uC0C1"
-  questObj: {fileID: 0}
+  questObj: {fileID: 224346229844717324, guid: e368ef467e94fc94283ad4cfb3246a90, type: 3}
   questRewardData: {fileID: 11400000, guid: 47127a7fd6b3cf840ab81d57a4595bbd, type: 2}

@@ -1,6 +1,7 @@
 using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
@@ -18,7 +19,7 @@ public class QuestManager : MonoBehaviour
     [SerializeField] private Transform eventNotice;
 
     // 딕셔너리 단점 => 키값으로 받을 퀘스트의 레벨제한이 중복이 되면 안된다.
-    public List<int> questInProgress = new List<int>();
+    public List<QuestTab> questInProgress = new List<QuestTab>();
 
     // 플레이어의 레벨을 받아 NPC의 DialogueTrigger.progress를 증가하여 퀘스트를 해금한다.
 
@@ -28,7 +29,22 @@ public class QuestManager : MonoBehaviour
         {
             if (quests[i].GetComponent<QuestTab>().questData.restrictedLV <= lv)
             {
-                QM_SetNpcTrigger(quests[i].GetComponent<QuestTab>().questData.npcId, i);
+                if(questInProgress.Count > 0) // 진행중인 퀘스트가 있다면 제외하고 트리거를 발동 하기 위함
+                {
+                    for (int n = 0; n < questInProgress.Count; n++)
+                    {
+                        if (questInProgress[n].GetComponent<QuestTab>().questData.questIndex != quests[i].GetComponent<QuestTab>().questData.questIndex)
+                        { //이미 등록된 퀘스트라면 제외
+                            QM_SetNpcTrigger(quests[i].GetComponent<QuestTab>().questData.npcId, i);
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    QM_SetNpcTrigger(quests[i].GetComponent<QuestTab>().questData.npcId, i);
+                }
+                
             }
         }
     }
@@ -54,7 +70,7 @@ public class QuestManager : MonoBehaviour
         npc[npcId].minimapPin[1].SetActive(true); //exmark on
     }
 
-    public void QM_GetTargetNpcQuestSuccess(int targetNpcId)
+    public void QM_GetTargetNpcQuestSuccess(int targetNpcId, int npcId)
     {
         for(int i = 0; i< npc[targetNpcId].dialogue.Length; i++)
         {
@@ -65,6 +81,8 @@ public class QuestManager : MonoBehaviour
                 break;
             }
         }
+
+        npc[npcId].progress++; // 의뢰 npc
     }
 
     /*public void QM_GetBackToQuest(int npcId) // <<<<<<<<<<<<<<<<아직 안함
@@ -78,9 +96,9 @@ public class QuestManager : MonoBehaviour
         npc[npcId].minimapPin[1].SetActive(false);
     }
 
-    public void QM_Reward(int questIndex) // 보상 진행 후 진행중인 퀘스트 목록에서 지워줘야 한다.
+    public void QM_Reward(QuestTab questTab) // 보상 진행 후 진행중인 퀘스트 목록에서 지워줘야 한다.
     {
-        questInProgress.Remove(questIndex);
+        questInProgress.Remove(questTab); 
     }
 
     public void QM_SaveQuestProgress()

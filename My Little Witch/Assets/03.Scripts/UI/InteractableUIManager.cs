@@ -85,14 +85,14 @@ public class InteractableUIManager : MonoBehaviour
         }
     }
 
-    private void Open(GameObject obj)
+    public void Open(GameObject obj)
     {
         obj.SetActive(true);
         obj.GetComponent<Transform>().SetAsLastSibling();
         if (!stack.Contains(obj)) { stack.Push(obj); } // 두 번 이상 스택에 안쌓이도록
     }
 
-    private void CloseAll(Stack<GameObject> values)
+    public void CloseAll(Stack<GameObject> values)
     {
         if(stack.Count != 0) // 스택에 카운트가 0이 아닐 경우에만
         {
@@ -105,11 +105,11 @@ public class InteractableUIManager : MonoBehaviour
             // 세이브, 환경설정 창 띄움
             gameMenu = !gameMenu;
             if (gameMenu) { GameMenu.SetActive(true);}
-            else { GameMenu.SetActive(false); }
+            else { GameMenu.SetActive(false); SceneData.Inst.myPlayer.OnUI = false; }
         }
     }
 
-    private void Close(GameObject obj)
+    public void Close(GameObject obj)
     {
         obj.SetActive(false);
         SceneData.Inst.myPlayer.OnUI = false; // 마우스가 ui 위에 존재할 때 클로즈 할 경우 false 가 미처 안될때를 대비

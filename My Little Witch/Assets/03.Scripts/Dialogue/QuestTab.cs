@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking.Types;
 
 public class QuestTab : MonoBehaviour
 {
@@ -56,8 +57,6 @@ public class QuestTab : MonoBehaviour
                 }
             }
         }
-        // 아이템을 얻었다가 다시 잃은 경우 => 버렸을 경우
-        //ThrownItemCheck();
     }
 
     public void QT_GetProgressNum(int count)
@@ -65,6 +64,7 @@ public class QuestTab : MonoBehaviour
         progressNum = count;
         if (nums != null) nums[1].text = progressNum.ToString();
     }
+
     public void QT_GetSuccess()
     {
         isComplete = true;
@@ -77,18 +77,13 @@ public class QuestTab : MonoBehaviour
     {
         isComplete = true;
         content.text = "퀘스트 완료 \nNCP와 대화하시오"; // 대화성공 후 텍스트 띄움
-        SceneData.Inst.questManager.QM_GetTargetNpcQuestSuccess(questData.targetNpcId);
-        SceneData.Inst.questItemCheckEvent -= QT_FindQuestItemInInventory;
+        SceneData.Inst.questManager.QM_GetTargetNpcQuestSuccess(questData.targetNpcId, questData.npcId);
+        SceneData.Inst.questItemCheckEvent -= QT_FindQuestItemInInventory; // 델리게이트 삭제
     }
 
-    public void ThrownItemCheck() //아이템 획득 후, 퀘스트 아이템을 버렸을 경우
+    public void QT_DestroyQuestTab(QuestTab questTab)
     {
-        isComplete = false;
-        content.text = "아이템을 \n소실하였습니다.";
-    }
-
-    public void QT_DestroyQuestTab()
-    {
+        SceneData.Inst.questManager.questInProgress.Remove(questTab);
         Destroy(this.gameObject);
     }
 

@@ -134,10 +134,6 @@ public class Movement : CharacterProperty
     {
         StateProcess();
         CheckGround();
-        if (Input.GetKeyDown(KeyCode.L) && ground)
-        {
-            SwitchingCharacter();
-        }
     }
 
     private void FixedUpdate()
@@ -190,28 +186,35 @@ public class Movement : CharacterProperty
         }
 
     }
-    void SwitchingCharacter()
+    public void SwitchingCharacter() // broom button
     {
-        if (ONWHAT.Broom != onWhat)
+        if(ground)
         {
-            onWhat = ONWHAT.Broom;
-            ChangeState(ONWHAT.Broom);
-            followCam.ChangeState(CAMTYPE.OnBroom);
+            if (ONWHAT.Broom != onWhat)
+            {
+                onWhat = ONWHAT.Broom;
+                ChangeState(ONWHAT.Broom);
+                followCam.ChangeState(CAMTYPE.OnBroom);
+            }
+            else
+            {
+                onWhat = ONWHAT.Street;
+                ChangeState(ONWHAT.Street);
+                followCam.ChangeState(CAMTYPE.OnStreet);
+            }
         }
-        else
-        {
-            onWhat = ONWHAT.Street;
-            ChangeState(ONWHAT.Street);
-            followCam.ChangeState(CAMTYPE.OnStreet);
-        }
+        
     }
 
     /////////////////////////////////Character/////////////////////////////////////////////////
 
     public void SetPlayerStop()
     {
-        curAnim[0].SetBool("IsWalking", false);
-        myAgent.SetDestination(transform.position);
+        if (onWhat == ONWHAT.Street)
+        {
+            curAnim[0].SetBool("IsWalking", false);
+            myAgent.SetDestination(transform.position);
+        }
     }
 
     void C_Ray()

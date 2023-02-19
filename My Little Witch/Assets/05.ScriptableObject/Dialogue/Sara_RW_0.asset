@@ -19,5 +19,5 @@ MonoBehaviour:
   contents:
   - "\uBE75 \uBC30\uB2EC\uC744 \uBD80\uD0C1 \uBC1B\uC558\uAD6C\uB098, \uACE0\uB9C8\uC6CC!
     \n\uC624\uB298 \uD558\uB8E8\uAC00 \uC990\uAC81\uAE38 \uBC14\uB77C"
-  questObj: {fileID: 0}
+  questObj: {fileID: 7657543158739981381, guid: e0a4d17c5b9d03f4f8ef5a017456ff62, type: 3}
   questRewardData: {fileID: 11400000, guid: 82faf355637b32b40bc37d6916f671e9, type: 2}

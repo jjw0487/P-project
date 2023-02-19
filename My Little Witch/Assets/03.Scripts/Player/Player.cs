@@ -95,15 +95,18 @@ public class Player : Movement
     {
         HandleHP(dmg, 0f);
         StartCoroutine(Stunned(0.7f));
+        curAnim[2].SetTrigger("GetHit");
         curAnim[0].SetTrigger("IsHit");
+
         if (handleSlider == null) { handleSlider = StartCoroutine(SliderValue()); }
     }
 
     public void GetItemValue(int i, int value)
     {
+        if (handleSlider == null) { handleSlider = StartCoroutine(SliderValue()); }
         if (i == 1) {  HandleHP(0f, value); } // 1번타입, hp회복
         if (i == 2) { HandleMP(0f, value); } // 2번타입, mp회복
-        if (handleSlider == null) { handleSlider = StartCoroutine(SliderValue()); }
+        
     }
 
     public void GetEXP(int exp)
@@ -157,10 +160,12 @@ public class Player : Movement
             curMP += 1 * Time.deltaTime; // 시간당 회복
             hPBar.value = Mathf.Lerp(hPBar.value, curHP / maxHP * 100f, 0.2f);
             mPBar.value = Mathf.Lerp(mPBar.value, curMP / maxMP * 100f, 0.2f);
-            if (curHP >= maxHP && curMP >= maxMP) { handleSlider = null; yield break; } 
+            if (Mathf.Approximately(mPBar.value, maxMP) && Mathf.Approximately(hPBar.value, maxHP))
+                { handleSlider = null; yield break; } 
             // 체력,마력에 변동 없을 때 더이상 돌지 않도록
             yield return null;
         }
+
         handleSlider = null;
     }
 }

@@ -21,7 +21,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         if (GetComponent<Item>() != null) // 아이템을 놓고 실험할 경우
         {
             item = GetComponentInChildren<Item>();
-            itemCount = GetComponentInChildren<Item>().myItem.curNumber;
+            itemCount = GetComponentInChildren<Item>().curNumber;
         }
     }
     /*public void ShowingSprite()
@@ -34,7 +34,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     public void FloatNotice(string itemName)
     {
         GameObject obj = Instantiate(SceneData.Inst.Inven.floatingItemNotice, SceneData.Inst.Inven.eventNotice);
-        SceneData.Inst.Inven.floatingItemNotice.GetComponent<NotificationController>().GetText(itemName);
+        //SceneData.Inst.Inven.floatingItemNotice.GetComponent<NotificationController>().GetText(itemName);
+        obj.GetComponent<NotificationController>().GetText(itemName);
     }
     public virtual void AddItem(Item _item, int _count)
     {
@@ -52,8 +53,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     public void AddCount(int howmany)
     {
         itemCount += howmany;
-        item.myItem.curNumber = itemCount;
-        if(count != null) count.text = item.myItem.curNumber.ToString();
+        item.curNumber = itemCount;
+        if(count != null) count.text = item.curNumber.ToString();
     }
 
     public virtual void OnPointerClick(PointerEventData eventData)
@@ -95,13 +96,14 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         if (itemCount == 0) { if (item.gameObject != null) { Destroy(item.gameObject); } ClearSlot(); }
         else
         {
-            item.myItem.curNumber = itemCount;
-            count.text = item.myItem.curNumber.ToString();
+            item.curNumber = itemCount;
+            count.text = item.curNumber.ToString();
         }
     }
 
     public void UseSingleItem()
     {
+        print("사용");
         if (item.myItem.orgData.itemType == ItemData.ItemType.Consumable)
         {
             SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value);
@@ -118,9 +120,9 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             itemCount -= 1;
             if (itemCount == 0) { Destroy(item.gameObject); ClearSlot(); }
             else
-            {
-                item.myItem.curNumber = itemCount;
-                count.text = item.myItem.curNumber.ToString();
+            { 
+                item.curNumber = itemCount;
+                count.text = item.curNumber.ToString();
             }
             
         }
@@ -147,7 +149,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         }
     }
 
-    public void OnEndDrag(PointerEventData eventData)
+    public virtual void OnEndDrag(PointerEventData eventData)
     {
         DragImage.Inst.SetColor(0);
         DragImage.Inst.dragSlot = null;
@@ -196,7 +198,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
                     == item.myItem.orgData.itemName)
                 {
                     SceneData.Inst.ItemPool.GetChild(i).transform.position = SceneData.Inst.myPlayer.transform.position + new Vector3(0f, 1f, 0.5f);
-                    SceneData.Inst.ItemPool.GetChild(i).GetComponent<Item>().myItem.curNumber = howmany;
+                    SceneData.Inst.ItemPool.GetChild(i).GetComponent<Item>().curNumber = howmany;
                     isDone = true;
                     break;
                 }
@@ -204,7 +206,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             if(!isDone)
             {
                 GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position + new Vector3(0f, 1f, 0.5f), Quaternion.identity);
-                obj.GetComponent<Item>().myItem.curNumber = howmany;
+                obj.GetComponent<Item>().curNumber = howmany;
                 obj.transform.SetParent(SceneData.Inst.ItemPool);
             }
             
@@ -212,7 +214,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         else
         {
             GameObject obj = Instantiate(item.gameObject, SceneData.Inst.myPlayer.transform.position + new Vector3(0f, 1f, 0.5f), Quaternion.identity);
-            obj.GetComponent<Item>().myItem.curNumber = howmany;
+            obj.GetComponent<Item>().curNumber = howmany;
             obj.transform.SetParent(SceneData.Inst.ItemPool);
         }
 
@@ -221,8 +223,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         if (itemCount == 0) { ClearSlot(); }
         else
         {
-            item.myItem.curNumber = itemCount;
-            count.text = item.myItem.curNumber.ToString();
+            item.curNumber = itemCount;
+            count.text = item.curNumber.ToString();
         }
     }
 
@@ -274,7 +276,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         }
     }
 
-    protected void ClearSlot()
+    public void ClearSlot()
     {
         item = null;
         itemCount = 0;

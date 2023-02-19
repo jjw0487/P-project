@@ -18,7 +18,7 @@ MonoBehaviour:
   sprite: {fileID: 21300000, guid: 5e160ff9648049645bddeb916502e7cf, type: 3}
   Obj: {fileID: 8566056783275893560, guid: 733f6c6d9024a994ab10ed3ef97b7ddd, type: 3}
   Count: 1
-  ValueType: 25
-  Value: 2
+  ValueType: 2
+  Value: 25
   CurrencyInStore: 25
   itemNameInStore: "\uBE14\uB8E8\uD3EC\uC158"

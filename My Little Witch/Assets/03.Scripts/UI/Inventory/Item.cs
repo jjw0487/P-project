@@ -5,7 +5,6 @@ using UnityEngine;
 public struct ItemInformation
 {
     public ItemData orgData;
-    public int curNumber;
 }
 
 public class Item : MonoBehaviour
@@ -13,12 +12,12 @@ public class Item : MonoBehaviour
 
     public ItemInformation myItem;
     public GameObject[] contents;
-
+    public int curNumber;
     private bool moveOn = false;
     private void Awake()
     {
         if (contents == null) { contents = null; }
-        myItem.curNumber = myItem.orgData.count;
+        curNumber = myItem.orgData.count;
     }
 
     private void Start()
@@ -68,7 +67,7 @@ public class Item : MonoBehaviour
                             moveOn = true; 
                             this.transform.position = new Vector3(999f, 999f, 999f);
                             if (count != 0) { SceneData.Inst.Inven.slots[n].GetComponent<Slots>().AddCount(count); }
-                            else { SceneData.Inst.Inven.slots[n].GetComponent<Slots>().AddCount(this.myItem.curNumber); }
+                            else { SceneData.Inst.Inven.slots[n].GetComponent<Slots>().AddCount(curNumber); }
                             SceneData.Inst.Inven.slots[n].GetComponent<Slots>().FloatNotice(this.myItem.orgData.itemName); // 이름플러팅
                             SceneData.Inst.questItemCheckEvent?.Invoke();
                             break;
@@ -82,7 +81,7 @@ public class Item : MonoBehaviour
                     this.transform.SetParent(SceneData.Inst.ItemPool);
 
                     if (count != 0) { SceneData.Inst.Inven.slots[i].GetComponent<Slots>().AddItem(this.GetComponent<Item>(), count); }
-                    else { SceneData.Inst.Inven.slots[i].GetComponent<Slots>().AddItem(this.GetComponent<Item>(), myItem.curNumber); }
+                    else { SceneData.Inst.Inven.slots[i].GetComponent<Slots>().AddItem(this.GetComponent<Item>(), curNumber); }
                     SceneData.Inst.Inven.slots[i].GetComponent<Slots>().FloatNotice(this.myItem.orgData.itemName); // 이름플러팅
                     SceneData.Inst.questItemCheckEvent?.Invoke();
                 }
@@ -95,7 +94,7 @@ public class Item : MonoBehaviour
                 //this.transform.SetParent(SceneData.Inst.Inven.slots[i]);
                 this.transform.position = new Vector3(999f, 999f, 999f);
                 if (count != 0) { SceneData.Inst.Inven.slots[i].GetComponent<Slots>().AddCount(count); }
-                else { SceneData.Inst.Inven.slots[i].GetComponent<Slots>().AddCount(this.myItem.curNumber); }// 증가 한 후에 다시 화면에 표현
+                else { SceneData.Inst.Inven.slots[i].GetComponent<Slots>().AddCount(this.curNumber); }// 증가 한 후에 다시 화면에 표현
                 SceneData.Inst.Inven.slots[i].GetComponent<Slots>().FloatNotice(this.myItem.orgData.itemName); // 이름플러팅
                 Destroy(this.gameObject, 1f);
                 break;
@@ -126,8 +125,8 @@ public class Item : MonoBehaviour
                 GameObject obj = Instantiate(what, SceneData.Inst.Inven.slots[i]);
                 //this.transform.SetParent(SceneData.Inst.Inven.slots[i]);
                 obj.transform.position = new Vector3(999f, 999f, 999f);
-                SceneData.Inst.Inven.slots[i].GetComponentInChildren<Item>().myItem.curNumber += obj.GetComponent<Item>().myItem.curNumber; // 수량을 증가
-                SceneData.Inst.Inven.slots[i].GetComponent<Slots>().AddCount(obj.GetComponent<Item>().myItem.curNumber); // 증가 한 후에 다시 화면에 표현
+                SceneData.Inst.Inven.slots[i].GetComponentInChildren<Item>().curNumber += obj.GetComponent<Item>().curNumber; // 수량을 증가
+                SceneData.Inst.Inven.slots[i].GetComponent<Slots>().AddCount(obj.GetComponent<Item>().curNumber); // 증가 한 후에 다시 화면에 표현
                 Destroy(this.gameObject, 1f);
                 break;
             }
