@@ -7,7 +7,7 @@ public class SceneData : MonoBehaviour
 
     public Action questItemCheckEvent;
 
-    public Player myPlayer;
+    public Player myPlayer = null;
     public Skill mySkill;
 
     public Transform HPBars;
@@ -25,7 +25,14 @@ public class SceneData : MonoBehaviour
     public Transform ItemPool;
     private void Awake()
     {
+
         Inst = this;
+
+    }
+
+    private void Start()
+    {
+        if (myPlayer == null) { myPlayer = FindObjectOfType<Player>(); }
     }
 
 }

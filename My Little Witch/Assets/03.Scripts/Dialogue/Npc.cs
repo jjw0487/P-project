@@ -5,7 +5,6 @@ using UnityEngine;
 public class Npc : DialogueTrigger
 {
 
-    // 퀘스트 포기했을 시 npc의 trigger를 찾아 progress를 다시 차감시켜줘야 함
     [SerializeField] protected LayerMask layerMask;
     
     private void Start()

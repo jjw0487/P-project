@@ -157,6 +157,15 @@ public class Movement : CharacterProperty
         Quaternion target = Quaternion.Euler(camRot.eulerAngles.x, this.transform.rotation.eulerAngles.y, camRot.eulerAngles.z);
         mainCamera.transform.parent.rotation = target;
     }
+
+    public void SetPlayerBack()
+    {
+        OnInteraction = false; // 플레이어 다시 움직임
+        curAnim[2].SetBool("IsInteracting", false); // 카메라 원복
+        if (!SceneData.Inst.talkSign.GetBool("IsOpen")) SceneData.Inst.talkSign.SetBool("IsOpen", true);
+    }
+
+
     public void CheckGround()
     {
         if (onWhat == ONWHAT.Street)
@@ -426,7 +435,7 @@ public class Movement : CharacterProperty
 
         
 
-
+/*
         if (dir.z < 0)
         {
             if (dir.x < 0)//left
@@ -457,7 +466,7 @@ public class Movement : CharacterProperty
         {
             curAnim[1].SetBool("IsTurningLeft", false);
             curAnim[1].SetBool("IsTurningRight", false);
-        }
+        }*/
 
     }
     void B_DashnHeight()

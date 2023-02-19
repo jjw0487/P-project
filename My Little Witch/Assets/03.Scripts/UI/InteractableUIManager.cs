@@ -21,6 +21,8 @@ public class InteractableUIManager : MonoBehaviour
     [SerializeField] private GameObject GameMenu;
     public GameObject Store; // npc 상호작용 참조
 
+    public GameObject AskIfWarp;
+
     private Stack<GameObject> stack;
 
     private void Start()
