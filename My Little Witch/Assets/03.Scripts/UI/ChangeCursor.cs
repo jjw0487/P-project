@@ -6,6 +6,6 @@ public class ChangeCursor : MonoBehaviour
 
     void Start()
     {
-        //Cursor.SetCursor(cursorImg[0], Vector2.zero, CursorMode.ForceSoftware);
+        Cursor.SetCursor(cursorImg[0], Vector2.zero, CursorMode.ForceSoftware);
     }
 }

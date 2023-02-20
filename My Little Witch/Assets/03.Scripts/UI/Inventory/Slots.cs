@@ -128,8 +128,6 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         }
     }
 
-
-
     public void OnBeginDrag(PointerEventData eventData)
     {
         if (item != null)
@@ -289,6 +287,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         if (item != null)
         {
             SceneData.Inst.Inven.itemExplnation.text = item.myItem.orgData.explanation;
+            
         }
     }
 

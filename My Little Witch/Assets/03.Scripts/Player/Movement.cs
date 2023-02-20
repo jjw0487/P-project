@@ -485,7 +485,7 @@ public class Movement : CharacterProperty
 
         if (this.transform.position.y < B_restrictedHeight)
         {
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKey(KeyCode.LeftControl))
             {
                 Vector3 jumpPower = Vector3.up * B_AddFloatPower;
                 myRigid.AddForce(jumpPower, ForceMode.VelocityChange);
