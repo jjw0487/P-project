@@ -7,6 +7,7 @@ public class LevelLoader : MonoBehaviour
 {
     public Animator transition;
     public float transitionTime = 2f;
+    
 
     public void LoadNextLevel()
     {
@@ -54,8 +55,8 @@ public class LevelLoader : MonoBehaviour
         // ¾À·Îµå
         SceneManager.LoadScene("Dungeon");
     }
-
     // Town
+
     public void LoadTownScene()
     {
         StartCoroutine(LoadTownSceneCo());

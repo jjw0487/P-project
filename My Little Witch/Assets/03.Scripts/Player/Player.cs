@@ -122,7 +122,7 @@ public class Player : Movement
     public void LevelUp(int rest)
     {
         ++level; // 일단 스크립터블에 영향이 안가도록 데이터는 건드리지 말고 이렇게 두자
-        SceneData.Inst.questManager.QM_GetPlayerLevel(level);
+        if(SceneData.Inst.questManager != null) SceneData.Inst.questManager.QM_GetPlayerLevel(level);
         curHP = charStat.orgData.HP[level - 1];
         maxHP = charStat.orgData.HP[level - 1];
         curMP = charStat.orgData.HP[level - 1];

@@ -9,7 +9,6 @@ public class MinimapCam : MonoBehaviour
     {
         if (myTarget == null) { 
         myTarget = FindObjectOfType<Player>().transform;
-            print(myTarget.name);
         }
     }
     private void Update()

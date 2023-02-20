@@ -26,6 +26,8 @@ public class Movement : CharacterProperty
     [SerializeField] protected float C_dashSpeed = 7f;
     [SerializeField] protected float C_rotSpeed = 10f;
     [SerializeField] protected LayerMask layer;
+    protected Quaternion orgCamRot = Quaternion.identity;
+    
     //private bool run;
     protected bool canRun = true;
     public bool stun = false; // �ܺ����� �ʿ�
@@ -62,6 +64,7 @@ public class Movement : CharacterProperty
         {
             case ONWHAT.Street:
                 myAgent.enabled = true;
+                followCam.transform.rotation = orgCamRot;
                 //myRigid.drag = 0f;
                 //myRigid.constraints = RigidbodyConstraints.FreezeAll;
                 KK.SetActive(true);
@@ -115,19 +118,18 @@ public class Movement : CharacterProperty
         }
     }
 
-    private void Awake()
-    {
-        ChangeState(ONWHAT.Street);
-        mainCamera = Camera.main;
-    }
-
     protected virtual void Start()
     {
-        if(normalAttack != null) { normAtkData = normalAttack.myData; }
+        mainCamera = Camera.main;
+        orgCamRot = followCam.transform.rotation;
+        ChangeState(ONWHAT.Street);
+
+        if (normalAttack != null) { normAtkData = normalAttack.myData; }
         coolStacks = 0;
         StackNumCheck(coolStacks, coolStacks + 1);
         StartCoroutine(StackingCoolStacks(5f));
         myAgent.updateRotation = false; // navAgent 기본제공 로테이션 기능 false
+        
     }
 
     protected virtual void Update()
@@ -195,6 +197,7 @@ public class Movement : CharacterProperty
         }
 
     }
+
     public void SwitchingCharacter() // broom button
     {
         if(ground)
@@ -222,7 +225,8 @@ public class Movement : CharacterProperty
         if (onWhat == ONWHAT.Street)
         {
             curAnim[0].SetBool("IsWalking", false);
-            myAgent.SetDestination(transform.position);
+            if(myAgent.enabled) myAgent.SetDestination(transform.position);
+            // 씬 이동할 때 애니메이션 꺼져있는걸 방지 위해
         }
     }
 
@@ -251,6 +255,7 @@ public class Movement : CharacterProperty
 
         if (Input.GetMouseButtonDown(0))
         {
+            
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);            
             RaycastHit hitData;

@@ -30,7 +30,7 @@ public class CharacterProperty : MonoBehaviour
     }
 
     NavMeshAgent _NavAgent = null;
-    protected NavMeshAgent myAgent
+    public NavMeshAgent myAgent
     {
         get
         {
@@ -39,6 +39,10 @@ public class CharacterProperty : MonoBehaviour
                 _NavAgent = GetComponent<NavMeshAgent>();
             }
             return _NavAgent;
+        }
+        set
+        {
+            _NavAgent = value; //씬 이동할 때 셋 해줘야함
         }
     }
 

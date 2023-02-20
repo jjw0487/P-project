@@ -34,6 +34,4 @@ public class ItemData : ScriptableObject
     public int currencyInStore { get { return CurrencyInStore; } }
 
     public string itemNameInStore;
-
-
 }

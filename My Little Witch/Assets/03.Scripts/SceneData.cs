@@ -20,7 +20,7 @@ public class SceneData : MonoBehaviour
     public InteractableUIManager interactableUIManager;
     public DialogueManager dialogueManager;
     public Animator talkSign;
-    public QuestManager questManager;
+    public QuestManager questManager = null;
 
     public Transform ItemPool;
     private void Awake()
@@ -33,6 +33,10 @@ public class SceneData : MonoBehaviour
     private void Start()
     {
         if (myPlayer == null) { myPlayer = FindObjectOfType<Player>(); }
+
+        if (FindObjectOfType<QuestManager>()) { questManager = FindObjectOfType<QuestManager>(); }
+        else { questManager = null; }
+        
     }
 
 }

@@ -45,6 +45,7 @@ public class QuestManager : MonoBehaviour
                     QM_SetNpcTrigger(quests[i].GetComponent<QuestTab>().questData.npcId, i);
                 }
                 
+
             }
         }
     }

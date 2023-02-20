@@ -69,6 +69,13 @@ public class DialogueManager : MonoBehaviour
             //ProgressChecker(); // 대화 타입 검사
             askAWill.SetActive(true); // 퀘스트 수락할지 물음
         }
+        else if (curData.type == DialogueData.Type.Obstacle)
+        {
+            DM_ProgressChecker(); // 대화 타입 검사
+            SceneData.Inst.myPlayer.OnInteraction = false; // 플레이어 다시 움직임
+            animator.SetBool("IsOpen", false); // 패널 닫음
+            camAnimator.SetBool("IsInteracting", false); // 카메라 원복
+        }
         else
         {
             DM_ProgressChecker(); // 대화 타입 검사

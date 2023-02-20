@@ -14,23 +14,17 @@ public class InteractionManager : PointerCheck
         myPlyer = SceneData.Inst.myPlayer;
     }
 
-    public void GetType(float cool, int type, Transform lookAt)
+    public void GetType(float cool, Transform lookAt)
     {
         // cool-> 몇 초 후에 다른 화면전환을 일으킬것인지
 
-        if(type == 1)
-        {
-            // type 1번 -> n초 후 anykey 받고 화면 풀어줌
-            exObj = Instantiate(Resources.Load("UI/ExMark")) as GameObject;
-            exObj.GetComponent<ExclamationMark>().myTarget = myPlyer.interactionUIPos;
-            myPlyer.GetInteraction(lookAt);
-            Camera.main.transform.parent.GetComponent<Animator>().SetTrigger("Interaction");
-            StartCoroutine(OnInteration(cool));
-        }
-        else if(type == 2)
-        {
-            // 2번 -> NPC와 대화
-        }
+        // type 1번 -> n초 후 anykey 받고 화면 풀어줌
+        exObj = Instantiate(Resources.Load("UI/ExMark")) as GameObject;
+        exObj.GetComponent<ExclamationMark>().myTarget = myPlyer.interactionUIPos;
+        myPlyer.GetInteraction(lookAt);
+        Camera.main.transform.parent.GetComponent<Animator>().SetBool("IsInteracting", true);
+        StartCoroutine(OnInteration(cool));
+        
     }
 
 
