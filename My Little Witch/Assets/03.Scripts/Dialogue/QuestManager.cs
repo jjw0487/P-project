@@ -9,11 +9,8 @@ public class QuestManager : MonoBehaviour
     
     [SerializeField] private GameObject[] quests; //퀘스트의 restricted lv 을 검사
 
-
-
     [Header("NPCID 순서 배열로 나열하시오.")]
     [SerializeField] private Npc[] npc; // npcId 순서 배열로 나열하시오.
-
 
     [SerializeField] private GameObject floatingQuestNotice;
     [SerializeField] private Transform eventNotice;

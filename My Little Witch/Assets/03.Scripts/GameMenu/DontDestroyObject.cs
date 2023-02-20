@@ -6,8 +6,14 @@ using UnityEngine.SceneManagement;
 public class DontDestroyObject : MonoBehaviour
 {
     public static DontDestroyObject instance = null;
-    public Transform playerPos;
-    public Transform camPos;
+    [SerializeField] private Transform playerPos;
+    [SerializeField] private Transform camRot;
+
+    private Transform townPosAfterWarp;
+    private Transform townPosBeforeWarp;
+    private Transform dungeonPosAfterWarp;
+
+    public bool isWarping = false; // runegate 워프를 이용한 씬이동
 
     void Awake() // called zero
     {
@@ -15,7 +21,6 @@ public class DontDestroyObject : MonoBehaviour
         {
             //이 클래스 인스턴스가 탄생했을 때 전역변수 instance에 게임매니저 인스턴스가 담겨있지 않다면, 자신을 넣어준다.
             instance = this;
-
             //씬 전환이 되더라도 파괴되지 않게 한다.
             //gameObject만으로도 이 스크립트가 컴포넌트로서 붙어있는 Hierarchy상의 게임오브젝트라는 뜻이지만, 
             //나는 헷갈림 방지를 위해 this를 붙여주기도 한다.
@@ -37,29 +42,41 @@ public class DontDestroyObject : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) // called second
     {
-        print("Scene on scene");
-
         if (scene.name == "Town")
-        { 
+        {
             SceneData.Inst.questManager = FindObjectOfType<QuestManager>();
-            SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
-            /*ChangeState(State.Menu);
-            GamePanel_Sliders[0].onValueChanged.AddListener((float v) => GraphicManager.Inst.fbrightness = v);
-            GamePanel_Sliders[1].onValueChanged.AddListener((float v) => GraphicManager.Inst.fconstrast = v);
-            GamePanel_Sliders[2].onValueChanged.AddListener((float v) => SoundManager.Inst.bgmVolume = v);
-            GamePanel_Sliders[3].onValueChanged.AddListener((float v) => SoundManager.Inst.effectVolume = v);
-            newGameSceneName = "testScene";
-            faderAnim?.SetTrigger("FadeIn");
-            DisableUI();*/
+            SceneData.Inst.myPlayer.myAgent.enabled = true;
+            if (!isWarping)
+            {
+                townPosBeforeWarp = GameObject.FindGameObjectWithTag("TownPosBeforeWarp").transform;
+                playerPos.position = townPosBeforeWarp.position;
+                playerPos.rotation = townPosBeforeWarp.rotation;
+                camRot.rotation = Quaternion.Euler(30f, 90f, 0f);
+                SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
+            }
+
+            if (isWarping)
+            {  
+                townPosAfterWarp = GameObject.FindGameObjectWithTag("TownPosAfterWarp").transform;
+                playerPos.position = townPosAfterWarp.position;
+                playerPos.rotation = townPosAfterWarp.rotation;
+                camRot.rotation = Quaternion.Euler(30f, 0f, 0f);
+                SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
+
+            }
+           
         }
 
         if (scene.name == "Dungeon")
         {
-            playerPos.position = new Vector3(161.59f, 25.0f, 132.47f);
+            dungeonPosAfterWarp = GameObject.FindGameObjectWithTag("DungeonPosAfterWarp").transform;
+            playerPos.position = dungeonPosAfterWarp.position;
+            playerPos.rotation = dungeonPosAfterWarp.rotation;
+            camRot.rotation = Quaternion.Euler(30f, 45f, 0f);
+
             SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
             SceneData.Inst.questManager = null; // 던전에서는 퀘스트 상호작용 없음
-            /*newGameSceneName = "GameStage2";
-            faderAnim.SetTrigger("FadeIn");*/
+
         }
     }
 

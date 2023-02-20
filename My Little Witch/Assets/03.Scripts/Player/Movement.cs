@@ -163,7 +163,7 @@ public class Movement : CharacterProperty
     public void SetPlayerBack()
     {
         OnInteraction = false; // 플레이어 다시 움직임
-        curAnim[2].SetBool("IsInteracting", false); // 카메라 원복
+        if (curAnim[2] != null) curAnim[2].SetBool("IsInteracting", false); // 카메라 원복
         if (!SceneData.Inst.talkSign.GetBool("IsOpen")) SceneData.Inst.talkSign.SetBool("IsOpen", true);
     }
 
@@ -224,7 +224,7 @@ public class Movement : CharacterProperty
     {
         if (onWhat == ONWHAT.Street)
         {
-            curAnim[0].SetBool("IsWalking", false);
+            if (curAnim[0] != null) curAnim[0].SetBool("IsWalking", false);
             if(myAgent.enabled) myAgent.SetDestination(transform.position);
             // 씬 이동할 때 애니메이션 꺼져있는걸 방지 위해
         }
