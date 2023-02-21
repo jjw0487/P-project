@@ -47,6 +47,16 @@ public class AnimEvent : MonoBehaviour
        demon.DemonAtk3();
     }
 
+    public void OnTrailRendererEnter()
+    {
+        demon.tr.enabled = true;
+    }
+
+    public void OnTrailRendererExit()
+    {
+        demon.tr.enabled = false;
+    }
+
     /////////////PLAYER//////////////////////
     public void OnPlayerNormAtk() // 일반공격
     {

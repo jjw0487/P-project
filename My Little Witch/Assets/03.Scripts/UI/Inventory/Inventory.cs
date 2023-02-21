@@ -4,7 +4,7 @@ public class Inventory : PointerCheck
 {
 
     public Transform[] slots;
-    public Transform[] equipSlots;
+    public EquipmentSlots[] equipSlots;
     public GameObject[] usePanel;
     public GameObject floatingItemNotice;
     public Transform eventNotice;

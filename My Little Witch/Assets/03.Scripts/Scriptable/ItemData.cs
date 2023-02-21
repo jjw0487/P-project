@@ -9,6 +9,7 @@ public class ItemData : ScriptableObject
     [Header("Type")]
     public ItemType itemType;
     public string itemName;
+    [TextArea(3, 10)]
     public string explanation;
     public Sprite sprite;
 

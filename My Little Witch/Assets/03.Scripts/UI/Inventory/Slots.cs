@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Playables;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
@@ -41,7 +42,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     {
         if (orgSprite == null) { orgSprite = GetComponent<Image>().sprite; }
         // 기존 이미지를 둬서 슬롯이 clear 될 때 붙여주자
-     
+        
         item = _item;
         if (_item.myItem.orgData.name == item.myItem.orgData.name)
         {
@@ -80,6 +81,29 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
                 {
                     SceneData.Inst.Inven.usePanel[0].SetActive(true);
                     SceneData.Inst.Inven.usePanel[0].GetComponent<DecisionReturn>().ReturnDecision(this);
+                }
+                else if(item.myItem.orgData.itemType == ItemData.ItemType.Equipment)
+                {
+
+                    for (int n = 0; n < SceneData.Inst.Inven.equipSlots.Length; ++n)
+                    {
+                        if (SceneData.Inst.Inven.equipSlots[n].item != null && SceneData.Inst.Inven.equipSlots[n].item.myItem.orgData.itemName == this.item.myItem.orgData.itemName)
+                            //아이템이 null이 아니거나 이미 존재하는 아이템인 경우
+                        {
+                            return;
+                        }
+                    }
+
+                    for (int i = 0; i < SceneData.Inst.Inven.equipSlots.Length; ++i) // 슬롯 갯수만큼 반복
+                    {
+                        if (SceneData.Inst.Inven.equipSlots[i].item == null)
+                        {
+
+                            SceneData.Inst.Inven.equipSlots[i].ChangeSlotByCliicking(this.item);
+                            this.ClearSlot();
+                            break; // 조건검사에 걸린다면 반복문 탈출
+                        }
+                    }
                 }
                 
                 // 매터리얼 타입은 반응 안하도록
@@ -258,7 +282,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         if (DragImage.Inst.dragSlot != null) { ChangeSlot(); }
     }
 
-    protected void ChangeSlot()
+    protected virtual void ChangeSlot()
     {
         Item temp = item; // 아이템을 담을 공간을 만들고
         int tempItemCount = itemCount;

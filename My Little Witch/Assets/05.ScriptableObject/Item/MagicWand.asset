@@ -15,7 +15,7 @@ MonoBehaviour:
   itemType: 3
   itemName: MagicWand
   explanation: "\uC624\uCF00\uC2A4\uD2B8\uB77C\uB97C \uC9C0\uD718\uD560 \uB54C \uC37C\uC5C8\uB358
-    \uAC83 \uAC19\uB2E4."
+    \uAC83 \uAC19\uB2E4.\n\n\uB9C8\uBC95\uACF5\uACA9\uB825 [+15]"
   sprite: {fileID: 21300000, guid: 75ce382b4d2ee744c8101600a76663ff, type: 3}
   Obj: {fileID: 814325023332838667, guid: f70ae7a12df29a644a5702beb1e8adc1, type: 3}
   Count: 1

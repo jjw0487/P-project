@@ -307,7 +307,7 @@ public class Movement : CharacterProperty
 
     void StackNumCheck(int i, int n)
     {
-        normAtkNums[i].SetActive(true);
+        if (normAtkNums[i] != null) normAtkNums[i].SetActive(true);
 
         if (i > 0)
         {

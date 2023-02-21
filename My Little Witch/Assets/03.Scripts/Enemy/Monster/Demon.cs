@@ -8,6 +8,8 @@ public class Demon : Monster
     [SerializeField] private GameObject[] eftObj;
     private int rndNum;
     private float atkDist;
+    public TrailRenderer tr;
+
 
     protected override void Start()
     {
@@ -22,6 +24,8 @@ public class Demon : Monster
         {
             myAnim.SetTrigger("OnBattle");
         }
+
+        
     }
 
     public override void ChangeState(MonsterState what)
@@ -41,6 +45,7 @@ public class Demon : Monster
                 break;
             case MonsterState.Idle:
                 onBattle = false;
+                StartCoroutine(IfAlive());
                 myAgent.SetDestination(IdlePos);
                 //roam = StartCoroutine(DelayState(MonsterState.Roam, 5f));
                 break;
