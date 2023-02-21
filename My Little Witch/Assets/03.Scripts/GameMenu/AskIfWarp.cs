@@ -9,16 +9,15 @@ public class AskIfWarp : PointerCheck
     {
         DontDestroyObject.instance.isWarping = false;
         SceneData.Inst.myPlayer.SetPlayerBack();
-        SceneData.Inst.myPlayer.OnUI = false;
+        //SceneData.Inst.myPlayer.OnUI = false;
         levelLoader.LoadTitleScene();
     }
     public void MoveOnDungeon()
     {
         DontDestroyObject.instance.isWarping = true;
-        SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
         SceneData.Inst.myPlayer.myAgent.enabled = false;
         SceneData.Inst.myPlayer.SetPlayerBack();
-        SceneData.Inst.myPlayer.OnUI = false;
+        //SceneData.Inst.myPlayer.OnUI = false;
         levelLoader.LoadDungeonScene();
     }
 
@@ -28,7 +27,7 @@ public class AskIfWarp : PointerCheck
         SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
         SceneData.Inst.myPlayer.myAgent.enabled = false;
         SceneData.Inst.myPlayer.SetPlayerBack();
-        SceneData.Inst.myPlayer.OnUI = false;
+        //SceneData.Inst.myPlayer.OnUI = false;
         levelLoader.LoadTownScene();
     }
 
@@ -38,7 +37,7 @@ public class AskIfWarp : PointerCheck
         DontDestroyObject.instance.isWarping = true;
         SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
         SceneData.Inst.myPlayer.SetPlayerBack();
-        SceneData.Inst.myPlayer.OnUI = false;
+        //SceneData.Inst.myPlayer.OnUI = false;
         levelLoader.LoadTownScene();
     }
 

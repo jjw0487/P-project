@@ -21,8 +21,9 @@ public class SceneData : MonoBehaviour
     public DialogueManager dialogueManager;
     public Animator talkSign;
     public QuestManager questManager = null;
-
     public Transform ItemPool;
+
+
     private void Awake()
     {
 

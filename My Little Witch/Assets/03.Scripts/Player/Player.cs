@@ -39,6 +39,12 @@ public class Player : Movement
     public float CurMP { get { return curMP; } } // 게터, 스킬셋에서 참조
     [SerializeField] private float maxMP;
 
+    [SerializeField]
+    private float sp;
+    public float SP { get { return sp; } } // 스킬셋에서 데미지 계산 시 사용
+    private float addedSP;
+    
+
     public Coroutine handleSlider; // skill에서 참조
 
     [Header("UI")]
@@ -63,7 +69,7 @@ public class Player : Movement
         this.transform.position = position;
         myAgent.SetDestination(this.transform.position);
 
-
+        sp = charStat.orgData.HP[level - 1] + addedSP;
         maxHP = charStat.orgData.HP[level - 1];
         curMP = charStat.orgData.HP[level - 1];
         maxMP = charStat.orgData.HP[level - 1];
@@ -76,6 +82,8 @@ public class Player : Movement
         base.Start();
         canRun = true; //시작할 때 바로 뛸 수 있도록
         level = 1;
+        addedSP = 0;
+        sp = charStat.orgData.HP[level - 1] + addedSP;
         curHP = charStat.orgData.HP[level - 1];
         maxHP = charStat.orgData.HP[level - 1];
         curMP = charStat.orgData.HP[level - 1];
@@ -99,6 +107,13 @@ public class Player : Movement
         curAnim[0].SetTrigger("IsHit");
 
         if (handleSlider == null) { handleSlider = StartCoroutine(SliderValue()); }
+    }
+
+
+    public void GetEquipedItemValue(float equiped, float takeOff)
+    {
+        addedSP += equiped;
+        addedSP -= takeOff;
     }
 
     public void GetItemValue(int i, int value)

@@ -45,22 +45,23 @@ public class DontDestroyObject : MonoBehaviour
         if (scene.name == "Town")
         {
             SceneData.Inst.questManager = FindObjectOfType<QuestManager>();
-            SceneData.Inst.myPlayer.myAgent.enabled = true;
-            if (!isWarping)
+            if (!isWarping) // initial scene
             {
                 townPosBeforeWarp = GameObject.FindGameObjectWithTag("TownPosBeforeWarp").transform;
                 playerPos.position = townPosBeforeWarp.position;
                 playerPos.rotation = townPosBeforeWarp.rotation;
                 camRot.rotation = Quaternion.Euler(30f, 90f, 0f);
+                SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
                 SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
             }
 
-            if (isWarping)
+            if (isWarping) // from Dungeon
             {  
                 townPosAfterWarp = GameObject.FindGameObjectWithTag("TownPosAfterWarp").transform;
                 playerPos.position = townPosAfterWarp.position;
                 playerPos.rotation = townPosAfterWarp.rotation;
                 camRot.rotation = Quaternion.Euler(30f, 0f, 0f);
+                SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
                 SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
 
             }
@@ -74,10 +75,16 @@ public class DontDestroyObject : MonoBehaviour
             playerPos.rotation = dungeonPosAfterWarp.rotation;
             camRot.rotation = Quaternion.Euler(30f, 45f, 0f);
 
+            SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
             SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
             SceneData.Inst.questManager = null; // 던전에서는 퀘스트 상호작용 없음
 
         }
+
+        //if(scene.name == "Title")
+        //{
+            
+        //}
     }
 
     void OnDisable() // called when the game is terminated
