@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class EquipmentSlots : Slots
@@ -24,5 +25,7 @@ public class EquipmentSlots : Slots
     {
         item = _item;
         img.sprite = item.myItem.orgData.sprite;
+        SceneData.Inst.myPlayer.GetEquipedItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value, 0f); // 1. SP 2. DP 3. HP, 4. MP
+
     }
 }

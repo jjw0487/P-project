@@ -21,6 +21,8 @@ public class Player : Movement
     [SerializeField]
     private int ValueType;
     public int valueType { get { return ValueType; } }
+    private TMPro.TMP_Text[] playerStatus;
+    private TMPro.TMP_Text[] playerAddedStatus;
 
     [Header("Player")]
     [SerializeField] protected PlayerStat charStat;
@@ -69,13 +71,12 @@ public class Player : Movement
         this.transform.position = position;
         myAgent.SetDestination(this.transform.position);
 
-        sp = charStat.orgData.HP[level - 1] + addedSP;
+        sp = charStat.orgData.SP[level - 1] + addedSP;
         maxHP = charStat.orgData.HP[level - 1];
         curMP = charStat.orgData.HP[level - 1];
         maxMP = charStat.orgData.HP[level - 1];
         curExp = charStat.orgData.EXP[level - 1];
     }
-
 
     protected override void Start()
     {
@@ -86,9 +87,13 @@ public class Player : Movement
         sp = charStat.orgData.HP[level - 1] + addedSP;
         curHP = charStat.orgData.HP[level - 1];
         maxHP = charStat.orgData.HP[level - 1];
-        curMP = charStat.orgData.HP[level - 1];
-        maxMP = charStat.orgData.HP[level - 1];
+        curMP = charStat.orgData.MP[level - 1];
+        maxMP = charStat.orgData.MP[level - 1];
         curExp = charStat.orgData.EXP[level - 1];
+
+        playerStatus = SceneData.Inst.Inven.playerStatus;
+        playerAddedStatus = SceneData.Inst.Inven.playerAddedStat;
+        SetStatusWindow();
     }
     protected override void Update()
     {
@@ -98,6 +103,25 @@ public class Player : Movement
             GetEXP(20);
         }
     }
+
+    public void SetStatusWindow()
+    {
+        // 0.레벨 1.필요경험치 2.마법공격력 3.방어력 4.최대체력 5.최대마력
+
+        playerStatus[0].text = level.ToString();
+        playerStatus[1].text = curExp.ToString();
+        playerStatus[2].text = charStat.orgData.SP[level - 1].ToString();
+        //방어력 아직 없음 playerStatus[3].text = 
+        playerStatus[4].text = charStat.orgData.HP[level - 1].ToString();
+        playerStatus[5].text = charStat.orgData.MP[level - 1].ToString();
+
+        //playerAddedStatus
+        playerAddedStatus[2].text = addedSP.ToString();
+        //방어력 아직 없음 playerAddedStatus[3].text = 
+        //playerAddedStatus[4].text = charStat.orgData.HP[level - 1].ToString();
+        //playerAddedStatus[5].text = charStat.orgData.MP[level - 1].ToString();
+    }
+
 
     public void OnDmg(float dmg)
     {
@@ -110,10 +134,17 @@ public class Player : Movement
     }
 
 
-    public void GetEquipedItemValue(float equiped, float takeOff)
+    public void GetEquipedItemValue(int type, float equiped, float takeOff)
     {
-        addedSP += equiped;
-        addedSP -= takeOff;
+        if (type == 1)
+        {
+            addedSP += equiped;
+            addedSP -= takeOff;
+            playerAddedStatus[2].text = addedSP.ToString();
+            sp = charStat.orgData.SP[level - 1] + addedSP;
+            return;
+        }
+        
     }
 
     public void GetItemValue(int i, int value)
@@ -121,13 +152,13 @@ public class Player : Movement
         if (handleSlider == null) { handleSlider = StartCoroutine(SliderValue()); }
         if (i == 1) {  HandleHP(0f, value); } // 1번타입, hp회복
         if (i == 2) { HandleMP(0f, value); } // 2번타입, mp회복
-        
     }
 
     public void GetEXP(int exp)
     {
         curExp -= exp;
-        if (curExp < 0)
+        playerStatus[1].text = curExp.ToString();
+        if (curExp <= 0)
         {
             curExp *= -1; //음수를 양수로
             //curExp *= -1;
@@ -137,11 +168,11 @@ public class Player : Movement
     public void LevelUp(int rest)
     {
         ++level; // 일단 스크립터블에 영향이 안가도록 데이터는 건드리지 말고 이렇게 두자
-        if(SceneData.Inst.questManager != null) SceneData.Inst.questManager.QM_GetPlayerLevel(level);
+        SceneData.Inst.interactableUIManager.SkillBook.GetComponent<SkillBook>().GetSkillPoint(level);
         curHP = charStat.orgData.HP[level - 1];
         maxHP = charStat.orgData.HP[level - 1];
-        curMP = charStat.orgData.HP[level - 1];
-        maxMP = charStat.orgData.HP[level - 1];
+        curMP = charStat.orgData.MP[level - 1];
+        maxMP = charStat.orgData.MP[level - 1];
         curExp = charStat.orgData.EXP[level - 1];
         curExp -= rest;
         if (curExp < 0)
@@ -149,6 +180,9 @@ public class Player : Movement
             curExp *= -1;
             LevelUp(+curExp);
         }
+        if (SceneData.Inst.questManager != null) SceneData.Inst.questManager.QM_GetPlayerLevel(level);
+        SetStatusWindow(); // 스텟창에 업데이트
+
         Instantiate(Resources.Load("Effect/MagicAura"), this.transform.position + Vector3.up * 0.2f, Quaternion.Euler(new Vector3(-90f, 0f, 0f)));
         GameObject obj = Instantiate(eagle, Camera.main.transform.position, Quaternion.identity);
         obj.GetComponent<EagleSpiral>().GetLevel(level);

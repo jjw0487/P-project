@@ -17,7 +17,7 @@ public class InteractableUIManager : MonoBehaviour
     private bool gameMenu = false;
     [SerializeField] private GameObject Inventory;
     [SerializeField] private GameObject QuestBook;
-    [SerializeField] private GameObject SkillBook;
+    public GameObject SkillBook; // 레벨업마다 스킬포인트 증가
     [SerializeField] private GameObject GameMenu;
     public GameObject Store; // npc 상호작용 참조
 

@@ -15,7 +15,7 @@ MonoBehaviour:
   itemType: 3
   itemName: Necklace
   explanation: "\uBB34\uC5B8\uAC00 \uBE44\uBC00\uC774 \uC788\uC744 \uAC83\uB9CC \uAC19\uB2E4.\n\n\uB9C8\uBC95\uACF5\uACA9\uB825
-    [+15]"
+    [+10]"
   sprite: {fileID: 21300000, guid: 3ba1c56ba8adea74d99214e9a025767a, type: 3}
   Obj: {fileID: 7717968373366478240, guid: a91e80c0e351d274a95b539f861f6b63, type: 3}
   Count: 1

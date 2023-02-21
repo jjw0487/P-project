@@ -16,12 +16,25 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (skillBook.skillPoint <= 0 || this.myData.level >= 5)
         {
             lvUpBtn.interactable = false;
+            skillBook.tabList.Remove(this);
         }
+        else lvUpBtn.interactable = true;
     }
 
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F)) { SceneData.Inst.mySkill.skillSetArray[0].AddSkillData(myData); }
+    }
+
+    public void GetRestOfSkillPoint()
+    {
+        curLv.text = myData.level.ToString();
+        if (skillBook.skillPoint <= 0 || this.myData.level >= 5)
+        {
+            lvUpBtn.interactable = false;
+            skillBook.tabList.Remove(this);
+        }
+        else lvUpBtn.interactable = true;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -51,7 +64,9 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (skillBook.skillPoint <= 0 || this.myData.level >= 5)
         {
             lvUpBtn.interactable = false;
+            skillBook.tabList.Remove(this);
         }
+        else lvUpBtn.interactable = true;
     }
 
     public void OnPointerClick(PointerEventData eventData)
