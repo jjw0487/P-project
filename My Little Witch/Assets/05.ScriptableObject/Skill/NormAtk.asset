@@ -15,7 +15,7 @@ MonoBehaviour:
   Type: 4
   Action: 1
   orientation: 0
-  Level: 5
+  Level: 0
   RemainTime: 0.3
   CoolTime:
   - 0.2

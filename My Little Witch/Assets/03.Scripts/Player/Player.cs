@@ -8,6 +8,7 @@ using static Cinemachine.DocumentationSortingAttribute;
 using static Unity.Burst.Intrinsics.X86.Avx;
 using UnityEngine.UI;
 using System.Runtime.CompilerServices;
+using static UnityEditor.Progress;
 
 [Serializable]
 public struct PlayerStat
@@ -56,18 +57,18 @@ public class Player : Movement
 
     public void SavePlayer()
     {
-        SaveSystem.SavePlayer(this);
+        SaveSystem.SavePlayer(this, SceneData.Inst.Inven, SceneData.Inst.interactableUIManager, SceneData.Inst.questManager, SceneData.Inst.interactableUIManager.skillBookData.tabs);
     }
 
     public void LoadPlayer()
     {
         SaveData data = SaveSystem.LoadPlayer();
 
-        #region PLAYER
+        #region PLAYER DATA
         level = data.level;
         curHP = data.hp;
         Vector3 position;
-        position.x = data.position[0];
+        position.x = data.position[0]; 
         position.y = data.position[1];
         position.z = data.position[2];
         this.transform.position = position;
@@ -76,9 +77,47 @@ public class Player : Movement
         SetStatusWindow();
         #endregion
 
-        #region INVENTORY
-        
+        #region QUEST DATA
+        for (int i = 0; i < data.questIndex.Length; i++)
+        {
+            SceneData.Inst.questManager.QM_LoadSavedQuest(data.questIndex[i]);
+        }
+
+        for (int i = 0; i < data.npcProgress.Length; i++)
+        {
+            SceneData.Inst.questManager.QM_LoadSavedNpcProgress(data.npcProgress[i]);
+        }
         #endregion
+
+        #region INVENTORY DATA
+
+        SceneData.Inst.Inven.ClearSlots();
+
+        for (int i = 0; i < data.itemCount.Length; i++)
+        {
+            SceneData.Inst.Inven.LoadItemData(data.items[i], data.itemCount[i]);
+        }
+
+        for(int i = 0; i<data.equipmentItems.Length; i++)
+        {
+            SceneData.Inst.Inven.LoadEquipmentItemData(data.equipmentItems[i]);
+        }
+
+
+        #endregion
+
+        #region SKILL DATA
+        for (int i = 0; i < SceneData.Inst.interactableUIManager.skillBookData.tabs.Length; i++)
+        {
+            SceneData.Inst.interactableUIManager.skillBookData.tabs[i].LoadSkillLevel(data.skillLevel[i]);
+        }
+        #endregion
+
+        #region GOLD
+        SceneData.Inst.interactableUIManager.LoadGold(data.gold);
+        #endregion 
+        
+
     }
 
     protected override void Start()

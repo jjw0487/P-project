@@ -179,7 +179,8 @@ public class DialogueManager : MonoBehaviour
         if (curData.questObj != null) 
         { 
             GameObject obj = Instantiate(curData.questObj, questBook.content); // 퀘스트북에 퀘스트를 추가해줌
-            SceneData.Inst.questManager.questInProgress.Add(obj.GetComponent<QuestTab>()); // 퀘스트북 '진행중' 리스트에 추가  
+            SceneData.Inst.questManager.questInProgress.Add(obj.GetComponent<QuestTab>()); // 퀘스트북 '진행중' 리스트에 추가
+            SceneData.Inst.questManager.questIndex.Add(obj.GetComponent<QuestTab>().questData.questIndex);
         }
         SceneData.Inst.interactableUIManager.OpenQuestBookAfterDialogue(); // 퀘스트창을 띄워 퀘스트 프리팹이 진행을 가능하게 해줌
         SceneData.Inst.myPlayer.OnInteraction = false; // 플레이어 다시 움직임

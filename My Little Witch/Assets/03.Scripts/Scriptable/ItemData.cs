@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ItemData : ScriptableObject
 {
-    public enum ItemType { Consumable, Material, Interactable, Equipment}
+    public enum ItemType { Consumable, Material, Interactable, Equipment }
 
     [Header("Type")]
     public ItemType itemType;
@@ -19,7 +19,7 @@ public class ItemData : ScriptableObject
 
     [SerializeField]
     private int Count;
-    public int count { get{ return Count; } }
+    public int count { get { return Count; } }
 
     [Header("Selective::Consumable")]
     [SerializeField]
@@ -27,7 +27,7 @@ public class ItemData : ScriptableObject
     public int valueType { get { return ValueType; } } // 회복류 아이템의 타입 설정 1:hp, 2:mp, 3:st, 장비는 옵션 1.공격력, 2.
 
     [SerializeField]
-    private int Value; 
+    private int Value;
     public int value { get { return Value; } } // 회복량, 장비는 성능
 
     [SerializeField]
@@ -35,4 +35,8 @@ public class ItemData : ScriptableObject
     public int currencyInStore { get { return CurrencyInStore; } }
 
     public string itemNameInStore;
+
+    [SerializeField]
+    private int ItemId;
+    public int itemId { get { return ItemId; } } // 세이브 할 아이템 고유 id
 }

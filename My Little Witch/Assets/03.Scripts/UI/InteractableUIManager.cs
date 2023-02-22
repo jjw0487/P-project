@@ -16,8 +16,9 @@ public class InteractableUIManager : MonoBehaviour
     private bool skillbook = false;
     private bool gameMenu = false;
     [SerializeField] private GameObject Inventory;
-    [SerializeField] private GameObject QuestBook;
+    [SerializeField] private GameObject QuestBook; // 세이브데이터
     public GameObject SkillBook; // 레벨업마다 스킬포인트 증가
+    public SkillBook skillBookData;
     [SerializeField] private GameObject GameMenu;
     public GameObject Store; // npc 상호작용 참조
 
@@ -47,6 +48,13 @@ public class InteractableUIManager : MonoBehaviour
         Gold += gold;
         text.text = Gold.ToString();
     }
+
+    public void LoadGold(int gold)
+    {
+        Gold = gold;
+        text.text = Gold.ToString();
+    }
+
 
     public void PurchaseItem(int paid)
     {

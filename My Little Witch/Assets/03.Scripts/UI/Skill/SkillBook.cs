@@ -6,7 +6,7 @@ public class SkillBook : PointerCheck
     public TMPro.TMP_Text point;
 
     public GameObject[] skillShutter;
-    [SerializeField] SkillTab[] tabs;
+    public SkillTab[] tabs;
 
     public int skillPoint;
     private int playerLevel;

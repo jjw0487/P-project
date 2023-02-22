@@ -5,13 +5,13 @@ using Unity.VisualScripting.FullSerializer;
 
 public static class SaveSystem
 {
-    public static void SavePlayer(Player player)
+    public static void SavePlayer(Player _player, Inventory _inventory, InteractableUIManager _gold, QuestManager _quest, SkillTab[] _skillTab)
     {
         BinaryFormatter formatter = new BinaryFormatter();
         string path = Application.persistentDataPath + "/Player.chase";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        SaveData data = new SaveData(player);
+        SaveData data = new SaveData(_player, _inventory, _gold, _quest, _skillTab);
 
         formatter.Serialize(stream, data);
         stream.Close();

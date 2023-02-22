@@ -28,4 +28,11 @@ public class EquipmentSlots : Slots
         SceneData.Inst.myPlayer.GetEquipedItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value, 0f); // 1. SP 2. DP 3. HP, 4. MP
 
     }
+
+    public override void ClearSlot()
+    {
+        item = null;
+        itemCount = 0;
+        img.sprite = orgSprite;
+    }
 }

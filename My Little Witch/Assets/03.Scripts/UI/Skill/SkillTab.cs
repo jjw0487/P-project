@@ -9,9 +9,11 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public SkillData myData;
     public TMPro.TMP_Text curLv;
 
+    public int curLevel;
 
     private void Start()
     {
+        curLevel = myData.level;
         curLv.text = myData.level.ToString();
         if (skillBook.skillPoint <= 0 || this.myData.level >= 5)
         {
@@ -23,6 +25,12 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F)) { SceneData.Inst.mySkill.skillSetArray[0].AddSkillData(myData); }
+    }
+
+    public void LoadSkillLevel(int savedLevel)
+    {
+        myData.level = savedLevel;
+        curLv.text = myData.level.ToString();
     }
 
     public void GetRestOfSkillPoint()
@@ -64,6 +72,7 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     {
         skillBook.CalculateSkillPoint(-1);
         ++myData.level;
+        curLevel = myData.level;
         curLv.text = myData.level.ToString();
         if (skillBook.skillPoint <= 0 || this.myData.level >= 5)
         {

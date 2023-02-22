@@ -14,16 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   Action: 1
-  level: 1
+  orientation: 0
+  Level: 1
+  RemainTime: 0
+  CoolTime: []
+  ConsumeMP: 0
+  triggerName: 
   sprite: {fileID: 0}
   performPos: {x: 0, y: 0, z: 0}
   Effect: {fileID: 0}
-  remainTime: 0
-  coolTime: []
-  consumeMP: 0
-  triggerName: 
-  dmg: []
-  rangeOfSkill: 0
-  overlapRadius: 0
-  percentage: []
-  debuffTime: []
+  Dmg: []
+  RangeOfSkill: 0
+  OverlapRadius: 0
+  Percentage: []
+  DebuffTime: []
+  Upgrade: 

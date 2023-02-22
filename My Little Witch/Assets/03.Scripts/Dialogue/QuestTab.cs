@@ -83,7 +83,7 @@ public class QuestTab : MonoBehaviour
 
     public void QT_DestroyQuestTab(QuestTab questTab)
     {
-        SceneData.Inst.questManager.questInProgress.Remove(questTab);
+        SceneData.Inst.questManager.QM_Reward(questTab);
         Destroy(this.gameObject);
     }
 

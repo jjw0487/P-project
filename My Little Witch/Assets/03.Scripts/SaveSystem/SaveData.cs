@@ -1,5 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
+using Unity.VisualScripting.FullSerializer;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -12,9 +15,22 @@ public class SaveData
     public float[] position; //플레이어 마지막 위치
 
     //inventory
-    public List<Item> items = new List<Item>();
+    public int existItemCount;
+    public int[] itemCount;
+    public int[] items;
+    public int[] equipmentItems;
 
-    public SaveData(Player player)
+    //skill
+    public int[] skillLevel;
+
+    //gold
+    public int gold;
+
+    //quest
+    public int[] questIndex;
+    public int[] npcProgress;
+     
+    public SaveData(Player _player, Inventory _inventory, InteractableUIManager _gold, QuestManager _quest, SkillTab[] _skillTab)
     {
         #region 생성자를 오버로딩 한 이유
         //생성자는 클래스의 객체를 생성하는 역할을 한다.
@@ -22,18 +38,107 @@ public class SaveData
         //객체의 필드를 원하는 값으로 초기화하려고 할 때 적합한 장소가 생성자이기 때문
         #endregion
 
-        level = player.Level;
-        hp = player.CurHP;
 
+        #region player ->
+        level = _player.Level;
+        hp = _player.CurHP;
         position = new float[3];
-        position[0] = player.transform.position.x;
-        position[1] = player.transform.position.y;
-        position[2] = player.transform.position.z;
-
-        //items = 
-
+        position[0] = _player.transform.position.x;
+        position[1] = _player.transform.position.y;
+        position[2] = _player.transform.position.z;
+        #endregion
 
 
+
+        #region Inventory ->
+
+        existItemCount = 1;
+        for (int i = 0; i < _inventory.slotData.Length; i++)
+        {
+            if (_inventory.slotData[i].item != null)
+            {
+                existItemCount++; // 존재하는 아이템 개수를 센 후
+            }
+        }
+
+        items = new int[existItemCount];
+        itemCount = new int[existItemCount];
+
+        for (int i = 0; i < _inventory.slotData.Length; i++) // 아이템 배치를 띄엄띄엄 해 놨을 수 도  있으므로 다 검사 해야한다.
+        {
+            if(_inventory.slotData[i].item != null)
+            {
+                Debug.Log("아이템");
+                items[i] = _inventory.slotData[i].item.myItem.orgData.itemId;
+                
+            }
+        }
+        for(int i = 0; i < _inventory.slotData.Length; i++)
+        {
+            if (_inventory.slotData[i].item != null)
+            {
+                itemCount[i] = _inventory.slotData[i].item.curNumber;
+            }
+        }
+
+        existItemCount = 1; //다시 0으로 초기화
+
+        for (int i = 0; i < _inventory.equipSlots.Length; i++)
+        {
+            if (_inventory.equipSlots[i].item != null)
+            {
+                existItemCount++; // 존재하는 아이템 개수를 센 후
+            }
+        }
+
+
+        equipmentItems = new int[existItemCount];
+
+        for (int i = 0; i < _inventory.equipSlots.Length; i++)
+        {
+            if (_inventory.equipSlots[i].item != null)
+            {
+                equipmentItems[i] = _inventory.equipSlots[i].item.myItem.orgData.itemId;
+            }
+        }
+        #endregion
+
+
+        #region Quest ->
+        _quest.n = 0;
+
+        if (_quest.questInProgress != null) // 진행중인 퀘스트 데이터
+        {
+            questIndex = new int[_quest.questInProgress.Count];
+
+            for(int i = 0; i < questIndex.Length; i++)
+            {
+                questIndex[i] = _quest.questIndex[i];
+            }
+        }
+
+        npcProgress = new int[_quest.npc.Length]; // npc 진행도 저장
+        for(int i = 0; i < npcProgress.Length; i++)
+        {
+            npcProgress[i] = _quest.npc[i].progress;
+        }
+
+        #endregion
+
+        #region Gold ->
+        gold = _gold.gold;
+        #endregion
+
+        #region Skill ->
+        skillLevel = new int[8];
+        for(int i = 0; i < _skillTab.Length; i++)
+        {
+            skillLevel[i] = _skillTab[i].curLevel;
+        }
+        #endregion
+
+
+        // 동영상 다시 봐서 왜 이 3가지 타입만 저장 가능한지 알아보자, 모노비헤비어 사용 가능한지 알아보자
 
     }
 }

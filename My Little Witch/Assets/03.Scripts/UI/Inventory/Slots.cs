@@ -298,7 +298,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         }
     }
 
-    public void ClearSlot()
+    public virtual void ClearSlot()
     {
         item = null;
         itemCount = 0;
