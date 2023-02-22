@@ -18,9 +18,19 @@ public class FallGuy : Monster
             chill -= Time.deltaTime;
             yield return null;
         }
-        // 난수를 생성해서 랜덤하게 아이템을 switch 로 드랍되도록 만들어보자
-        GameObject DropItem = Instantiate(monStat.orgData.dropItems[0].obj, this.transform.position + Vector3.up, Quaternion.identity); // 드랍 아이템
-        DropItem.transform.SetParent(SceneData.Inst.ItemPool);
+        int rndNum = UnityEngine.Random.Range(0, 11); // 난수를 생성해서 아이템 랜덤하게 드랍
+        if (rndNum < 5 && monStat.orgData.dropItems[0] != null)
+        {
+            GameObject DropItem = Instantiate(monStat.orgData.dropItems[0].obj,
+                this.transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity); // 드랍 아이템
+            DropItem.transform.SetParent(SceneData.Inst.ItemPool);
+        }
+        else if (rndNum == 1 && monStat.orgData.dropItems[0] != null)
+        {
+            GameObject DropItem = Instantiate(monStat.orgData.dropItems[1].obj,
+                this.transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity); // 드랍 아이템
+            DropItem.transform.SetParent(SceneData.Inst.ItemPool);
+        }
         Destroy(gameObject);
     }
 }

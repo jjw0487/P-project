@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 [System.Serializable]
 public class SaveData
@@ -9,6 +10,9 @@ public class SaveData
     public int level;
     public float hp;
     public float[] position; //플레이어 마지막 위치
+
+    //inventory
+    public List<Item> items = new List<Item>();
 
     public SaveData(Player player)
     {
@@ -25,6 +29,11 @@ public class SaveData
         position[0] = player.transform.position.x;
         position[1] = player.transform.position.y;
         position[2] = player.transform.position.z;
+
+        //items = 
+
+
+
 
     }
 }

@@ -62,6 +62,8 @@ public class Player : Movement
     public void LoadPlayer()
     {
         SaveData data = SaveSystem.LoadPlayer();
+
+        #region PLAYER
         level = data.level;
         curHP = data.hp;
         Vector3 position;
@@ -70,12 +72,13 @@ public class Player : Movement
         position.z = data.position[2];
         this.transform.position = position;
         myAgent.SetDestination(this.transform.position);
+        SetStatus();
+        SetStatusWindow();
+        #endregion
 
-        sp = charStat.orgData.SP[level - 1] + addedSP;
-        maxHP = charStat.orgData.HP[level - 1];
-        curMP = charStat.orgData.HP[level - 1];
-        maxMP = charStat.orgData.HP[level - 1];
-        curExp = charStat.orgData.EXP[level - 1];
+        #region INVENTORY
+        
+        #endregion
     }
 
     protected override void Start()
@@ -84,15 +87,9 @@ public class Player : Movement
         canRun = true; //시작할 때 바로 뛸 수 있도록
         level = 1;
         addedSP = 0;
-        sp = charStat.orgData.SP[level - 1] + addedSP;
-        curHP = charStat.orgData.HP[level - 1];
-        maxHP = charStat.orgData.HP[level - 1];
-        curMP = charStat.orgData.MP[level - 1];
-        maxMP = charStat.orgData.MP[level - 1];
-        curExp = charStat.orgData.EXP[level - 1];
-
         playerStatus = SceneData.Inst.Inven.playerStatus;
         playerAddedStatus = SceneData.Inst.Inven.playerAddedStat;
+        SetStatus();
         SetStatusWindow();
     }
     protected override void Update()
@@ -121,7 +118,15 @@ public class Player : Movement
         //playerAddedStatus[4].text = charStat.orgData.HP[level - 1].ToString();
         //playerAddedStatus[5].text = charStat.orgData.MP[level - 1].ToString();
     }
-
+    private void SetStatus()
+    {
+        sp = charStat.orgData.SP[level - 1] + addedSP;
+        curHP = charStat.orgData.HP[level - 1];
+        maxHP = charStat.orgData.HP[level - 1];
+        curMP = charStat.orgData.MP[level - 1];
+        maxMP = charStat.orgData.MP[level - 1];
+        curExp = charStat.orgData.EXP[level - 1];
+    }
 
     public void OnDmg(float dmg)
     {
@@ -167,15 +172,7 @@ public class Player : Movement
         }
     }
 
-    private void SetStatus()
-    {
-        sp = charStat.orgData.SP[level - 1] + addedSP;
-        curHP = charStat.orgData.HP[level - 1];
-        maxHP = charStat.orgData.HP[level - 1];
-        curMP = charStat.orgData.MP[level - 1];
-        maxMP = charStat.orgData.MP[level - 1];
-        curExp = charStat.orgData.EXP[level - 1];
-    }
+    
 
     public void LevelUp(int rest)
     {

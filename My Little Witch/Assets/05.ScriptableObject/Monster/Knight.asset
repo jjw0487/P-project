@@ -23,6 +23,7 @@ MonoBehaviour:
   AttackSpeed: 4
   EXP: 30
   DropItems:
-  - {fileID: 11400000, guid: 48611bdc6adf76448bff90a4a09c694a, type: 2}
+  - {fileID: 11400000, guid: 40d228c45a7c54b4eafea64a0a839c75, type: 2}
+  - {fileID: 11400000, guid: 84a23cbd15c6b1543b578228684e2791, type: 2}
   Currency: 12
   HPlocalScale: {x: 1, y: 1, z: 1}
