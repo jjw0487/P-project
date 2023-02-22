@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class SaveBtn : MonoBehaviour
 {
-    [SerializeField] private GameObject askIfSave;
+    [SerializeField] private GameObject[] askIfSaveAndLoad;
     public void SaveButton()
     {
-        askIfSave.SetActive(true);
+        askIfSaveAndLoad[0].SetActive(true);
+    }
+
+    public void LoadButton()
+    {
+        askIfSaveAndLoad[1].SetActive(true);
     }
 }

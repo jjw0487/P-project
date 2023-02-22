@@ -20,7 +20,15 @@ public class DecisionReturn : MonoBehaviour
         this.gameObject.SetActive(false);
     }
 
-    public void CancelSaving()
+
+    public void AcceptSaving() // 세이브 YES
+    {
+        this.gameObject.SetActive(false);
+        this.transform.parent.gameObject.SetActive(false); // 부모까지 모두 종료
+    }
+
+
+    public void CancelSaving() // 세이브 NO
     {
         this.gameObject.SetActive(false);
     }

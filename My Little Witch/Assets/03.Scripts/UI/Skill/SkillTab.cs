@@ -16,7 +16,6 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (skillBook.skillPoint <= 0 || this.myData.level >= 5)
         {
             lvUpBtn.interactable = false;
-            skillBook.tabList.Remove(this);
         }
         else lvUpBtn.interactable = true;
     }
@@ -32,9 +31,14 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (skillBook.skillPoint <= 0 || this.myData.level >= 5)
         {
             lvUpBtn.interactable = false;
-            skillBook.tabList.Remove(this);
+            
         }
         else lvUpBtn.interactable = true;
+
+        if(this.myData.level >= 5)
+        {
+            skillBook.tabList.Remove(this); //레벨 5가 되면 더이상 함수실행 안되도록 제거 해 준다.
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -64,9 +68,13 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (skillBook.skillPoint <= 0 || this.myData.level >= 5)
         {
             lvUpBtn.interactable = false;
-            skillBook.tabList.Remove(this);
         }
         else lvUpBtn.interactable = true;
+
+        if (this.myData.level >= 5)
+        {
+            skillBook.tabList.Remove(this); //레벨 5가 되면 더이상 함수실행 안되도록 제거 해 준다.
+        }
     }
 
     public void OnPointerClick(PointerEventData eventData)

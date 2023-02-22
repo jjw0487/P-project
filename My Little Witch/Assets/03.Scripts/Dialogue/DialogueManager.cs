@@ -15,7 +15,7 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] private TMPro.TMP_Text nameText;
     [SerializeField] private TMPro.TMP_Text dialogueText;
     [SerializeField] private Animator animator;
-    [SerializeField] private GameObject askAWill;
+    [SerializeField] private GameObject[] askAWill;  // 0.퀘스트 1.세이브,로드
     public QuestBook questBook; //세이브로드 할 때 참조
     private Animator camAnimator;
     public Queue<string> sentences;
@@ -67,7 +67,7 @@ public class DialogueManager : MonoBehaviour
         if (curData.type == DialogueData.Type.QuestGiver) //퀘스트 타입일 시 수락여부 물음
         {
             //ProgressChecker(); // 대화 타입 검사
-            askAWill.SetActive(true); // 퀘스트 수락할지 물음
+            askAWill[0].SetActive(true); // 퀘스트 수락할지 물음
         }
         else if (curData.type == DialogueData.Type.Obstacle)
         {
@@ -75,6 +75,10 @@ public class DialogueManager : MonoBehaviour
             SceneData.Inst.myPlayer.OnInteraction = false; // 플레이어 다시 움직임
             animator.SetBool("IsOpen", false); // 패널 닫음
             camAnimator.SetBool("IsInteracting", false); // 카메라 원복
+        }
+        else if(curData.type == DialogueData.Type.SavePoint)
+        {
+            askAWill[1].SetActive(true); //저장할지 물음
         }
         else
         {
@@ -177,10 +181,7 @@ public class DialogueManager : MonoBehaviour
             GameObject obj = Instantiate(curData.questObj, questBook.content); // 퀘스트북에 퀘스트를 추가해줌
             SceneData.Inst.questManager.questInProgress.Add(obj.GetComponent<QuestTab>()); // 퀘스트북 '진행중' 리스트에 추가  
         }
-
         SceneData.Inst.interactableUIManager.OpenQuestBookAfterDialogue(); // 퀘스트창을 띄워 퀘스트 프리팹이 진행을 가능하게 해줌
-
-
         SceneData.Inst.myPlayer.OnInteraction = false; // 플레이어 다시 움직임
         animator.SetBool("IsOpen", false); // 패널 닫음
         camAnimator.SetBool("IsInteracting", false); // 카메라 원복
@@ -189,7 +190,7 @@ public class DialogueManager : MonoBehaviour
         curTrigger.isTalking = false;
         curTrigger.minimapPin[0].SetActive(false); // 미니맵 핀 false, true는 <QuestManager->QM_SetNpcTrigger()> 에서
 
-        askAWill.SetActive(false); // 수락여부팝업 닫아줌
+        askAWill[0].SetActive(false); // 수락여부팝업 닫아줌
     }
 
     public void IfDenied()
@@ -201,7 +202,19 @@ public class DialogueManager : MonoBehaviour
         // 대화종료, F키를 눌러 다시 대화를 할 수 있도록
         if (!SceneData.Inst.talkSign.GetBool("IsOpen")) SceneData.Inst.talkSign.SetBool("IsOpen", true);
         curTrigger.isTalking = false;
-        askAWill.SetActive(false); // 수락여부팝업 닫아줌
+        askAWill[0].SetActive(false); // 수락여부팝업 닫아줌
+    }
+
+    public void IfCancelSaving()
+    {
+        // 대화 진행도를 올리지 않음
+        SceneData.Inst.myPlayer.OnInteraction = false; // 플레이어 다시 움직임
+        animator.SetBool("IsOpen", false); // 패널 닫음
+        camAnimator.SetBool("IsInteracting", false); // 카메라 원복
+        // 대화종료, F키를 눌러 다시 대화를 할 수 있도록
+        if (!SceneData.Inst.talkSign.GetBool("IsOpen")) SceneData.Inst.talkSign.SetBool("IsOpen", true);
+        curTrigger.isTalking = false;
+        askAWill[1].SetActive(false); // 수락여부팝업 닫아줌
     }
 
     IEnumerator DM_TypeSentence(string sentence)

@@ -84,7 +84,7 @@ public class Player : Movement
         canRun = true; //시작할 때 바로 뛸 수 있도록
         level = 1;
         addedSP = 0;
-        sp = charStat.orgData.HP[level - 1] + addedSP;
+        sp = charStat.orgData.SP[level - 1] + addedSP;
         curHP = charStat.orgData.HP[level - 1];
         maxHP = charStat.orgData.HP[level - 1];
         curMP = charStat.orgData.MP[level - 1];
@@ -110,13 +110,13 @@ public class Player : Movement
 
         playerStatus[0].text = level.ToString();
         playerStatus[1].text = curExp.ToString();
-        playerStatus[2].text = charStat.orgData.SP[level - 1].ToString();
+        playerStatus[2].text = sp.ToString();
         //방어력 아직 없음 playerStatus[3].text = 
         playerStatus[4].text = charStat.orgData.HP[level - 1].ToString();
         playerStatus[5].text = charStat.orgData.MP[level - 1].ToString();
 
         //playerAddedStatus
-        playerAddedStatus[2].text = addedSP.ToString();
+        playerAddedStatus[2].text = "+" + addedSP.ToString();
         //방어력 아직 없음 playerAddedStatus[3].text = 
         //playerAddedStatus[4].text = charStat.orgData.HP[level - 1].ToString();
         //playerAddedStatus[5].text = charStat.orgData.MP[level - 1].ToString();
@@ -140,8 +140,9 @@ public class Player : Movement
         {
             addedSP += equiped;
             addedSP -= takeOff;
-            playerAddedStatus[2].text = addedSP.ToString();
-            sp = charStat.orgData.SP[level - 1] + addedSP;
+            playerAddedStatus[2].text = "+" + addedSP.ToString(); //추가공격력
+            sp = charStat.orgData.SP[level - 1] + addedSP; // sp 수치 업데이트0
+            playerStatus[2].text = sp.ToString(); // 합산 공격력 출력
             return;
         }
         
@@ -165,15 +166,22 @@ public class Player : Movement
             LevelUp(+curExp);
         }
     }
-    public void LevelUp(int rest)
+
+    private void SetStatus()
     {
-        ++level; // 일단 스크립터블에 영향이 안가도록 데이터는 건드리지 말고 이렇게 두자
-        SceneData.Inst.interactableUIManager.SkillBook.GetComponent<SkillBook>().GetSkillPoint(level);
+        sp = charStat.orgData.SP[level - 1] + addedSP;
         curHP = charStat.orgData.HP[level - 1];
         maxHP = charStat.orgData.HP[level - 1];
         curMP = charStat.orgData.MP[level - 1];
         maxMP = charStat.orgData.MP[level - 1];
         curExp = charStat.orgData.EXP[level - 1];
+    }
+
+    public void LevelUp(int rest)
+    {
+        ++level; // 일단 스크립터블에 영향이 안가도록 데이터는 건드리지 말고 이렇게 두자
+        SceneData.Inst.interactableUIManager.SkillBook.GetComponent<SkillBook>().GetSkillPoint(level);
+        SetStatus();
         curExp -= rest;
         if (curExp < 0)
         {

@@ -8,7 +8,7 @@ public class DontDestroyObject : MonoBehaviour
     public static DontDestroyObject instance = null;
     [SerializeField] private Transform playerPos;
     [SerializeField] private Transform camRot;
-
+    [SerializeField] private GameObject[] ifSceneNeeds; // 0.GUI, 1.Player 2.Camera
     private Transform townPosAfterWarp;
     private Transform townPosBeforeWarp;
     private Transform dungeonPosAfterWarp;
@@ -42,11 +42,31 @@ public class DontDestroyObject : MonoBehaviour
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode) // called second
     {
-        if (scene.name == "Town")
+        if (scene.name == "Opening")
+        {
+            // 0.GUI, 1.Player 2.Camera
+            ifSceneNeeds[0].SetActive(false);
+            ifSceneNeeds[1].SetActive(false);
+            ifSceneNeeds[2].SetActive(false);
+
+        }
+        else if(scene.name == "Title")
+        {
+            // 0.GUI, 1.Player 2.Camera
+            ifSceneNeeds[0].SetActive(false);
+            ifSceneNeeds[1].SetActive(false);
+            ifSceneNeeds[2].SetActive(false);
+        }
+        else if (scene.name == "Town")
         {
             SceneData.Inst.questManager = FindObjectOfType<QuestManager>();
             if (!isWarping) // initial scene
             {
+                // 0.GUI, 1.Player 2.Camera
+                ifSceneNeeds[0].SetActive(true);
+                ifSceneNeeds[1].SetActive(true);
+                ifSceneNeeds[2].SetActive(true);
+
                 townPosBeforeWarp = GameObject.FindGameObjectWithTag("TownPosBeforeWarp").transform;
                 playerPos.position = townPosBeforeWarp.position;
                 playerPos.rotation = townPosBeforeWarp.rotation;
@@ -67,8 +87,7 @@ public class DontDestroyObject : MonoBehaviour
             }
            
         }
-
-        if (scene.name == "Dungeon")
+        else if (scene.name == "Dungeon")
         {
             dungeonPosAfterWarp = GameObject.FindGameObjectWithTag("DungeonPosAfterWarp").transform;
             playerPos.position = dungeonPosAfterWarp.position;
@@ -78,13 +97,7 @@ public class DontDestroyObject : MonoBehaviour
             SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
             SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
             SceneData.Inst.questManager = null; // 던전에서는 퀘스트 상호작용 없음
-
         }
-
-        //if(scene.name == "Title")
-        //{
-            
-        //}
     }
 
     void OnDisable() // called when the game is terminated

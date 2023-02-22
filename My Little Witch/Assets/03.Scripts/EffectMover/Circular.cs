@@ -52,7 +52,7 @@ public class Circular : ProjectileMover
                     if (mon == null) continue;   //나중에 nullref 나오면 예외처리 해줘야함.
                     if (!col.GetComponentInParent<Monster>().isDead)
                     {
-                        col.GetComponentInParent<Monster>().OnDamage(skillData.dmg[skillData.level]);
+                        col.GetComponentInParent<Monster>().OnDamage(skillData.dmg[skillData.level] + SceneData.Inst.myPlayer.SP);
                     }
 
                     ContactPoint contact = collision.contacts[0];

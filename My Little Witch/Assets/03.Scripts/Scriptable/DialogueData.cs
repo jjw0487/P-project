@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class DialogueData : ScriptableObject
 {
-    public enum Type { QuestGiver, Repeat, Reward, Obstacle, Dialogue, OpenStore }
+    public enum Type { QuestGiver, Repeat, Reward, Obstacle, Dialogue, OpenStore, SavePoint }
     public Type type;
     public int npcId;
     public string npcName;

@@ -256,7 +256,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
                 if (mon == null) continue;*/   //나중에 nullref 나오면 예외처리 해줘야함.
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level - 1]);
+                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level - 1] + fromSkill.myPlayer.SP);
                 }
             }
         }
@@ -273,7 +273,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
                 if (mon == null) continue;*/   //나중에 nullref 나오면 예외처리 해줘야함.
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level - 1]);
+                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level - 1] + fromSkill.myPlayer.SP);
                 }
             }
         }
@@ -288,7 +288,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
             {
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level - 1]);
+                    col.GetComponentInParent<Monster>().OnDamage(myData.dmg[myData.level - 1] + fromSkill.myPlayer.SP);
                     col.GetComponentInParent<Monster>().OnDebuff(myData.debuffTime[myData.level - 1], myData.percentage[myData.level - 1]);
                 }
             }
