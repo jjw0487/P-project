@@ -1,13 +1,5 @@
-using JetBrains.Annotations;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-using System;
-using UnityEngine.Events;
-using UnityEditor.PackageManager.Requests;
-using UnityEngine.UIElements;
-using Unity.VisualScripting;
 
 public class MonsterSpawner : MonoBehaviour
 {
@@ -26,8 +18,8 @@ public class MonsterSpawner : MonoBehaviour
 
     private QuestTab curQuestTabData;
 
-    List<GameObject> aliveFoxes = new List<GameObject> ();
-    List<GameObject> aliveFallguys = new List<GameObject> ();
+    List<GameObject> aliveFoxes = new List<GameObject>();
+    List<GameObject> aliveFallguys = new List<GameObject>();
 
 
     private void Awake()
@@ -48,7 +40,7 @@ public class MonsterSpawner : MonoBehaviour
         fallguyObj.transform.SetParent(this.transform);
         aliveFallguys.Add(fallguyObj);
 
-        GameObject foxObj = Instantiate(monsters[0], spawnPos[0].position +  new Vector3(UnityEngine.Random.Range(-15.0f, 15.0f), 0f, UnityEngine.Random.Range(-15.0f, 15.0f)), Quaternion.identity);
+        GameObject foxObj = Instantiate(monsters[0], spawnPos[0].position + new Vector3(UnityEngine.Random.Range(-15.0f, 15.0f), 0f, UnityEngine.Random.Range(-15.0f, 15.0f)), Quaternion.identity);
         foxObj.transform.SetParent(this.transform);
         aliveFoxes.Add(foxObj);
     }
@@ -80,12 +72,12 @@ public class MonsterSpawner : MonoBehaviour
                 MS_ReturnQuestProgress(D_foxCounter);
             }
             aliveFoxes.Remove(obj);
-            if(aliveFoxes.Count < 5)
+            if (aliveFoxes.Count < 5)
             {
                 InvokeRepeating("MS_spawnFox", 0, 1f);
             }
         }
-        else if(name == "Fallguy")
+        else if (name == "Fallguy")
         {
             //D_fallguyCounter++;
             //if (curQuestTabData != null)
@@ -105,7 +97,7 @@ public class MonsterSpawner : MonoBehaviour
     public void MS_ReturnQuestProgress(int count)
     {
         curQuestTabData.QT_GetProgressNum(count); // 퀘스트 화면에 보여줄 진행도
-        
+
         if (curQuestTabData.questData.goalNumber <= D_foxCounter)
         {
             curQuestTabData.QT_GetSuccess();

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace CritiasFoliage
 {
@@ -8,7 +6,7 @@ namespace CritiasFoliage
     public class FoliageTerrainListener : MonoBehaviour
     {
         public FoliagePainter m_FoliagePainter;
-        
+
         /**
          * TODO: Listen to all the changes and stick the grass to the terrain again based on the label. Not implemented at the
          * moment due to possibly high recomputation cost
@@ -19,7 +17,7 @@ namespace CritiasFoliage
             { }
 
             if ((flags & TerrainChangedFlags.DelayedHeightmapUpdate) != 0)
-            { }            
+            { }
         }
     }
 }

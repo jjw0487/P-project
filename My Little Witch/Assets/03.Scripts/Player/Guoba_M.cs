@@ -8,7 +8,7 @@ public class Guoba_M : MonoBehaviour
     public GuobaMachineState GuobaState = GuobaMachineState.Create;
 
     public SkillData myData;
-    
+
     [SerializeField] private float HP;
     [SerializeField] private GameObject explosion;
     [SerializeField] private GameObject appearance;
@@ -62,7 +62,7 @@ public class Guoba_M : MonoBehaviour
                 {
                     if (!col.GetComponentInParent<Monster>().isDead) //죽지 않았다면
                     {
-                        if (Vector3.Distance(col.GetComponentInParent<Transform>().position, 
+                        if (Vector3.Distance(col.GetComponentInParent<Transform>().position,
                             previousTarget.position) < 10f)
                         {
                             col.GetComponentInParent<Monster>().myTarget = previousTarget;

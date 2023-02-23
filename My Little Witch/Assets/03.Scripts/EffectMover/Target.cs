@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Target : ProjectileMover
@@ -37,7 +35,7 @@ public class Target : ProjectileMover
                 if (mon == null) continue;*/   //나중에 nullref 나오면 예외처리 해줘야함.
                 if (!col.GetComponentInParent<Monster>().isDead)
                 {
-                    col.GetComponentInParent<Monster>().OnDamage(skillData.dmg[skillData.level-1] + SceneData.Inst.myPlayer.SP);
+                    col.GetComponentInParent<Monster>().OnDamage(skillData.dmg[skillData.level - 1] + SceneData.Inst.myPlayer.SP);
                 }
             }
         }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ExampleRuntimeTreeRemover : MonoBehaviour
 {
@@ -18,7 +16,7 @@ public class ExampleRuntimeTreeRemover : MonoBehaviour
      * 'Foliage Colliders' script to something larger than the default 7! Else colliders will only have 7m of colliders and therefore you 
      * can remove only trees at 7m distance.
      */
-    void Update ()
+    void Update()
     {
         if (Input.GetMouseButtonDown(0) == false)
             return;
@@ -29,14 +27,14 @@ public class ExampleRuntimeTreeRemover : MonoBehaviour
         const string queryLayer = "Default";
 
         RaycastHit hit;
-        if(Physics.Raycast(transform.position, transform.forward, out hit, 1000, LayerMask.GetMask(queryLayer)))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, 1000, LayerMask.GetMask(queryLayer)))
         {
-            if(hit.collider)
+            if (hit.collider)
             {
                 // Try and get the value if the collider is sticked here
                 var data = hit.collider.gameObject.GetComponent<CritiasFoliage.FoliageColliderData>();
-                
-                if(data)
+
+                if (data)
                 {
                     CritiasFoliage.FoliageInstance instance = data.m_FoliageInstance;
                     runtime.RemoveFoliageInstance(data.m_FoliageType, instance.m_UniqueId, instance.m_Position);
@@ -45,12 +43,12 @@ public class ExampleRuntimeTreeRemover : MonoBehaviour
                 // Try and get the value if maybe it is in the owner in case we are an owned collider
                 data = hit.collider.gameObject.GetComponentInParent<CritiasFoliage.FoliageColliderData>();
 
-                if(data)
+                if (data)
                 {
                     CritiasFoliage.FoliageInstance instance = data.m_FoliageInstance;
                     runtime.RemoveFoliageInstance(data.m_FoliageType, instance.m_UniqueId, instance.m_Position);
                 }
             }
         }
-	}
+    }
 }

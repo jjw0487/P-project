@@ -20,7 +20,7 @@ public class SkillData : ScriptableObject
 
     [SerializeField]
     private float RemainTime;
-    public float remainTime{ get { return RemainTime; } } // 애니메이션 동작동안 움직임을 막기 위함
+    public float remainTime { get { return RemainTime; } } // 애니메이션 동작동안 움직임을 막기 위함
 
     [SerializeField]
     private float[] CoolTime;

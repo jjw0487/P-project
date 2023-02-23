@@ -17,7 +17,7 @@ MonoBehaviour:
   ATK: 50
   DP: 15
   StrikingDist: 3
-  AgentSpeed: 4
+  AgentSpeed: 5
   AgentStopDist: 1
   AttackRadius: 0
   AttackSpeed: 3

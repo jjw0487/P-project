@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class OpeningScene : MonoBehaviour
@@ -11,9 +10,9 @@ public class OpeningScene : MonoBehaviour
     }
     IEnumerator PressAnyKey()
     {
-        while(true)
+        while (true)
         {
-            if(Input.anyKeyDown)
+            if (Input.anyKeyDown)
             {
                 levelLoader.LoadTitleScene();
                 yield break;

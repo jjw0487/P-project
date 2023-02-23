@@ -1,6 +1,5 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -64,7 +63,7 @@ namespace CritiasFoliage
         {
             m_Painter.GenerateTreeBillboards(true);
         }
-        
+
         public FoliagePainterEditTime(FoliagePainter painter)
         {
             m_Painter = painter;

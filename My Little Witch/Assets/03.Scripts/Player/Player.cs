@@ -1,14 +1,7 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using Unity.Mathematics;
 using UnityEngine;
-using static Cinemachine.DocumentationSortingAttribute;
-using static Unity.Burst.Intrinsics.X86.Avx;
 using UnityEngine.UI;
-using System.Runtime.CompilerServices;
-using static UnityEditor.Progress;
 
 [Serializable]
 public struct PlayerStat
@@ -46,7 +39,7 @@ public class Player : Movement
     private float sp;
     public float SP { get { return sp; } } // 스킬셋에서 데미지 계산 시 사용
     private float addedSP;
-    
+
 
     public Coroutine handleSlider; // skill에서 참조
 
@@ -60,6 +53,11 @@ public class Player : Movement
         SaveSystem.SavePlayer(this, SceneData.Inst.Inven, SceneData.Inst.interactableUIManager, SceneData.Inst.questManager, SceneData.Inst.interactableUIManager.skillBookData.tabs);
     }
 
+    public void LoadGameFromTitle()
+    {
+        LoadPlayer();
+    }
+
     public void LoadPlayer()
     {
         SaveData data = SaveSystem.LoadPlayer();
@@ -68,7 +66,7 @@ public class Player : Movement
         level = data.level;
         curHP = data.hp;
         Vector3 position;
-        position.x = data.position[0]; 
+        position.x = data.position[0];
         position.y = data.position[1];
         position.z = data.position[2];
         this.transform.position = position;
@@ -98,7 +96,7 @@ public class Player : Movement
             SceneData.Inst.Inven.LoadItemData(data.items[i], data.itemCount[i]);
         }
 
-        for(int i = 0; i<data.equipmentItems.Length; i++)
+        for (int i = 0; i < data.equipmentItems.Length; i++)
         {
             SceneData.Inst.Inven.LoadEquipmentItemData(data.equipmentItems[i]);
         }
@@ -115,8 +113,8 @@ public class Player : Movement
 
         #region GOLD
         SceneData.Inst.interactableUIManager.LoadGold(data.gold);
-        #endregion 
-        
+        #endregion
+
 
     }
 
@@ -134,7 +132,7 @@ public class Player : Movement
     protected override void Update()
     {
         base.Update();
-        if(Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             GetEXP(20);
         }
@@ -157,7 +155,7 @@ public class Player : Movement
         //playerAddedStatus[4].text = charStat.orgData.HP[level - 1].ToString();
         //playerAddedStatus[5].text = charStat.orgData.MP[level - 1].ToString();
     }
-    private void SetStatus()
+    public void SetStatus()
     {
         sp = charStat.orgData.SP[level - 1] + addedSP;
         curHP = charStat.orgData.HP[level - 1];
@@ -189,13 +187,13 @@ public class Player : Movement
             playerStatus[2].text = sp.ToString(); // 합산 공격력 출력
             return;
         }
-        
+
     }
 
     public void GetItemValue(int i, int value)
     {
         if (handleSlider == null) { handleSlider = StartCoroutine(SliderValue()); }
-        if (i == 1) {  HandleHP(0f, value); } // 1번타입, hp회복
+        if (i == 1) { HandleHP(0f, value); } // 1번타입, hp회복
         if (i == 2) { HandleMP(0f, value); } // 2번타입, mp회복
     }
 
@@ -211,7 +209,7 @@ public class Player : Movement
         }
     }
 
-    
+
 
     public void LevelUp(int rest)
     {
@@ -254,7 +252,7 @@ public class Player : Movement
             hPBar.value = Mathf.Lerp(hPBar.value, curHP / maxHP * 100f, 0.2f);
             mPBar.value = Mathf.Lerp(mPBar.value, curMP / maxMP * 100f, 0.2f);
             if (Mathf.Approximately(mPBar.value, maxMP) && Mathf.Approximately(hPBar.value, maxHP))
-                { handleSlider = null; yield break; } 
+            { handleSlider = null; yield break; }
             // 체력,마력에 변동 없을 때 더이상 돌지 않도록
             yield return null;
         }

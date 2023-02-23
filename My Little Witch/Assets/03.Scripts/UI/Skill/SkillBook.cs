@@ -33,7 +33,6 @@ public class SkillBook : PointerCheck
 
     public void GetSkillPoint(int lv)
     {
-        print(tabList.Count);
         skillPoint += 1;
         point.text = skillPoint.ToString();
         playerLevel = lv;
@@ -43,12 +42,12 @@ public class SkillBook : PointerCheck
         if (playerLevel == 12) { skillShutter[3].SetActive(false); tabList.Add(tabs[6]); }
         if (playerLevel == 15) { skillShutter[4].SetActive(false); tabList.Add(tabs[7]); }
 
-        for(int i = 0; i < tabList.Count; ++i)
+        for (int i = 0; i < tabList.Count; ++i)
         {
             tabList[i].GetRestOfSkillPoint();
         }
     }
 
-    
+
 
 }

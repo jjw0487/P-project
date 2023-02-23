@@ -1,6 +1,5 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +14,7 @@ namespace CritiasFoliage
         public FoliageTuple(T editTime)
         {
             m_EditTime = editTime;
-            m_RuntimeAppended = default(T);            
+            m_RuntimeAppended = default(T);
         }
 
         public FoliageTuple(T editTime, T runtime)
@@ -47,7 +46,7 @@ namespace CritiasFoliage
 
         // Position within the local space of the bigger cell
         public FoliageCell m_Position;
-        
+
         // Data built at load time for runtime. It is an array of all the grass types organised into a multi array of batches of 1000 foliage pieces each.
         public FoliageKeyValuePair<int, FoliageTuple<Matrix4x4[][]>>[] m_TypeHashLocationsRuntime;
     }
@@ -56,18 +55,18 @@ namespace CritiasFoliage
      * Foliage cell data that holds the larger tree foliage instances.
      */
     public class FoliageCellDataRuntime
-    {        
+    {
         // Cell bounds extended
         public Bounds m_Bounds;
 
         // Foliage cell position with it's hash
         public FoliageCell m_Position;
-        
+
         // Used for trees at runtime. Will be built from the above dictionary by merging the sources.
         public FoliageKeyValuePair<int, FoliageTuple<FoliageInstance[]>>[] m_TypeHashLocationsRuntime;
 
         // Used for grass. No need for a dict here since we will only iterate the cells
-        public FoliageKeyValuePair<int, FoliageCellSubdividedDataRuntime>[] m_FoliageDataSubdivided;        
+        public FoliageKeyValuePair<int, FoliageCellSubdividedDataRuntime>[] m_FoliageDataSubdivided;
     }
 
     public class FoliageDataRuntime
@@ -86,18 +85,18 @@ namespace CritiasFoliage
         /** Slow removal don't use often */
         public void RemoveFoliageInstance(int typeHash, System.Guid guid)
         {
-            foreach(FoliageCellDataRuntime data in m_FoliageData.Values)
+            foreach (FoliageCellDataRuntime data in m_FoliageData.Values)
             {
                 RemoveFoliageInstanceCell(typeHash, guid, data);
             }
         }
-        
+
         /** Fastest removal */
         public void RemoveFoliageInstance(int typeHash, System.Guid guid, Vector3 position)
         {
             FoliageCellDataRuntime cell;
 
-            if(m_FoliageData.TryGetValue(FoliageCell.MakeHash(position), out cell))
+            if (m_FoliageData.TryGetValue(FoliageCell.MakeHash(position), out cell))
             {
                 RemoveFoliageInstanceCell(typeHash, guid, cell);
             }
@@ -143,19 +142,19 @@ namespace CritiasFoliage
                 // Add the type
                 cell.m_TypeHashLocationsRuntime[idx] = new FoliageKeyValuePair<int, FoliageTuple<FoliageInstance[]>>(typeHash, new FoliageTuple<FoliageInstance[]>(new FoliageInstance[0]));
             }
-            
+
             // We have the stuff
             System.Array.Resize(ref cell.m_TypeHashLocationsRuntime[idx].Value.m_EditTime, cell.m_TypeHashLocationsRuntime[idx].Value.m_EditTime.Length + 1);
             cell.m_TypeHashLocationsRuntime[idx].Value.m_EditTime[cell.m_TypeHashLocationsRuntime[idx].Value.m_EditTime.Length - 1] = instance;
         }
-        
+
         /**
          * Removes the instance from the list. Costly operation that will re-build the array. Do not use often!
          */
         private void RemoveFoliageInstanceCell(int typeHash, System.Guid guid, FoliageCellDataRuntime data, bool ignoreDifferentHash = true)
         {
             for (int type = 0; type < data.m_TypeHashLocationsRuntime.Length; type++)
-            {                
+            {
                 if (ignoreDifferentHash && data.m_TypeHashLocationsRuntime[type].Key != typeHash)
                     continue;
 
@@ -170,13 +169,13 @@ namespace CritiasFoliage
                 if (tuple.m_EditTime != null)
                     newInstancesEdit = System.Array.FindAll(tuple.m_EditTime, (x) => x.m_UniqueId != guid);
 
-                if(tuple.m_RuntimeAppended != null)
-                    newInstancesRuntime = System.Array.FindAll(tuple.m_RuntimeAppended, (x) => x.m_UniqueId != guid);                
+                if (tuple.m_RuntimeAppended != null)
+                    newInstancesRuntime = System.Array.FindAll(tuple.m_RuntimeAppended, (x) => x.m_UniqueId != guid);
 
                 // Set the new value
                 data.m_TypeHashLocationsRuntime[type].Value.m_EditTime = newInstancesEdit;
                 data.m_TypeHashLocationsRuntime[type].Value.m_RuntimeAppended = newInstancesRuntime;
-            }            
+            }
         }
     }
 }

@@ -1,7 +1,5 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CritiasFoliage
@@ -22,10 +20,10 @@ namespace CritiasFoliage
             this.y = y;
             this.z = z;
         }
-        
+
         public FoliageCell(Vector3 pos, bool subdivided)
         {
-            if(subdivided == false)
+            if (subdivided == false)
             {
                 x = Mathf.FloorToInt(pos.x / FoliageGlobals.CELL_SIZE);
                 y = Mathf.FloorToInt(pos.y / FoliageGlobals.CELL_SIZE);
@@ -56,8 +54,8 @@ namespace CritiasFoliage
         public Vector3 GetCenter()
         {
             return new Vector3(
-                FoliageGlobals.CELL_SIZE * x + FoliageGlobals.CELL_SIZE_HALF, 
-                FoliageGlobals.CELL_SIZE * y + FoliageGlobals.CELL_SIZE_HALF, 
+                FoliageGlobals.CELL_SIZE * x + FoliageGlobals.CELL_SIZE_HALF,
+                FoliageGlobals.CELL_SIZE * y + FoliageGlobals.CELL_SIZE_HALF,
                 FoliageGlobals.CELL_SIZE * z + FoliageGlobals.CELL_SIZE_HALF);
         }
 
@@ -80,7 +78,7 @@ namespace CritiasFoliage
         }
 
         public override int GetHashCode()
-        {            
+        {
             return prime1 * x + prime2 * y + prime3 * z;
         }
 
@@ -107,7 +105,7 @@ namespace CritiasFoliage
          * The position in here must be in defined as a local cell boundng box position 
          */
         public static int MakeHashSubdivided(Vector3 pos)
-        {           
+        {
             int x = Mathf.FloorToInt(pos.x / FoliageGlobals.CELL_SUBDIVIDED_SIZE);
             int y = Mathf.FloorToInt(pos.y / FoliageGlobals.CELL_SUBDIVIDED_SIZE);
             int z = Mathf.FloorToInt(pos.z / FoliageGlobals.CELL_SUBDIVIDED_SIZE);
@@ -119,7 +117,7 @@ namespace CritiasFoliage
          * The position in here must be in defined as a world space position 
          */
         public static int MakeHash(Vector3 pos)
-        {            
+        {
             int x = Mathf.FloorToInt(pos.x / FoliageGlobals.CELL_SIZE);
             int y = Mathf.FloorToInt(pos.y / FoliageGlobals.CELL_SIZE);
             int z = Mathf.FloorToInt(pos.z / FoliageGlobals.CELL_SIZE);
@@ -139,17 +137,17 @@ namespace CritiasFoliage
             FoliageCell cMin = new FoliageCell(min, subdivided);
             FoliageCell cMax = new FoliageCell(max, subdivided);
 
-            for(int x = cMin.x; x <= cMax.x; x++)
+            for (int x = cMin.x; x <= cMax.x; x++)
             {
-                for(int y = cMin.y; y <= cMax.y; y++)
+                for (int y = cMin.y; y <= cMax.y; y++)
                 {
-                    for(int z = cMin.z; z <= cMax.z; z++)
+                    for (int z = cMin.z; z <= cMax.z; z++)
                     {
                         action(MakeHash(x, y, z));
                     }
                 }
-            }            
-        }        
+            }
+        }
 
         /**
          * The depth should be around 1 or maximum 2 at runtime.

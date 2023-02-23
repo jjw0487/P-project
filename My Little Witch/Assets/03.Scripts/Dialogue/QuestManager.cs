@@ -1,12 +1,9 @@
-using JetBrains.Annotations;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class QuestManager : MonoBehaviour
 {
-    
+
     [SerializeField] private GameObject[] quests; //퀘스트의 restricted lv 을 검사
 
     [Header("NPCID 순서 배열로 나열하시오.")]
@@ -30,7 +27,7 @@ public class QuestManager : MonoBehaviour
             {
                 GameObject obj = Instantiate(quests[_questIndex], SceneData.Inst.dialogueManager.questBook.content);
             }
-        }   
+        }
     }
 
     public void QM_LoadSavedNpcProgress(int _progress)
@@ -42,11 +39,11 @@ public class QuestManager : MonoBehaviour
 
     public void QM_GetPlayerLevel(int lv)
     {
-        for(int i = 0; i < quests.Length; i++)
+        for (int i = 0; i < quests.Length; i++)
         {
             if (quests[i].GetComponent<QuestTab>().questData.restrictedLV <= lv)
             {
-                if(questInProgress.Count > 0) // 진행중인 퀘스트가 있다면 제외하고 트리거를 발동 하기 위함
+                if (questInProgress.Count > 0) // 진행중인 퀘스트가 있다면 제외하고 트리거를 발동 하기 위함
                 {
                     for (int n = 0; n < questInProgress.Count; n++)
                     {
@@ -67,7 +64,7 @@ public class QuestManager : MonoBehaviour
 
     void QM_SetNpcTrigger(int npcId) // id를 이용하여 해당 npc에 접근하여
     {
-        for(int i = npc[npcId].progress; i < npc[npcId].dialogue.Length; i++)
+        for (int i = npc[npcId].progress; i < npc[npcId].dialogue.Length; i++)
         {// 현재 진행도부터 배열검사하여 가장 가까운 퀘스트부터 실행하도록 진행도 올림
             if (npc[npcId].dialogue[i].type == DialogueData.Type.QuestGiver)
             {
@@ -88,7 +85,7 @@ public class QuestManager : MonoBehaviour
 
     public void QM_GetTargetNpcQuestSuccess(int targetNpcId, int npcId)
     {
-        for(int i = 0; i< npc[targetNpcId].dialogue.Length; i++)
+        for (int i = 0; i < npc[targetNpcId].dialogue.Length; i++)
         {
             if (npc[targetNpcId].dialogue[i].type == DialogueData.Type.Reward)
             {

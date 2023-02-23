@@ -1,6 +1,4 @@
-using JetBrains.Annotations;
 using System.Collections.Generic;
-using System.Threading.Tasks.Sources;
 using UnityEngine;
 
 public class InteractableUIManager : MonoBehaviour
@@ -70,7 +68,7 @@ public class InteractableUIManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             inven = !inven;
-            if (inven) { Open(Inventory);}
+            if (inven) { Open(Inventory); }
             else { Close(Inventory); }
         }
 
@@ -103,7 +101,7 @@ public class InteractableUIManager : MonoBehaviour
 
     public void CloseAll(Stack<GameObject> values)
     {
-        if(stack.Count != 0) // 스택에 카운트가 0이 아닐 경우에만
+        if (stack.Count != 0) // 스택에 카운트가 0이 아닐 경우에만
         {
             GameObject obj = values.Pop();
             obj.SetActive(false);
@@ -113,7 +111,7 @@ public class InteractableUIManager : MonoBehaviour
         {
             // 세이브, 환경설정 창 띄움
             gameMenu = !gameMenu;
-            if (gameMenu) { GameMenu.SetActive(true);}
+            if (gameMenu) { GameMenu.SetActive(true); }
             else { GameMenu.SetActive(false); SceneData.Inst.myPlayer.OnUI = false; }
         }
     }

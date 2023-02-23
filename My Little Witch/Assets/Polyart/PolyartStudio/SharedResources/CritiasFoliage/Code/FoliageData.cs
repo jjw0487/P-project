@@ -1,11 +1,10 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace CritiasFoliage
-{       
+{
     /**
      * Foliage cell data that holds the smaller grass instances.
      */
@@ -20,7 +19,7 @@ namespace CritiasFoliage
         // Grass data, organised in the same manned as the trees. Grass supports labels too.
         public Dictionary<int, Dictionary<string, List<FoliageInstance>>> m_TypeHashLocationsEditor = new Dictionary<int, Dictionary<string, List<FoliageInstance>>>();
     }
-    
+
     /**
      * Foliage cell data that holds the larger tree foliage instances.
      */
@@ -46,7 +45,7 @@ namespace CritiasFoliage
         // Used for grass. The hash data is generated basd on the local-space of the bounds and not world space.
         public Dictionary<int, FoliageCellSubdividedData> m_FoliageDataSubdivided = new Dictionary<int, FoliageCellSubdividedData>();
     }
-    
+
     /**
      * Foliage data and the operations that are taken on it. All operations have
      * a few variants:
@@ -63,7 +62,7 @@ namespace CritiasFoliage
     {
         // Foliage data
         public Dictionary<int, FoliageCellData> m_FoliageData = new Dictionary<int, FoliageCellData>();
-        
+
         /**
          * Removes all the foliage instances of the type from the data.
          */
@@ -71,18 +70,18 @@ namespace CritiasFoliage
         {
             bool anyRemoved = false;
             int cellsPurged = 0;
-            
-            foreach(FoliageCellData data in m_FoliageData.Values)
+
+            foreach (FoliageCellData data in m_FoliageData.Values)
             {
-                if(data.m_TypeHashLocationsEditor.Remove(typeHash))
+                if (data.m_TypeHashLocationsEditor.Remove(typeHash))
                 {
                     anyRemoved = true;
                     cellsPurged++;
                 }
 
-                foreach(FoliageCellSubdividedData subdivData in data.m_FoliageDataSubdivided.Values)
+                foreach (FoliageCellSubdividedData subdivData in data.m_FoliageDataSubdivided.Values)
                 {
-                    if(subdivData.m_TypeHashLocationsEditor.Remove(typeHash))
+                    if (subdivData.m_TypeHashLocationsEditor.Remove(typeHash))
                     {
                         anyRemoved = true;
                         cellsPurged++;
@@ -107,17 +106,17 @@ namespace CritiasFoliage
          * Will preserve labeling data.
          */
         public void RebuildType(int typeHash, bool subdivided)
-        {            
+        {
             Dictionary<string, List<FoliageInstance>> instances = new Dictionary<string, List<FoliageInstance>>();
-            
+
             foreach (FoliageCellData data in m_FoliageData.Values)
             {
-                if(data.m_TypeHashLocationsEditor.ContainsKey(typeHash))
+                if (data.m_TypeHashLocationsEditor.ContainsKey(typeHash))
                 {
                     var labeledData = data.m_TypeHashLocationsEditor[typeHash];
 
                     // Get all the data from the cells
-                    foreach(var labeled in labeledData)
+                    foreach (var labeled in labeledData)
                     {
                         string label = labeled.Key;
 
@@ -126,7 +125,7 @@ namespace CritiasFoliage
 
                         instances[label].AddRange(labeled.Value);
                     }
-                }                
+                }
 
                 foreach (FoliageCellSubdividedData subdivData in data.m_FoliageDataSubdivided.Values)
                 {
@@ -135,7 +134,7 @@ namespace CritiasFoliage
                         var labeledData = subdivData.m_TypeHashLocationsEditor[typeHash];
 
                         // Get all the data from the subdivided cells
-                        foreach(var labeled in labeledData)
+                        foreach (var labeled in labeledData)
                         {
                             string label = labeled.Key;
 
@@ -143,19 +142,19 @@ namespace CritiasFoliage
                                 instances.Add(label, new List<FoliageInstance>());
 
                             instances[label].AddRange(labeled.Value);
-                        }                        
+                        }
                     }
                 }
             }
 
-            if(instances.Count > 0)
+            if (instances.Count > 0)
             {
                 // Clear the old added data
                 RemoveType(typeHash);
 
                 int count = 0;
 
-                foreach(var labeledInstances in instances)
+                foreach (var labeledInstances in instances)
                 {
                     string label = labeledInstances.Key;
                     List<FoliageInstance> inst = labeledInstances.Value;
@@ -202,13 +201,13 @@ namespace CritiasFoliage
                         }
                     }
                 } // Foreach labeled finished
-                finished:;
+            finished:;
             }
 
             // If we removed everything from a cell then clear it from the list completely
             RemoveEmptyTypeDataCell(cell);
             if (IsCellEmpty(cell))
-                m_FoliageData.Remove(cell.GetHashCode());                
+                m_FoliageData.Remove(cell.GetHashCode());
 
             if (anyRemoved)
             {
@@ -233,7 +232,7 @@ namespace CritiasFoliage
             float distanceDelta = radius * radius;
 
             // Remove all the foliage that overlaps the sphere
-            FoliageCell.IterateMinMax(min, max, false, (int hash) => 
+            FoliageCell.IterateMinMax(min, max, false, (int hash) =>
             {
                 if (m_FoliageData.ContainsKey(hash) == false)
                     return;
@@ -314,14 +313,14 @@ namespace CritiasFoliage
                     m_FoliageData.Remove(hash);
             });
 
-            if(anyRemoved)
+            if (anyRemoved)
             {
                 RecalculateBoundsAfterRemove();
             }
 
             return (anyRemoved || anyGrassRemoved);
         }
-        
+
         public Dictionary<int, List<FoliageInstance>> CollectLabeledInstances(string label)
         {
             Dictionary<int, List<FoliageInstance>> data = new Dictionary<int, List<FoliageInstance>>();
@@ -352,9 +351,9 @@ namespace CritiasFoliage
                     {
                         List<FoliageInstance> instances;
 
-                        if(typedData.Value.TryGetValue(label, out instances))
+                        if (typedData.Value.TryGetValue(label, out instances))
                         {
-                            if(instances.Count > 0)
+                            if (instances.Count > 0)
                             {
                                 if (data.ContainsKey(typedData.Key) == false)
                                     data.Add(typedData.Key, new List<FoliageInstance>());
@@ -376,7 +375,7 @@ namespace CritiasFoliage
         {
             bool anyRemoved = false;
 
-            foreach(var cell in m_FoliageData.Values)
+            foreach (var cell in m_FoliageData.Values)
             {
                 // Remove all the labeled data from the typed data
                 foreach (var typedData in cell.m_TypeHashLocationsEditor.Values)
@@ -386,7 +385,7 @@ namespace CritiasFoliage
                 }
 
                 // Remove all the labeled data from the typed subdivided data
-                foreach(var cellSubdiv in cell.m_FoliageDataSubdivided.Values)
+                foreach (var cellSubdiv in cell.m_FoliageDataSubdivided.Values)
                 {
                     foreach (var typedData in cellSubdiv.m_TypeHashLocationsEditor.Values)
                     {
@@ -411,10 +410,10 @@ namespace CritiasFoliage
          * The painter should decide if our data is added to the subdivisions or if it is a tree type and must not be added to the subdivision.
          */
         public void AddInstance(int typeHash, FoliageInstance instance, bool subdivision, string label = FoliageGlobals.LABEL_PAINTED)
-        {            
+        {
             int hash = FoliageCell.MakeHash(instance.m_Position);
 
-            if(m_FoliageData.ContainsKey(hash) == false)
+            if (m_FoliageData.ContainsKey(hash) == false)
             {
                 FoliageCellData data = new FoliageCellData();
                 data.m_Position = new FoliageCell();
@@ -438,7 +437,7 @@ namespace CritiasFoliage
 
                 if (labeled.ContainsKey(label) == false)
                     labeled.Add(label, new List<FoliageInstance>());
-                
+
                 // Add the foliage data
                 labeled[label].Add(instance);
 
@@ -453,7 +452,7 @@ namespace CritiasFoliage
 
                 int hashSubdivided = FoliageCell.MakeHashSubdivided(localPosition);
 
-                if(foliageSubdividedData.ContainsKey(hashSubdivided) == false)
+                if (foliageSubdividedData.ContainsKey(hashSubdivided) == false)
                 {
                     FoliageCellSubdividedData data = new FoliageCellSubdividedData();
                     data.m_Position = new FoliageCell();
@@ -479,11 +478,11 @@ namespace CritiasFoliage
                 labeled[label].Add(instance);
             }
         }
-        
+
         public void AddInstances(int typeHash, List<FoliageInstance> instances, bool subdivision, string label = FoliageGlobals.LABEL_PAINTED)
         {
-            for(int i = 0; i < instances.Count; i++)
-            {                
+            for (int i = 0; i < instances.Count; i++)
+            {
                 AddInstance(typeHash, instances[i], subdivision, label);
             }
         }
@@ -494,7 +493,7 @@ namespace CritiasFoliage
          * we are not going to test for any empty cells at runtime.
          */
         public void RemoveEmptyData()
-        {            
+        {
             HashSet<int> emptyCells = null;
             HashSet<int> emptyCellsSubdiv = null;
 
@@ -519,14 +518,14 @@ namespace CritiasFoliage
                     RemoveEmptyTypeDataCellSubdivided(cellSubdiv.Value);
                     if (IsSubCellEmpty(cellSubdiv.Value))
                     {
-                        if(emptyCellsSubdiv == null)
+                        if (emptyCellsSubdiv == null)
                             emptyCellsSubdiv = new HashSet<int>();
 
                         emptyCellsSubdiv.Add(cellSubdiv.Key);
                     }
                 }
 
-                if(emptyCellsSubdiv != null && emptyCellsSubdiv.Count > 0)
+                if (emptyCellsSubdiv != null && emptyCellsSubdiv.Count > 0)
                 {
                     foreach (int key in emptyCellsSubdiv)
                     {
@@ -534,7 +533,7 @@ namespace CritiasFoliage
                     }
                 }
             }
-            
+
             // Remove the empty cells
             if (emptyCells != null)
             {
@@ -554,7 +553,7 @@ namespace CritiasFoliage
         public int GetInstanceCountLocation(Vector3 position, float radius, bool subdivision)
         {
             int count = 0;
-            
+
             Vector3 min = position - new Vector3(radius, radius, radius);
             Vector3 max = position + new Vector3(radius, radius, radius);
 
@@ -603,8 +602,8 @@ namespace CritiasFoliage
                         if (cell.m_FoliageDataSubdivided.TryGetValue(hashLocal, out cellSubdivided) == false)
                             return;
 
-                    // Count all the grass foliage that overlaps the sphere
-                    foreach (var data in cellSubdivided.m_TypeHashLocationsEditor.Values)
+                        // Count all the grass foliage that overlaps the sphere
+                        foreach (var data in cellSubdivided.m_TypeHashLocationsEditor.Values)
                         {
                             foreach (var instances in data.Values)
                             {
@@ -636,7 +635,7 @@ namespace CritiasFoliage
             foreach (FoliageCellData data in m_FoliageData.Values)
             {
                 // Look through all the types
-                foreach(int typeHash in data.m_TypeHashLocationsEditor.Keys)
+                foreach (int typeHash in data.m_TypeHashLocationsEditor.Keys)
                 {
                     var labeledData = data.m_TypeHashLocationsEditor[typeHash];
 
@@ -650,7 +649,7 @@ namespace CritiasFoliage
                 foreach (FoliageCellSubdividedData dataSubdivided in data.m_FoliageDataSubdivided.Values)
                 {
                     // Look through all the types
-                    foreach(int typeHash in dataSubdivided.m_TypeHashLocationsEditor.Keys)
+                    foreach (int typeHash in dataSubdivided.m_TypeHashLocationsEditor.Keys)
                     {
                         var labeledData = dataSubdivided.m_TypeHashLocationsEditor[typeHash];
 
@@ -673,10 +672,10 @@ namespace CritiasFoliage
         {
             int count = 0;
 
-            foreach(FoliageCellData data in m_FoliageData.Values)
-            {       
+            foreach (FoliageCellData data in m_FoliageData.Values)
+            {
                 // Look through all the types
-                if(data.m_TypeHashLocationsEditor.ContainsKey(typeHash))
+                if (data.m_TypeHashLocationsEditor.ContainsKey(typeHash))
                 {
                     var labeledData = data.m_TypeHashLocationsEditor[typeHash];
 
@@ -685,12 +684,12 @@ namespace CritiasFoliage
                         count += typeData.Count;
                     }
                 }
-                
+
                 // Look through the subdivisions too
                 foreach (FoliageCellSubdividedData dataSubdivided in data.m_FoliageDataSubdivided.Values)
                 {
                     // Look through all the types
-                    if(dataSubdivided.m_TypeHashLocationsEditor.ContainsKey(typeHash))
+                    if (dataSubdivided.m_TypeHashLocationsEditor.ContainsKey(typeHash))
                     {
                         var labeledData = dataSubdivided.m_TypeHashLocationsEditor[typeHash];
 
@@ -704,7 +703,7 @@ namespace CritiasFoliage
 
             return count;
         }
-        
+
         public HashSet<int> GetFoliageHashes()
         {
             HashSet<int> tempHashes = null;
@@ -714,7 +713,7 @@ namespace CritiasFoliage
                 foreach (FoliageCellData cell in m_FoliageData.Values)
                 {
                     // Get the tree instances hashes
-                    if(cell.m_TypeHashLocationsEditor.Count > 0)
+                    if (cell.m_TypeHashLocationsEditor.Count > 0)
                     {
                         if (tempHashes == null)
                             tempHashes = new HashSet<int>();
@@ -725,13 +724,13 @@ namespace CritiasFoliage
                     // Get the grass instances hashes
                     foreach (FoliageCellSubdividedData cellSubdivided in cell.m_FoliageDataSubdivided.Values)
                     {
-                        if(cellSubdivided.m_TypeHashLocationsEditor.Count > 0)
+                        if (cellSubdivided.m_TypeHashLocationsEditor.Count > 0)
                         {
                             if (tempHashes == null)
                                 tempHashes = new HashSet<int>();
 
                             tempHashes.UnionWith(cellSubdivided.m_TypeHashLocationsEditor.Keys);
-                        }                        
+                        }
                     }
                 }
             }
@@ -742,7 +741,7 @@ namespace CritiasFoliage
         public HashSet<string> GetFoliageLabels()
         {
             HashSet<string> tempLabels = null;
-            
+
             foreach (var cell in m_FoliageData.Values)
             {
                 // Look through the cells
@@ -753,7 +752,7 @@ namespace CritiasFoliage
 
                     tempLabels.UnionWith(typedData.Keys);
                 }
-                
+
                 // Look through the subdivisions
                 foreach (var cellSubdiv in cell.m_FoliageDataSubdivided.Values)
                 {
@@ -766,7 +765,7 @@ namespace CritiasFoliage
                     }
                 }
             }
-            
+
             return tempLabels;
         }
 
@@ -884,9 +883,9 @@ namespace CritiasFoliage
         }
 
         private bool IsCellEmpty(FoliageCellData cell)
-        {       
+        {
             // Iterate subdivisions
-            foreach(FoliageCellSubdividedData cellSubdiv in cell.m_FoliageDataSubdivided.Values)
+            foreach (FoliageCellSubdividedData cellSubdiv in cell.m_FoliageDataSubdivided.Values)
             {
                 if (IsSubCellEmpty(cellSubdiv) == false)
                     return false;
@@ -913,13 +912,13 @@ namespace CritiasFoliage
          */
         private void RecalculateBoundsAfterRemove()
         {
-            foreach(FoliageCellData cell in m_FoliageData.Values)
+            foreach (FoliageCellData cell in m_FoliageData.Values)
             {
                 cell.m_BoundsExtended = cell.m_Bounds;
 
-                foreach(var labeled in cell.m_TypeHashLocationsEditor.Values)
+                foreach (var labeled in cell.m_TypeHashLocationsEditor.Values)
                 {
-                    foreach(List<FoliageInstance> instances in labeled.Values)
+                    foreach (List<FoliageInstance> instances in labeled.Values)
                     {
                         // Encapsulare all the trees bounds
                         for (int i = 0; i < instances.Count; i++)

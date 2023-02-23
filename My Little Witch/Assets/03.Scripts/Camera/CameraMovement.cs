@@ -1,12 +1,10 @@
-using System.Collections.Generic;
 using UnityEngine;
-using static Movement;
 
 public class CameraMovement : MonoBehaviour
 {
     [SerializeField] private Transform myTarget;
     [SerializeField] private float lerpspeed;
-  
+
     public enum CAMTYPE { OnStreet, OnBroom, Dead }
     public CAMTYPE camType = CAMTYPE.OnStreet;
 
@@ -36,7 +34,7 @@ public class CameraMovement : MonoBehaviour
             case CAMTYPE.OnStreet:
                 if (Input.GetMouseButton(1))
                 {
-                    transform.RotateAround(myTarget.transform.position, Vector3.up, Input.GetAxis("Mouse X") * 10f);
+                    transform.RotateAround(myTarget.transform.position, Vector3.up, Input.GetAxis("Mouse X") * 5f);
                     //transform.position = myTarget.transform.position;
                     transform.position = Vector3.Lerp(this.transform.position, myTarget.position, lerpspeed * Time.deltaTime);
                 }

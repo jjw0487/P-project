@@ -51,7 +51,7 @@ public class Monster : CharacterProperty
 
     public Transform myHpPos;
     public Transform myDmgPos;
- 
+
     public virtual void ChangeState(MonsterState what)
     {
         if (state == what) { return; }
@@ -86,7 +86,7 @@ public class Monster : CharacterProperty
                 break;
             case MonsterState.Dead:
                 StopAllCoroutines();
-                if(myEnemy != null)myEnemy.GetEXP(monStat.orgData.exp);
+                if (myEnemy != null) myEnemy.GetEXP(monStat.orgData.exp);
                 SceneData.Inst.interactableUIManager.SetGold(monStat.orgData.currency);
                 if (hpObj != null) Destroy(hpObj);
                 hpObj = null;
@@ -145,7 +145,7 @@ public class Monster : CharacterProperty
         monStat.curHP = monStat.orgData.HP;
         myAgent.speed = monStat.orgData.agentSpeed;
         myAgent.stoppingDistance = monStat.orgData.agentStopDist;
-        
+
     }
 
     protected virtual void OnTriggerEnter(Collider other)
@@ -228,7 +228,7 @@ public class Monster : CharacterProperty
         if (monStat.curHP < 0.0f) ChangeState(MonsterState.Dead);
         else myAnim.SetTrigger("IsHit");
     }
-    
+
     public void OnDebuff(float time, float percents)
     {
         if (c != null)
@@ -298,20 +298,20 @@ public class Monster : CharacterProperty
         }
 
         int rndNum = UnityEngine.Random.Range(0, 11);
-        if(rndNum < 5 && monStat.orgData.dropItems[0] != null)
+        if (rndNum < 5 && monStat.orgData.dropItems[0] != null)
         {
-            GameObject DropItem = Instantiate(monStat.orgData.dropItems[0].obj, 
+            GameObject DropItem = Instantiate(monStat.orgData.dropItems[0].obj,
                 this.transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity); // 드랍 아이템
             DropItem.transform.SetParent(SceneData.Inst.ItemPool);
         }
-        else if(rndNum == 1 && monStat.orgData.dropItems[0] != null)
+        else if (rndNum == 1 && monStat.orgData.dropItems[0] != null)
         {
-            GameObject DropItem = Instantiate(monStat.orgData.dropItems[1].obj, 
+            GameObject DropItem = Instantiate(monStat.orgData.dropItems[1].obj,
                 this.transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity); // 드랍 아이템
             DropItem.transform.SetParent(SceneData.Inst.ItemPool);
         }
-        
-        
+
+
         Destroy(gameObject);
     }
 
@@ -332,7 +332,7 @@ public class Monster : CharacterProperty
 
     protected IEnumerator IfAlive()
     {
-        while(true)
+        while (true)
         {
             if (!isDead)
             {

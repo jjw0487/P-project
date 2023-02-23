@@ -17,6 +17,6 @@ MonoBehaviour:
   npcName: "\uACE0\uC591\uC774"
   questName: 
   contents:
-  - ..................
+  - '. . . . . . . . . . '
   questObj: {fileID: 0}
   questRewardData: {fileID: 0}

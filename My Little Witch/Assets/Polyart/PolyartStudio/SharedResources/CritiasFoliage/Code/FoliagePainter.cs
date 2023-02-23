@@ -1,11 +1,10 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace CritiasFoliage
-{    
+{
     /**
      * Foliage brush painting parameters.
      */
@@ -17,7 +16,7 @@ namespace CritiasFoliage
         public float m_BrushSize = 2;
         [Range(1f, 100)]
         public float m_FoliageDensity = 50;
-        
+
         /** If we should only add to some slopes foliage instances */
         public bool m_SlopeFilter = false;
         /** Angles at which we can draw the foliage instances at */
@@ -35,7 +34,7 @@ namespace CritiasFoliage
         // If we draw only on static objects
         public bool m_StaticOnly = false;
     }
-    
+
     public class PaintedColliderData
     {
         // If it is a terrain
@@ -46,7 +45,7 @@ namespace CritiasFoliage
 
         // Terrain name if we have one
         public string m_TerrainName;
-        
+
         // The terrain listener if it has one
         public FoliageTerrainListener m_TerrainListener;
     }
@@ -78,7 +77,7 @@ namespace CritiasFoliage
         public bool m_EditorFoldoutFoliageTypes = true;
         public bool m_EditorFoldoutFoliageTypeInfo = false;
         public bool m_EditorFoldoutAdvanced = false;
-        public bool m_EditorPaintBegun = false;       
+        public bool m_EditorPaintBegun = false;
         // END Editor data
 #endif
 
@@ -87,7 +86,7 @@ namespace CritiasFoliage
         public FoliageColliders m_FoliageColliders;
 
         // List of foliage types
-        [SerializeField] private List<FoliageType> m_FoliageTypes = new List<FoliageType>(); 
+        [SerializeField] private List<FoliageType> m_FoliageTypes = new List<FoliageType>();
         private Dictionary<int, FoliageType> m_FoliageTypeIndexed;
 
         // Data that we are going to hold
@@ -100,13 +99,13 @@ namespace CritiasFoliage
 #endif
 
         public FoliageDataRuntime m_FoliageDataRuntime;
-        
+
         public string m_FoliageDataSaveName;
 
 #if UNITY_EDITOR
         // Rendering data
         public ESpatialGridDrawMode m_DrawGridsMode;
-        public bool m_DrawTreeShadows = false;       
+        public bool m_DrawTreeShadows = false;
         public bool m_DrawTreeLastLOD = true;
         // 1...3 range
         public int m_DrawNeighboringCells = 1;
@@ -258,7 +257,7 @@ namespace CritiasFoliage
 
         public string GetFileSaveName()
         {
-            if(m_FoliageDataSaveName == null || m_FoliageDataSaveName.Length == 0)
+            if (m_FoliageDataSaveName == null || m_FoliageDataSaveName.Length == 0)
             {
                 m_FoliageDataSaveName = FoliageGlobals.DISK_FILENAME + "_" + gameObject.scene.name;
             }
@@ -289,7 +288,7 @@ namespace CritiasFoliage
 #if UNITY_EDITOR
             if (runtimeOnly)
             {
-                m_FoliageDataRuntime = FoliageDataSerializer.LoadFromFileRuntime(GetFileSaveName());                
+                m_FoliageDataRuntime = FoliageDataSerializer.LoadFromFileRuntime(GetFileSaveName());
             }
             else
             {
@@ -330,7 +329,7 @@ namespace CritiasFoliage
             if (UnityEditor.EditorApplication.isPlaying == true)
             {
                 FoliageLog.Assert(m_FoliageRenderer, "Foliage renderer must not be null!");
-                m_FoliageRenderer.UpdateFoliageTypes(m_FoliageTypes);          
+                m_FoliageRenderer.UpdateFoliageTypes(m_FoliageTypes);
             }
 #else
             FoliageLog.Assert(m_FoliageRenderer, "Foliage renderer must not be null!");
@@ -339,7 +338,7 @@ namespace CritiasFoliage
         }
 
         #region RUNTIME_OPERATIONS
-        
+
         public List<FoliageTypeRuntime> GetFoliageTypesRuntime()
         {
             return m_FoliageTypes.ConvertAll((x =>
@@ -360,12 +359,12 @@ namespace CritiasFoliage
         {
             m_FoliageDataRuntime.RemoveFoliageInstance(guid);
         }
-        
+
         public void RemoveFoliageInstanceRuntime(int typeHash, System.Guid guid)
         {
             m_FoliageDataRuntime.RemoveFoliageInstance(typeHash, guid);
         }
-        
+
         public void RemoveFoliageInstanceRuntime(int typeHash, System.Guid guid, Vector3 position)
         {
             m_FoliageDataRuntime.RemoveFoliageInstance(typeHash, guid, position);
@@ -377,7 +376,7 @@ namespace CritiasFoliage
 
             if (type != null)
             {
-                if(type.IsGrassType == false)
+                if (type.IsGrassType == false)
                 {
                     PrepareFoliageInstanceRuntime(type, ref instance);
                     m_FoliageDataRuntime.AddFoliageInstance(typeHash, instance);
@@ -432,7 +431,7 @@ namespace CritiasFoliage
                 }
             }
             else
-                FoliageLog.e("Cannot set max distance for hash: " + typeHash);            
+                FoliageLog.e("Cannot set max distance for hash: " + typeHash);
         }
 
         public float GetFoliageTypeMaxDistanceRuntime(int typeHash)
@@ -521,7 +520,7 @@ namespace CritiasFoliage
 
             m_FoliageRenderer.UpdateFoliageTypes(m_FoliageTypes);
         }
-        
+
         private Dictionary<int, FoliageType> GetFoliageTypeSet()
         {
             if (m_FoliageTypeIndexed == null)
@@ -549,7 +548,7 @@ namespace CritiasFoliage
             instance.m_Bounds = type.m_Bounds;
             instance.m_Bounds = FoliageUtilities.LocalToWorld(ref instance.m_Bounds, instance.GetWorldTransform());
 
-            instance.BuildWorldMatrix();            
+            instance.BuildWorldMatrix();
         }
 
         #endregion
@@ -586,36 +585,36 @@ namespace CritiasFoliage
         {
             if (m_FoliageData == null)
                 return;
-            
+
             foreach (FoliageCellData data in m_FoliageData.m_FoliageData.Values)
             {
-                if(m_DrawGridsMode == ESpatialGridDrawMode.DRAW_GRIDS)
+                if (m_DrawGridsMode == ESpatialGridDrawMode.DRAW_GRIDS)
                 {
                     Gizmos.color = Color.white;
                     Gizmos.DrawWireCube(data.m_Bounds.center, data.m_Bounds.size);
                 }
-                else if(m_DrawGridsMode == ESpatialGridDrawMode.DRAW_GRIDS_EXTENDED)
+                else if (m_DrawGridsMode == ESpatialGridDrawMode.DRAW_GRIDS_EXTENDED)
                 {
                     Gizmos.color = Color.cyan - new Color(0.2f, 0.2f, 0.2f, 0);
                     Gizmos.DrawWireCube(data.m_BoundsExtended.center, data.m_BoundsExtended.size);
                 }
-                else if(m_DrawGridsMode == ESpatialGridDrawMode.DRAW_SUBDIVIDED_GRIDS)
+                else if (m_DrawGridsMode == ESpatialGridDrawMode.DRAW_SUBDIVIDED_GRIDS)
                 {
                     Gizmos.color = Color.green - new Color(0.2f, 0.2f, 0.2f, 0);
-                    foreach(FoliageCellSubdividedData subdivData in data.m_FoliageDataSubdivided.Values)
+                    foreach (FoliageCellSubdividedData subdivData in data.m_FoliageDataSubdivided.Values)
                     {
                         Gizmos.DrawWireCube(subdivData.m_Bounds.center, subdivData.m_Bounds.size);
                     }
                 }
-                else if(m_DrawGridsMode == ESpatialGridDrawMode.DRAW_DRAWN_GRIDS)
+                else if (m_DrawGridsMode == ESpatialGridDrawMode.DRAW_DRAWN_GRIDS)
                 {
                     Gizmos.color = Color.blue + new Color(0.2f, 0.2f, 0.2f, 0);
-                    for(int i = 0; i < m_DrawnCells.Count; i++)
+                    for (int i = 0; i < m_DrawnCells.Count; i++)
                     {
                         Gizmos.DrawWireCube(m_DrawnCells[i].center, m_DrawnCells[i].size);
                     }
                 }
-                else if(m_DrawGridsMode == ESpatialGridDrawMode.DRAW_DRAWN_SUBDIVIDED_GRIDS)
+                else if (m_DrawGridsMode == ESpatialGridDrawMode.DRAW_DRAWN_SUBDIVIDED_GRIDS)
                 {
                     Gizmos.color = Color.yellow + new Color(0.2f, 0.2f, 0.2f, 0);
                     for (int i = 0; i < m_DrawnCellsSubdivided.Count; i++)
@@ -638,14 +637,14 @@ namespace CritiasFoliage
                     type.Type = newFoliageType;
 
                     // If we are not a grass any more we'll have to change the hierarchy
-                    if(wasGrass != type.IsGrassType)
+                    if (wasGrass != type.IsGrassType)
                     {
                         FoliageLog.i("Changed from tree/grass to the opposite type! Rebuilding hierarchy!");
                         m_FoliageData.RebuildType(type.m_Hash, type.IsGrassType);
 
                         // Update the count
                         RefreshCachedCountForType(type.m_Hash, false);
-                    }                 
+                    }
                     else
                         FoliageLog.i("Did not changed from tree/grass to opposite type! Not rebuilding hierarchy!");
 
@@ -735,7 +734,7 @@ namespace CritiasFoliage
                 if (Mathf.Abs(type.m_RenderInfo.m_MaxDistance - maxDistance) > Mathf.Epsilon)
                 {
                     type.m_RenderInfo.m_MaxDistance = FoliageGlobals.ClampDistance(type.Type, maxDistance);
-                    
+
                     // Refresh type data with it's edit/runtime data
                     RefreshFoliageTypeData();
                 }
@@ -750,13 +749,13 @@ namespace CritiasFoliage
 
             if (type != null)
             {
-                if(type.m_EnableCollision != enableCollision)
+                if (type.m_EnableCollision != enableCollision)
                     type.m_EnableCollision = enableCollision;
             }
             else
                 FoliageLog.e("Cannot set collision for hash: " + typeHash);
         }
-        
+
         public void SetFoliageTypeBending(int typeHash, bool enableBending)
         {
             FoliageType type = GetFoliageTypeByHash(typeHash);
@@ -843,7 +842,7 @@ namespace CritiasFoliage
             m_FoliageData.RemoveInstancesLabeled(label);
 
             // Stick all the instances to the terrain on the Y axis
-            foreach(var data in existingInstances)
+            foreach (var data in existingInstances)
             {
                 FoliageType type = GetFoliageTypeByHash(data.Key);
                 List<FoliageInstance> instances = data.Value;
@@ -873,7 +872,7 @@ namespace CritiasFoliage
 
                     // Rotate around the Y axis
                     rotation *= Quaternion.Euler(0, Random.Range(0, 360), 0);
-                    
+
                     normPos = FoliageTerrainUtilities.TerrainNormalizedToWorldPos(normPos, terrain);
                     normPos.y = y;
 
@@ -887,9 +886,9 @@ namespace CritiasFoliage
             }
 
             // Add them back to the system
-            foreach(var typeInstances in existingInstances)
+            foreach (var typeInstances in existingInstances)
                 AddFoliageInstancesInternal(typeInstances.Key, typeInstances.Value, label);
-            
+
             // Post a file save so that nothing gets lost
             SaveToFile();
 
@@ -929,22 +928,22 @@ namespace CritiasFoliage
                     // Build all the instances
                     foreach (var inst in typedData.Value.Values)
                     {
-                        for(int i = 0; i < inst.Count; i++)
+                        for (int i = 0; i < inst.Count; i++)
                         {
-							GameObject instance = UnityEditor.PrefabUtility.InstantiatePrefab(prefab) as GameObject;
-							instance.transform.parent = owner.transform;
+                            GameObject instance = UnityEditor.PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+                            instance.transform.parent = owner.transform;
 
 
                             instance.transform.position = inst[i].m_Position;
                             instance.transform.rotation = inst[i].m_Rotation;
                             instance.transform.localScale = inst[i].m_Scale;
                         }
-                    }                    
+                    }
                 }
 
-                foreach(FoliageCellSubdividedData cellSubdivided in cell.m_FoliageDataSubdivided.Values)
+                foreach (FoliageCellSubdividedData cellSubdivided in cell.m_FoliageDataSubdivided.Values)
                 {
-                    foreach(var typedData in cellSubdivided.m_TypeHashLocationsEditor)
+                    foreach (var typedData in cellSubdivided.m_TypeHashLocationsEditor)
                     {
                         FoliageType type = GetFoliageTypeByHash(typedData.Key);
 
@@ -958,8 +957,8 @@ namespace CritiasFoliage
                         {
                             for (int i = 0; i < inst.Count; i++)
                             {
-								GameObject instance = UnityEditor.PrefabUtility.InstantiatePrefab(prefab) as GameObject;
-								instance.transform.parent = owner.transform;
+                                GameObject instance = UnityEditor.PrefabUtility.InstantiatePrefab(prefab) as GameObject;
+                                instance.transform.parent = owner.transform;
 
                                 instance.transform.position = inst[i].m_Position;
                                 instance.transform.rotation = inst[i].m_Rotation;
@@ -1009,13 +1008,13 @@ namespace CritiasFoliage
                         continue;
 
                     // Add the data
-                    if(templateCache.ContainsKey(type.m_Hash) == false)
+                    if (templateCache.ContainsKey(type.m_Hash) == false)
                         templateCache.Add(type.m_Hash, FoliageUtilities.ExtractFromFoliagePrefab(type.m_Prefab, extractType, true));
 
                     GameObject template = templateCache[type.m_Hash];
 
                     // Instantiate the item
-                    if(template != null)
+                    if (template != null)
                     {
                         for (int i = 0; i < instances.Count; i++)
                         {
@@ -1040,12 +1039,12 @@ namespace CritiasFoliage
         {
             GameObject owner = GameObject.Find("CRITIAS_BillboardHolder");
 
-            if(clearExisting && owner != null)
+            if (clearExisting && owner != null)
                 DestroyImmediate(owner);
 
             if (owner == null)
                 owner = new GameObject("CRITIAS_BillboardHolder");
-            
+
             foreach (FoliageCellData cellTree in m_FoliageData.m_FoliageData.Values)
             {
                 GenerateTreeBillboards(owner, cellTree);
@@ -1054,7 +1053,7 @@ namespace CritiasFoliage
 
         /** Generate billboards selectively per cell */
         private void GenerateTreeBillboards(GameObject owner, FoliageCellData cell)
-        {            
+        {
             foreach (var typedData in cell.m_TypeHashLocationsEditor)
             {
                 FoliageType type = GetFoliageTypeByHash(typedData.Key);
@@ -1070,16 +1069,16 @@ namespace CritiasFoliage
 
                 if (instances.Count == 0)
                     continue;
-                
+
                 FoliageWindTreeUtilities.GenerateBillboards(cell.m_BoundsExtended, cell.m_Position, owner, instances, type, m_BillboardsGenerateLODGroup, m_BillboardLODGroupFade, m_BillboardLODGroupWillCrossFade);
             }
         }
 
         public int AddFoliageType(FoliageTypeBuilder foliageType)
-        {            
+        {
             int hash = GetUniqueHash(foliageType.m_Prefab);
 
-            if(GetFoliageTypeByHash(hash) != null)
+            if (GetFoliageTypeByHash(hash) != null)
             {
                 FoliageLog.w("Foliage prefab with hash: [" + hash + "] and name: [" + foliageType.m_Prefab.name + "] already contained!");
                 return hash;
@@ -1112,11 +1111,11 @@ namespace CritiasFoliage
         }
 
         public void RemoveFoliageTypeHash(int foliageTypeHash, bool deleteTypeToo, bool forcefullyProhibitSaving = false)
-        {            
+        {
             // Remove the data's types first
             m_FoliageTypes.ForEach((x =>
             {
-                if(x.m_Hash == foliageTypeHash)
+                if (x.m_Hash == foliageTypeHash)
                 {
                     m_FoliageData.RemoveType(x.m_Hash);
                 }
@@ -1131,7 +1130,7 @@ namespace CritiasFoliage
                 int deleted = m_FoliageTypes.RemoveAll((x) => x.m_Hash == foliageTypeHash);
                 FoliageLog.Assert(deleted == 1 || deleted == 0);
 
-                if(deleted > 0)
+                if (deleted > 0)
                     RefreshFoliageTypeData();
             }
 
@@ -1140,7 +1139,7 @@ namespace CritiasFoliage
                 // Save grass to file after we removed the types so that we don't have any bad data in the grass hierarchy if a reloading somehow takes place
                 SaveToFile();
             }
-            
+
             GenerateTreeBillboards(true);
             RefreshData();
         }
@@ -1172,7 +1171,7 @@ namespace CritiasFoliage
             GenerateTreeBillboards(true);
             RefreshData();
         }
-        
+
         public void RemoveFoliageInstances(int typeHash, Vector3 position, float distanceDelta = 0.3f)
         {
             if (GetFoliageTypeSet().ContainsKey(typeHash))
@@ -1187,7 +1186,7 @@ namespace CritiasFoliage
         {
             m_FoliageData.RemoveInstancesLabeled(label);
 
-            if(forcefullyProhibitSaving == false)
+            if (forcefullyProhibitSaving == false)
             {
                 SaveToFile();
             }
@@ -1199,7 +1198,7 @@ namespace CritiasFoliage
         public void RemoveFoliageInstanceGuid(int typeHash, Vector3 position, System.Guid guid)
         {
             if (GetFoliageTypeSet().ContainsKey(typeHash))
-            {                
+            {
                 m_FoliageData.RemoveInstanceGuid(typeHash, position, guid);
             }
             else
@@ -1223,7 +1222,7 @@ namespace CritiasFoliage
         {
             AddFoliageInstanceInternal(typeHash, instance, label);
         }
-        
+
         /** Same as the single value mode. */
         public void AddFoliageInstances(int typeHash, List<FoliageInstance> instances, string label = FoliageGlobals.LABEL_PAINTED)
         {
@@ -1237,7 +1236,7 @@ namespace CritiasFoliage
 
         private void RefreshCachedCountForType(int type, bool all)
         {
-            if(all)
+            if (all)
             {
                 GetFoliageTypeCachedCountSet().Clear();
             }
@@ -1277,7 +1276,7 @@ namespace CritiasFoliage
 
             return -1;
         }
-        
+
         public void RequestLabelRefresh()
         {
             m_FoliageTypeLabelsCached = null;
@@ -1300,7 +1299,7 @@ namespace CritiasFoliage
 
         // BEGIN Private utilities
 
-        private void AddFoliageInstanceInternal(int typeHash, FoliageInstance instance,  string label = FoliageGlobals.LABEL_PAINTED)
+        private void AddFoliageInstanceInternal(int typeHash, FoliageInstance instance, string label = FoliageGlobals.LABEL_PAINTED)
         {
             FoliageType type;
 
@@ -1321,7 +1320,7 @@ namespace CritiasFoliage
 
             if (GetFoliageTypeSet().TryGetValue(typeHash, out type))
             {
-                for(int i = 0; i < instances.Count; i++)
+                for (int i = 0; i < instances.Count; i++)
                     instances[i] = PrepareFoliageInstance(type, instances[i]);
 
                 m_FoliageData.AddInstances(typeHash, instances, type.IsGrassType, label);
@@ -1350,12 +1349,12 @@ namespace CritiasFoliage
 
             return instance;
         }
-        
+
         public void RequestRefreshFoliageTypeData()
         {
             RefreshFoliageTypeData();
         }
-        
+
         List<FoliageType> m_TempPainEnabled = new List<FoliageType>();
         private List<FoliageType> GetPaintEnabledFoliageTypesGrass()
         {
@@ -1390,7 +1389,7 @@ namespace CritiasFoliage
             gameObject.SetActive(false);
             gameObject.SetActive(true);
         }
-        
+
         private int GetUniqueHash(GameObject foliage)
         {
             return FoliageUtilities.GetStableHashCode(foliage.name);
@@ -1402,13 +1401,13 @@ namespace CritiasFoliage
         // Painter collider cache for colliders, very usefull for fast retrieval of data
         private Dictionary<Collider, PaintedColliderData> m_PaintedColliderCache = new Dictionary<Collider, PaintedColliderData>();
 
-        float m_TimeRealtimePaint;        
+        float m_TimeRealtimePaint;
         public void PaintFoliage(RaycastHit brushHit)
         {
             if (Time.realtimeSinceStartup - m_TimeRealtimePaint < FoliageGlobals.EDITOR_DELAY_PAINT_FOLIAGE)
                 return;
             m_TimeRealtimePaint = Time.realtimeSinceStartup;
-            
+
             List<FoliageType> tempPaintEnabled = GetPaintEnabledFoliageTypesTree();
             if (tempPaintEnabled.Count > 0)
                 PaintFoliageType(tempPaintEnabled, true, brushHit);
@@ -1419,7 +1418,7 @@ namespace CritiasFoliage
 
             RefreshData();
         }
-        
+
         public void DeleteFoliage(RaycastHit hit, bool allTypes)
         {
             if (Time.realtimeSinceStartup - m_TimeRealtimePaint < FoliageGlobals.EDITOR_DELAY_PAINT_FOLIAGE)
@@ -1527,7 +1526,7 @@ namespace CritiasFoliage
                 m_PaintedCells.Clear();
             }
 
-            if(m_PaintedTypes.Count > 0)
+            if (m_PaintedTypes.Count > 0)
             {
                 foreach (int key in m_PaintedTypes)
                     RefreshCachedCountForType(key, false);
@@ -1542,7 +1541,7 @@ namespace CritiasFoliage
         private void PaintFoliageType(List<FoliageType> enabledType, bool areTrees, RaycastHit brushHit)
         {
             int existingInstanceCount = m_FoliageData.GetInstanceCountLocation(brushHit.point, m_PaintParameters.m_BrushSize, areTrees == false);
-            
+
             // Instance count is count of instances per 1000(tree) / 100(grass) square meters
             float density = m_PaintParameters.m_FoliageDensity;
 
@@ -1556,7 +1555,7 @@ namespace CritiasFoliage
                 instanceCount = (int)((area / 50f) * density);
 
             // Required instance count
-            int requiredInstanceCount = Mathf.Clamp(instanceCount - existingInstanceCount, 1, areTrees ? 10000 : 100000);            
+            int requiredInstanceCount = Mathf.Clamp(instanceCount - existingInstanceCount, 1, areTrees ? 10000 : 100000);
 
             Vector3 brushHitNormalInverted = -brushHit.normal;
 
@@ -1586,20 +1585,20 @@ namespace CritiasFoliage
 
                     // If we don't have the collider key
                     if (m_PaintedColliderCache.ContainsKey(collider) == false)
-                    {                        
+                    {
                         PaintedColliderData data = new PaintedColliderData();
 
                         Terrain t = collider.gameObject.GetComponent<Terrain>();
                         data.m_IsTerrain = t != null;
 
-                        if(data.m_IsTerrain)
+                        if (data.m_IsTerrain)
                         {
                             data.m_Terrain = t;
                             data.m_TerrainName = t.name;
 
                             FoliageTerrainListener listener = t.gameObject.GetComponent<FoliageTerrainListener>();
 
-                            if(listener == null)
+                            if (listener == null)
                             {
                                 data.m_TerrainListener = t.gameObject.AddComponent<FoliageTerrainListener>();
                                 data.m_TerrainListener.m_FoliagePainter = this;
@@ -1643,17 +1642,17 @@ namespace CritiasFoliage
                             Quaternion slopeOrientation = Quaternion.LookRotation(hit.normal) * Quaternion.Euler(90, 0, 0);
 
                             // How much we orient towards the slope
-                            standardRot = Quaternion.Slerp(standardRot, slopeOrientation, 
+                            standardRot = Quaternion.Slerp(standardRot, slopeOrientation,
                                 Random.Range(paintInfo.m_SurfaceAlignInfluence.x, paintInfo.m_SurfaceAlignInfluence.y));
 
                             // To the slope orientation apply the rotation
-                            if(m_PaintParameters.m_RotateYOnly)
+                            if (m_PaintParameters.m_RotateYOnly)
                             {
                                 standardRot *= Quaternion.Euler(0, Random.Range(m_PaintParameters.m_RandomRotation.x, m_PaintParameters.m_RandomRotation.y), 0);
                             }
                             else
                             {
-                                standardRot *= Quaternion.Euler(Random.Range(m_PaintParameters.m_RandomRotation.x, m_PaintParameters.m_RandomRotation.y), 
+                                standardRot *= Quaternion.Euler(Random.Range(m_PaintParameters.m_RandomRotation.x, m_PaintParameters.m_RandomRotation.y),
                                     Random.Range(m_PaintParameters.m_RandomRotation.x, m_PaintParameters.m_RandomRotation.y),
                                     Random.Range(m_PaintParameters.m_RandomRotation.x, m_PaintParameters.m_RandomRotation.y));
                             }
@@ -1674,8 +1673,8 @@ namespace CritiasFoliage
                     }
 
                     Vector3 scale;
-                    
-                    if(m_PaintParameters.m_ScaleUniform)
+
+                    if (m_PaintParameters.m_ScaleUniform)
                     {
                         float scaleUni = Random.Range(m_PaintParameters.m_ScaleUniformXYZ.x, m_PaintParameters.m_ScaleUniformXYZ.y);
                         scale = new Vector3(scaleUni, scaleUni, scaleUni);
@@ -1689,9 +1688,9 @@ namespace CritiasFoliage
                     }
 
                     // Y Offset it by the values
-                    float YOffset = Random.Range(type.m_PaintInfo.m_YOffset.x, type.m_PaintInfo.m_YOffset.y); 
+                    float YOffset = Random.Range(type.m_PaintInfo.m_YOffset.x, type.m_PaintInfo.m_YOffset.y);
                     Vector3 foliageInstancePos = hit.point + (hit.normal * YOffset);
-                    
+
                     // We don't need to populate all the data
                     FoliageInstance instance = new FoliageInstance();
                     instance.m_Position = foliageInstancePos;
@@ -1718,10 +1717,10 @@ namespace CritiasFoliage
         }
 
 #endif
-#endregion
+        #endregion
 
-        
-#region EDIT_TIME_RENDERING
+
+        #region EDIT_TIME_RENDERING
 #if UNITY_EDITOR
 
         public void CheckNullAndRequestUpdate()
@@ -1769,7 +1768,7 @@ namespace CritiasFoliage
 
             RefreshData();
         }
-        
+
         private List<Bounds> m_DrawnCells = new List<Bounds>();
         private List<Bounds> m_DrawnCellsSubdivided = new List<Bounds>();
 
@@ -1780,7 +1779,7 @@ namespace CritiasFoliage
         // [SerializeField] private Quaternion m_CachedCameraRot;
 
         public void Update()
-        {            
+        {
             if (UnityEditor.EditorApplication.isPlaying)
                 return;
 
@@ -1796,9 +1795,9 @@ namespace CritiasFoliage
                 cam = UnityEditor.SceneView.lastActiveSceneView.camera;
             else
                 return;
-            
+
             m_DrawCamera = cam;
-            
+
             // Debug.Log("Updating draw!");
 
             m_DrawnCells.Clear();
@@ -1808,7 +1807,7 @@ namespace CritiasFoliage
 
             FoliageCell currentCell = new FoliageCell();
             currentCell.Set(cam.transform.position);
-            
+
             // We'll only get through the neighboring cells
             FoliageCell.IterateNeighboring(currentCell, m_DrawNeighboringCells, (int hash) =>
             {
@@ -1818,13 +1817,13 @@ namespace CritiasFoliage
                 {
                     ProcessCell(data);
                 }
-            });            
+            });
         }
 
         private void ProcessCell(FoliageCellData cell)
-        {   
+        {
             m_DrawnCells.Add(cell.m_Bounds);
-            
+
             UnityEngine.Rendering.ShadowCastingMode shadow = m_DrawTreeShadows ? UnityEngine.Rendering.ShadowCastingMode.On : UnityEngine.Rendering.ShadowCastingMode.Off;
 
             foreach (var pair in cell.m_TypeHashLocationsEditor)
@@ -1858,7 +1857,7 @@ namespace CritiasFoliage
                             m = type.m_RuntimeData.m_LODDataTree[0].m_Mesh;
                             mats = type.m_RuntimeData.m_LODDataTree[0].m_Materials;
                         }
-                        
+
                         for (int sub = 0; sub < m.subMeshCount; sub++)
                             Graphics.DrawMeshInstanced(m, sub, mats[sub], mtx, null, shadow);
                     }
@@ -1906,9 +1905,9 @@ namespace CritiasFoliage
         }
 
         private void ProcessSubCell(FoliageCellSubdividedData cell)
-        {            
+        {
             m_DrawnCellsSubdivided.Add(cell.m_Bounds);
-            
+
             foreach (var pair in cell.m_TypeHashLocationsEditor)
             {
                 FoliageType type = GetFoliageTypeByHash(pair.Key);
@@ -1927,7 +1926,7 @@ namespace CritiasFoliage
                     {
                         Mesh m = type.m_RuntimeData.m_LODDataGrass.m_Mesh;
                         Material mat = type.m_RuntimeData.m_LODDataGrass.m_Material;
-                        
+
                         Graphics.DrawMeshInstanced(m, 0, mat, mtx, null, UnityEngine.Rendering.ShadowCastingMode.Off);
                     }
                     else
@@ -1941,15 +1940,15 @@ namespace CritiasFoliage
 
                             Mesh m = type.m_RuntimeData.m_LODDataGrass.m_Mesh;
                             Material mat = type.m_RuntimeData.m_LODDataGrass.m_Material;
-                            
-                            Graphics.DrawMeshInstanced(m, 0, mat, range, null,UnityEngine.Rendering.ShadowCastingMode.Off);
+
+                            Graphics.DrawMeshInstanced(m, 0, mat, range, null, UnityEngine.Rendering.ShadowCastingMode.Off);
                         }
                     }
                 }
             }
         }
 #endif
-#endregion
+        #endregion
 
     } // End class 'FoliagePainter'
 } // End namespace 'Critias'

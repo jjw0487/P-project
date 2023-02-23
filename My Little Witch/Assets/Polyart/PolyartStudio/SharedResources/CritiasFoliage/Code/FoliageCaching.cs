@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace CritiasFoliage
 {
@@ -43,7 +42,7 @@ namespace CritiasFoliage
         {
             // If the cache count + 1 (the next element we're going to add) reached our threshold evict the first items that got in
             int cachedQueueCount = m_CachedQueue.Count;
-            
+
             if (cachedQueueCount + 1 > m_MaximumValues)
             {
                 int evictCount = m_EvictionCount <= cachedQueueCount ? m_EvictionCount : cachedQueueCount;

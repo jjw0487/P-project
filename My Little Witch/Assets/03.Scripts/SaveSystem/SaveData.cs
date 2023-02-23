@@ -1,12 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.UIElements;
-
 [System.Serializable]
 public class SaveData
 {
@@ -20,7 +11,6 @@ public class SaveData
     public int[] itemCount;
     public int[] items;
     public int[] equipmentItems;
-
     public int indexer;
 
     //skill
@@ -33,7 +23,7 @@ public class SaveData
     public int[] questIndex;
     public int[] npcProgress;
 
-     
+
     public SaveData(Player _player, Inventory _inventory, InteractableUIManager _gold, QuestManager _quest, SkillTab[] _skillTab)
     {
         #region 생성자를 오버로딩 한 이유
@@ -67,11 +57,10 @@ public class SaveData
         items = new int[existItemCount];
         itemCount = new int[existItemCount];
 
-        Debug.Log(items.Length);
 
         for (int i = 0; i < _inventory.slotData.Length; i++) // 아이템 배치를 띄엄띄엄 해 놨을 수 도  있으므로 다 검사 해야한다.
         {
-            if(_inventory.slotData[i].item != null)
+            if (_inventory.slotData[i].item != null)
             {
                 items[indexer] = _inventory.slotData[i].item.myItem.orgData.itemId;
                 indexer++;
@@ -80,10 +69,10 @@ public class SaveData
 
         indexer = 0; //인덱서 초기화
 
-        for(int i = 0; i < _inventory.slotData.Length; i++)
+        for (int i = 0; i < _inventory.slotData.Length; i++)
         {
             if (_inventory.slotData[i].item != null)
-            {  
+            {
                 itemCount[indexer] = _inventory.slotData[i].item.curNumber;
                 indexer++;
             }
@@ -120,14 +109,14 @@ public class SaveData
         {
             questIndex = new int[_quest.questInProgress.Count];
 
-            for(int i = 0; i < questIndex.Length; i++)
+            for (int i = 0; i < questIndex.Length; i++)
             {
                 questIndex[i] = _quest.questIndex[i];
             }
         }
 
         npcProgress = new int[_quest.npc.Length]; // npc 진행도 저장
-        for(int i = 0; i < npcProgress.Length; i++)
+        for (int i = 0; i < npcProgress.Length; i++)
         {
             npcProgress[i] = _quest.npc[i].progress;
         }
@@ -140,14 +129,11 @@ public class SaveData
 
         #region Skill ->
         skillLevel = new int[8];
-        for(int i = 0; i < _skillTab.Length; i++)
+        for (int i = 0; i < _skillTab.Length; i++)
         {
             skillLevel[i] = _skillTab[i].curLevel;
         }
         #endregion
-
-
-        // 동영상 다시 봐서 왜 이 3가지 타입만 저장 가능한지 알아보자, 모노비헤비어 사용 가능한지 알아보자
 
     }
 }

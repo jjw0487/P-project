@@ -1,11 +1,8 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEditor;
-
 using System.IO;
+using UnityEngine;
 
 namespace CritiasFoliage
 {
@@ -19,11 +16,11 @@ namespace CritiasFoliage
          * Load from file the runtime version of the data
          */
         public static FoliageDataRuntime LoadFromFileRuntime(string filename)
-        {            
+        {
             FoliageData data = LoadFromFileEditTime(filename);
-            
+
             // Build the runtime data from the edit time data
-            FoliageDataRuntime runtime = new FoliageDataRuntime();            
+            FoliageDataRuntime runtime = new FoliageDataRuntime();
 
             foreach (var hashedCell in data.m_FoliageData)
             {
@@ -59,10 +56,10 @@ namespace CritiasFoliage
                     // Don't forget to trim all excess instances!
                     allTreeInstances.TrimExcess();
 
-                    #if UNITY_EDITOR
+#if UNITY_EDITOR
                     if (allTreeInstances.Count == 0)
                         Debug.Assert(false, "Count 0!");
-                    #endif
+#endif
 
                     runtimeCell.m_TypeHashLocationsRuntime[idx] = new FoliageKeyValuePair<int, FoliageTuple<FoliageInstance[]>>(instances.Key, new FoliageTuple<FoliageInstance[]>(allTreeInstances.ToArray()));
                 }
@@ -81,7 +78,7 @@ namespace CritiasFoliage
 
                     idx = -1;
                     runtimeSubdividedCell.m_TypeHashLocationsRuntime = new FoliageKeyValuePair<int, FoliageTuple<Matrix4x4[][]>>[editSubdividedCell.m_TypeHashLocationsEditor.Count];
-                    foreach(var instances in editSubdividedCell.m_TypeHashLocationsEditor)
+                    foreach (var instances in editSubdividedCell.m_TypeHashLocationsEditor)
                     {
                         idx++;
 
@@ -91,10 +88,10 @@ namespace CritiasFoliage
                         foreach (List<FoliageInstance> inst in labeledInstances.Values)
                             allGrassInstances.AddRange(inst);
 
-                        #if UNITY_EDITOR
+#if UNITY_EDITOR
                         if (allGrassInstances.Count == 0)
                             Debug.Assert(false, "Count 0!");
-                        #endif
+#endif
 
                         // Build the multi-array data
                         int ranges = Mathf.CeilToInt(allGrassInstances.Count / (float)FoliageGlobals.RENDER_BATCH_SIZE);
@@ -102,10 +99,10 @@ namespace CritiasFoliage
 
                         for (int i = 0; i < ranges; i++)
                         {
-                            List<FoliageInstance> range = allGrassInstances.GetRange(i * FoliageGlobals.RENDER_BATCH_SIZE, 
-                                i * FoliageGlobals.RENDER_BATCH_SIZE + FoliageGlobals.RENDER_BATCH_SIZE > allGrassInstances.Count 
-                                    ? allGrassInstances.Count - i * FoliageGlobals.RENDER_BATCH_SIZE 
-                                    : FoliageGlobals.RENDER_BATCH_SIZE);                          
+                            List<FoliageInstance> range = allGrassInstances.GetRange(i * FoliageGlobals.RENDER_BATCH_SIZE,
+                                i * FoliageGlobals.RENDER_BATCH_SIZE + FoliageGlobals.RENDER_BATCH_SIZE > allGrassInstances.Count
+                                    ? allGrassInstances.Count - i * FoliageGlobals.RENDER_BATCH_SIZE
+                                    : FoliageGlobals.RENDER_BATCH_SIZE);
 
                             batches[i] = range.ConvertAll<Matrix4x4>((x) => x.GetWorldTransform()).ToArray();
                         }
@@ -222,12 +219,12 @@ namespace CritiasFoliage
             // Just print out some information
 #if UNITY_EDITOR
             {
-                int instances = data.GetInstanceCount();                
+                int instances = data.GetInstanceCount();
                 Debug.Log(string.Format("Written foliage data with [{0} Cells] and [{1} Instances].", data.m_FoliageData.Count, instances));
             }
 #endif
         }
-        
+
         private static void WriteFoliageData(BinaryWriter a, FoliageData data)
         {
             Dictionary<int, FoliageCellData> cellData = data.m_FoliageData;
@@ -362,7 +359,7 @@ namespace CritiasFoliage
 
             int entries = a.ReadInt32();
 
-            for(int i = 0; i < entries; i++)
+            for (int i = 0; i < entries; i++)
             {
                 int dataKey = a.ReadInt32();
 
@@ -371,15 +368,15 @@ namespace CritiasFoliage
 
                 // Read the content
                 int entriesLabeled = a.ReadInt32();
-                for(int j = 0; j < entriesLabeled; j++)
+                for (int j = 0; j < entriesLabeled; j++)
                 {
                     string dataKeyLabel = a.ReadString();
                     List<FoliageInstance> instances = ReadListFoliageInstance(a, false);
 
                     data.m_TypeHashLocationsEditor[dataKey].Add(dataKeyLabel, instances);
                 }
-            }            
-        }        
+            }
+        }
 
         private static void WriteFoliageCellDataSubdivided(BinaryWriter a, int key, FoliageCellSubdividedData data)
         {
@@ -392,13 +389,13 @@ namespace CritiasFoliage
             // Write inner cell data
             a.Write(data.m_TypeHashLocationsEditor.Count);
 
-            foreach(int dataKey in data.m_TypeHashLocationsEditor.Keys)
+            foreach (int dataKey in data.m_TypeHashLocationsEditor.Keys)
             {
                 a.Write(dataKey);
                 var labeled = data.m_TypeHashLocationsEditor[dataKey];
 
                 a.Write(labeled.Count);
-                foreach(string dataKeyLabel in labeled.Keys)
+                foreach (string dataKeyLabel in labeled.Keys)
                 {
                     a.Write(dataKeyLabel);
                     WriteListFoliageInstance(a, labeled[dataKeyLabel], false, true);
@@ -423,16 +420,16 @@ namespace CritiasFoliage
             a.Write(list.Count);
 
             // Shuffle the list if we save so that when we use the density we won't have problems with the lastly set list    
-            if(shuffle)
-                FoliageUtilities.Shuffle(list);            
+            if (shuffle)
+                FoliageUtilities.Shuffle(list);
 
             for (int i = 0; i < list.Count; i++)
                 WriteFoliageInstance(a, list[i], tree);
         }
-        
+
         private static void WriteFoliageInstance(BinaryWriter a, FoliageInstance i, bool tree)
         {
-            if(tree)
+            if (tree)
             {
                 WriteBounds(a, i.m_Bounds);
                 WriteVector3(a, i.m_Position);
@@ -452,7 +449,7 @@ namespace CritiasFoliage
         {
             FoliageInstance instance = new FoliageInstance();
 
-            if(tree)
+            if (tree)
             {
                 instance.m_Bounds = ReadBounds(a);
                 instance.m_Position = ReadVector3(a);
@@ -509,7 +506,7 @@ namespace CritiasFoliage
             a.Write(m.m31);
             a.Write(m.m32);
             a.Write(m.m33);
-        }        
+        }
 
         private static Matrix4x4 ReadMatrix4x4(BinaryReader a)
         {
@@ -545,7 +542,7 @@ namespace CritiasFoliage
             a.Write(q.z);
             a.Write(q.w);
         }
-        
+
         private static Quaternion ReadQuaternion(BinaryReader a)
         {
             Quaternion q;

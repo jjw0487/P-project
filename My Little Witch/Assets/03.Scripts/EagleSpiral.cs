@@ -1,7 +1,5 @@
 using System.Collections;
-using System.Threading;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class EagleSpiral : MonoBehaviour
 {
@@ -52,7 +50,7 @@ public class EagleSpiral : MonoBehaviour
                 StartCoroutine(RotateAround(rotateDuration));
                 break;
             case EagleMovement.Leave:
-                GameObject obj = Instantiate(dropItems[playerLV - 2], this.transform.position + new Vector3(0f,2f,0f), Quaternion.identity);
+                GameObject obj = Instantiate(dropItems[playerLV - 2], this.transform.position + new Vector3(0f, 2f, 0f), Quaternion.identity);
                 obj.transform.SetParent(SceneData.Inst.ItemPool);
                 StartCoroutine(Rotating((myExitPos - transform.position).normalized));
                 break;
@@ -83,14 +81,14 @@ public class EagleSpiral : MonoBehaviour
             case EagleMovement.Create:
                 break;
             case EagleMovement.Forward:
-                
+
                 if (Vector3.Distance(myTargetPos, transform.position) > 5f)
                 {
                     transform.rotation = Quaternion.LookRotation((myTargetPos - transform.position).normalized);
                     myTargetDir = (myTargetPos - transform.position).normalized;
                     transform.position += myTargetDir * (speed * Time.deltaTime);
                 }
-                else if(Vector3.Distance(myTargetPos, transform.position) < 5f && 
+                else if (Vector3.Distance(myTargetPos, transform.position) < 5f &&
                     Vector3.Distance(myTargetPos, transform.position) > 1.5f)
                 {
                     dir = Quaternion.Euler(0f, transform.rotation.eulerAngles.y, 0f);
@@ -98,7 +96,7 @@ public class EagleSpiral : MonoBehaviour
                     myTargetDir = (myTargetPos - transform.position).normalized;
                     transform.position += myTargetDir * (speed * Time.deltaTime);
                 }
-                else if(Vector3.Distance(myTargetPos, transform.position) < 1.5f)
+                else if (Vector3.Distance(myTargetPos, transform.position) < 1.5f)
                 { E_ChangeState(EagleMovement.Spiral); }
 
                 break;

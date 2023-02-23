@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Npc : DialogueTrigger
 {
 
     [SerializeField] protected LayerMask layerMask;
-    
+
     private void Start()
     {
         isTalking = false;

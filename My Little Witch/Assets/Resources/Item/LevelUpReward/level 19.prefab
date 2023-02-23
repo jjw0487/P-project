@@ -370,9 +370,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   myItem:
     orgData: {fileID: 11400000, guid: f75a63b1fe49ddb4183575412b5be65d, type: 2}
-    curNumber: 0
   contents:
-  - {fileID: 0}
+  - {fileID: 4951020221388243100, guid: 19e9bc8a685d3404fa980ab12df83f23, type: 3}
+  - {fileID: 8566056783275893560, guid: 733f6c6d9024a994ab10ed3ef97b7ddd, type: 3}
+  curNumber: 0
 --- !u!54 &-2951457103006455253
 Rigidbody:
   m_ObjectHideFlags: 0

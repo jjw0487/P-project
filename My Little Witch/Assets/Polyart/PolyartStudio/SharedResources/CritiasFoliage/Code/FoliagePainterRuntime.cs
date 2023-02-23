@@ -1,6 +1,5 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -172,7 +171,7 @@ namespace CritiasFoliage
         {
             throw new System.NotImplementedException();
         }
-        
+
         /**
          * Removes all the foliage instances of the specified type within a radius of the specified position.
          * 

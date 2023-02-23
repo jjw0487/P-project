@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Direct : ProjectileMover
 {
 
     public SkillData skillData;
- 
+
 
     protected override void Start()
     {
@@ -17,7 +15,7 @@ public class Direct : ProjectileMover
 
     void FixedUpdate()
     {
-        if(speed != 0) { rb.velocity = transform.forward * speed; }
+        if (speed != 0) { rb.velocity = transform.forward * speed; }
     }
 
     protected override void OnCollisionEnter(Collision collision)

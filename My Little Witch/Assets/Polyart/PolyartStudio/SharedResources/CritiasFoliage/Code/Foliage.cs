@@ -1,7 +1,5 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace CritiasFoliage
@@ -79,13 +77,13 @@ namespace CritiasFoliage
 
 #if UNITY_EDITOR
             string buildSettings = UnityEditor.PlayerSettings.GetScriptingDefineSymbolsForGroup(UnityEditor.EditorUserBuildSettings.selectedBuildTargetGroup);
-            
+
             if (!buildSettings.Contains("DEBUG_MODE_FOLIAGE"))
             {
                 UnityEditor.PlayerSettings.SetScriptingDefineSymbolsForGroup(UnityEditor.EditorUserBuildSettings.selectedBuildTargetGroup, buildSettings + ";DEBUG_MODE_FOLIAGE");
             }
 
-            if(SystemInfo.supportsInstancing == false)
+            if (SystemInfo.supportsInstancing == false)
             {
                 Debug.LogError("Instancing is not supported on this platform! The system will not work!");
             }

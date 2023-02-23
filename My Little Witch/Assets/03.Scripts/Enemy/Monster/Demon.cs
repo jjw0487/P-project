@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Demon : Monster
@@ -25,7 +24,7 @@ public class Demon : Monster
             myAnim.SetTrigger("OnBattle");
         }
 
-        
+
     }
 
     public override void ChangeState(MonsterState what)
@@ -101,10 +100,10 @@ public class Demon : Monster
                     targetPos = myTarget.transform.position;
 
                     if (!myAgent.pathPending) { myAgent.SetDestination(targetPos); }
-                    
-                    if(rndNum == 0) { if (targetDist <= monStat.orgData.strikingDist) { ChangeState(MonsterState.Attack); } }
-                    if(rndNum == 1) { if (targetDist <= 3f) { ChangeState(MonsterState.Attack); } } //스킬마다 다른 어택 범위를 갖는다.
-                    if(rndNum == 2) { if (targetDist <= 10f) { ChangeState(MonsterState.Attack); } }
+
+                    if (rndNum == 0) { if (targetDist <= monStat.orgData.strikingDist) { ChangeState(MonsterState.Attack); } }
+                    if (rndNum == 1) { if (targetDist <= 3f) { ChangeState(MonsterState.Attack); } } //스킬마다 다른 어택 범위를 갖는다.
+                    if (rndNum == 2) { if (targetDist <= 10f) { ChangeState(MonsterState.Attack); } }
 
                     if (Vector3.Distance(myTarget.transform.position, this.transform.position) > 20.0f) { OnExitMotion(); }
                     // 20.0f 으로 재정의
@@ -181,7 +180,6 @@ public class Demon : Monster
     void CreateRandomNumber()
     {
         rndNum = Random.Range(0, 3); // to get value from 0 to 2
-        print(rndNum);
 
         if (rndNum == 0) { atkDist = monStat.orgData.strikingDist; }
         if (rndNum == 1) { atkDist = 5f; }
@@ -209,7 +207,7 @@ public class Demon : Monster
         }
     }
 
-    protected IEnumerator Attacking() 
+    protected IEnumerator Attacking()
     {
         myAgent.SetDestination(transform.position);
         yield return new WaitForSeconds(1.0f);
@@ -222,7 +220,7 @@ public class Demon : Monster
             {
                 myAgent.SetDestination(transform.position);
                 this.transform.rotation = Quaternion.LookRotation((myTarget.position - transform.position).normalized);
-                if (rndNum == 0) { myAnim.SetTrigger("Attack");  }
+                if (rndNum == 0) { myAnim.SetTrigger("Attack"); }
                 if (rndNum == 1) { myAnim.SetTrigger("Attack2"); }
                 if (rndNum == 2) { myAnim.SetTrigger("Attack3"); }
                 chill = monStat.orgData.attackSpeed; //공격 속도

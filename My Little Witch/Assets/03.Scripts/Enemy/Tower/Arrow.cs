@@ -17,7 +17,7 @@ public class Arrow : MonoBehaviour
     }
     public IEnumerator Attacking()
     {
-        Vector3 target = myTarget.transform.position + new Vector3(0f,1.0f,0f);
+        Vector3 target = myTarget.transform.position + new Vector3(0f, 1.0f, 0f);
         Vector3 pos = this.transform.position;
         Vector3 dir = target - pos;
         float totalDist = dir.magnitude;

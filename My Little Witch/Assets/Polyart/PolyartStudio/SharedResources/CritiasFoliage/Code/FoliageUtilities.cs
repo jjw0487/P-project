@@ -1,6 +1,5 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,14 +27,14 @@ namespace CritiasFoliage
             GameObject prototype = null;
 
             // Pass unchanged
-            if (extractType == EExtractType.COLLIDERS 
+            if (extractType == EExtractType.COLLIDERS
                 || extractType == EExtractType.RENDERERS_FOR_COLLIDER_MESHES_NAVMESH
                 || extractType == EExtractType.RENDERERS)
-            {                
+            {
                 System.Type[] systemMustHaveType = null;
                 System.Type systemExtractType = null;
 
-                switch(extractType)
+                switch (extractType)
                 {
                     case EExtractType.COLLIDERS:
                         systemMustHaveType = new System.Type[] { typeof(Collider) };
@@ -63,7 +62,7 @@ namespace CritiasFoliage
                             return null;
                     }
                 }
-                
+
                 prototype = GameObject.Instantiate(foliageType);
                 prototype.name = extractType + "_Prototype_" + foliageType.name;
 
@@ -88,7 +87,7 @@ namespace CritiasFoliage
                 for (int i = 0; i < components.Length; i++)
                 {
                     if (extractType == EExtractType.COLLIDERS)
-                    {                        
+                    {
                         if ((components[i].GetType().IsSubclassOf(systemExtractType)) == false && (components[i] is Transform) == false)
                         {
                             GameObject.DestroyImmediate(components[i]);
@@ -96,7 +95,7 @@ namespace CritiasFoliage
                     }
                     else
                     {
-                        if ((components[i].GetType().IsSubclassOf(systemExtractType)) == false 
+                        if ((components[i].GetType().IsSubclassOf(systemExtractType)) == false
                             && (components[i] is Transform) == false
                             && (components[i] is LODGroup) == false
                             && (components[i] is MeshFilter) == false)
@@ -104,12 +103,12 @@ namespace CritiasFoliage
                             GameObject.DestroyImmediate(components[i]);
                         }
                     }
-                }                
+                }
             }
             else if (extractType == EExtractType.NON_MODIFIED)
             {
                 prototype = GameObject.Instantiate(foliageType);
-                prototype.name = extractType + "_Prototype_" + foliageType.name;                
+                prototype.name = extractType + "_Prototype_" + foliageType.name;
             }
 
 
@@ -121,7 +120,7 @@ namespace CritiasFoliage
                 for (int i = prototype.transform.childCount - 1; i >= 0; i--)
                     prototype.transform.GetChild(i).gameObject.isStatic = true;
             }
-            else if(extractType == EExtractType.RENDERERS_FOR_COLLIDER_MESHES_NAVMESH && shouldBeStatic)
+            else if (extractType == EExtractType.RENDERERS_FOR_COLLIDER_MESHES_NAVMESH && shouldBeStatic)
             {
                 UnityEditor.GameObjectUtility.SetStaticEditorFlags(prototype, UnityEditor.StaticEditorFlags.NavigationStatic);
 

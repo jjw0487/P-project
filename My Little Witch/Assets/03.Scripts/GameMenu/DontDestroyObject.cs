@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +12,7 @@ public class DontDestroyObject : MonoBehaviour
     private Transform dungeonPosAfterWarp;
 
     public bool isWarping = false; // runegate 워프를 이용한 씬이동
+    public bool withSavedData = false;
 
     void Awake() // called zero
     {
@@ -50,7 +49,7 @@ public class DontDestroyObject : MonoBehaviour
             ifSceneNeeds[2].SetActive(false);
 
         }
-        else if(scene.name == "Title")
+        else if (scene.name == "Title")
         {
             // 0.GUI, 1.Player 2.Camera
             ifSceneNeeds[0].SetActive(false);
@@ -60,6 +59,18 @@ public class DontDestroyObject : MonoBehaviour
         else if (scene.name == "Town")
         {
             SceneData.Inst.questManager = FindObjectOfType<QuestManager>();
+
+            if (withSavedData)
+            {
+                // 타이틀에서 로드할 때 로드가 잘 안됨
+                ifSceneNeeds[0].SetActive(true);
+                ifSceneNeeds[1].SetActive(true);
+                ifSceneNeeds[2].SetActive(true);
+                SceneData.Inst.myPlayer.LoadGameFromTitle();
+                withSavedData = false;
+                return;
+            }
+
             if (!isWarping) // initial scene
             {
                 // 0.GUI, 1.Player 2.Camera
@@ -71,20 +82,21 @@ public class DontDestroyObject : MonoBehaviour
                 playerPos.position = townPosBeforeWarp.position;
                 playerPos.rotation = townPosBeforeWarp.rotation;
                 camRot.rotation = Quaternion.Euler(30f, 90f, 0f);
-                SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
+                SceneData.Inst.talkSign.SetBool("IsOpen", false); // press f key
                 SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
             }
 
             if (isWarping) // from Dungeon
-            {  
+            {
                 townPosAfterWarp = GameObject.FindGameObjectWithTag("TownPosAfterWarp").transform;
                 playerPos.position = townPosAfterWarp.position;
                 playerPos.rotation = townPosAfterWarp.rotation;
                 camRot.rotation = Quaternion.Euler(30f, 0f, 0f);
                 SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
                 SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
+                SceneData.Inst.myPlayer.SetStatus();
             }
-           
+
         }
         else if (scene.name == "Dungeon")
         {
@@ -94,7 +106,7 @@ public class DontDestroyObject : MonoBehaviour
             camRot.rotation = Quaternion.Euler(30f, 45f, 0f);
 
             SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
-            //SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
+            SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
             SceneData.Inst.questManager = null; // 던전에서는 퀘스트 상호작용 없음
         }
     }

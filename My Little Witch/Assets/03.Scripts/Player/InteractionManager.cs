@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InteractionManager : PointerCheck
@@ -24,7 +23,7 @@ public class InteractionManager : PointerCheck
         myPlyer.GetInteraction(lookAt);
         Camera.main.transform.parent.GetComponent<Animator>().SetBool("IsInteracting", true);
         StartCoroutine(OnInteration(cool));
-        
+
     }
 
 
@@ -34,8 +33,8 @@ public class InteractionManager : PointerCheck
 
         // 아무키나 누르시오 메세지 화면에 호출
         while (SceneData.Inst.myPlayer.OnInteraction == true)
-        {            
-            if(Input.anyKey)
+        {
+            if (Input.anyKey)
             {
                 SceneData.Inst.dialogueManager.DM_EndDialogue();
                 yield break;

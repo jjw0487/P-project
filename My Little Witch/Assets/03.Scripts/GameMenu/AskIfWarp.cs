@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class AskIfWarp : PointerCheck
 {
-    [SerializeField]private LevelLoader levelLoader;
+    [SerializeField] private LevelLoader levelLoader;
     public void MoveOnTitle()
     {
         DontDestroyObject.instance.isWarping = false;

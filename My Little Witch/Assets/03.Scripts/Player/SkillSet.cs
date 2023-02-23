@@ -44,11 +44,11 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
             if (myData.Type != SkillData.SkillType.NormalAttack) // 일반공격이 아니라면 마우스로 스킬사용
             {
                 this.PerformSkill();
-                if(this == fromSkill.skillSetArray[0]) { print("1"); fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
-                if(this == fromSkill.skillSetArray[1]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
-                if(this == fromSkill.skillSetArray[2]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
-                if(this == fromSkill.skillSetArray[3]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
-            }  
+                if (this == fromSkill.skillSetArray[0]) { print("1"); fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
+                if (this == fromSkill.skillSetArray[1]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
+                if (this == fromSkill.skillSetArray[2]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
+                if (this == fromSkill.skillSetArray[3]) { fromSkill.myPlayer.curAnim[0].SetInteger("SkillNum", 0); }
+            }
         }
 
         if (eventData.button == PointerEventData.InputButton.Right)
@@ -188,7 +188,7 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
     {
         GameObject obj = Instantiate(myData.Effect, myCharacter.transform.position + myData.performPos, Quaternion.identity);
         fromSkill.myPlayer.curAnim[0].SetTrigger(myData.triggerName);
-        fromSkill.myPlayer.HandleMP(myData.consumeMP,0f);
+        fromSkill.myPlayer.HandleMP(myData.consumeMP, 0f);
         if (fromSkill.myPlayer.handleSlider == null) { fromSkill.myPlayer.handleSlider = StartCoroutine(fromSkill.myPlayer.SliderValue()); }
         StartCoroutine(fromSkill.Chill(myData.remainTime));
     }
@@ -232,8 +232,8 @@ public class SkillSet : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, 
             StartCoroutine(fromSkill.Chill(myData.remainTime));
             SkillOverlapCol();
         }
-        
-            
+
+
     }
 
     public void AND() // 어택 N 디버프 with Waiting Motion <- 애님이벤트에서 실행 OnPlayerANDSkill()

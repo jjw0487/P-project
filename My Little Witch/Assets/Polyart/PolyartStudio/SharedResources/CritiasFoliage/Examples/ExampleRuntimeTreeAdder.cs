@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ExampleRuntimeTreeAdder : MonoBehaviour
 {
@@ -52,7 +50,7 @@ public class ExampleRuntimeTreeAdder : MonoBehaviour
                 inst.m_Scale = Vector3.one;
                 inst.m_Rotation = Quaternion.Euler(0, Random.Range(0, 360), 0);
 
-                runtime.AddFoliageInstance(treeType.m_Hash, inst);                
+                runtime.AddFoliageInstance(treeType.m_Hash, inst);
             }
         }
     }

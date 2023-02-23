@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Flythrough : MonoBehaviour
 {
@@ -25,7 +23,7 @@ public class Flythrough : MonoBehaviour
         Cursor.visible = false;
         baseSunTransform = sun.transform.rotation;
     }
-   
+
 
     // Update is called once per frame
     void Update()
@@ -33,7 +31,7 @@ public class Flythrough : MonoBehaviour
 
         if (Input.GetKey("e"))
         {
-            sun.transform.Rotate(0, 0.1f, 0,Space.World);
+            sun.transform.Rotate(0, 0.1f, 0, Space.World);
         }
         if (Input.GetKey("q"))
         {
@@ -53,7 +51,7 @@ public class Flythrough : MonoBehaviour
         }
         if (Input.GetKey("v"))
         {
-            mycamera.fieldOfView -=0.3f;
+            mycamera.fieldOfView -= 0.3f;
         }
         if (Input.GetKey("b"))
         {
@@ -77,17 +75,18 @@ public class Flythrough : MonoBehaviour
         }
 
 
-   
-        if (Input.GetAxis("Vertical")!=0 && Input.GetAxis("Horizontal") !=0)
+
+        if (Input.GetAxis("Vertical") != 0 && Input.GetAxis("Horizontal") != 0)
         {
-            transform.position += transform.forward * moveSpeed/1.5f * Input.GetAxis("Vertical");
-            transform.position += transform.right * moveSpeed/ 1.5f * Input.GetAxis("Horizontal");
-        } else
+            transform.position += transform.forward * moveSpeed / 1.5f * Input.GetAxis("Vertical");
+            transform.position += transform.right * moveSpeed / 1.5f * Input.GetAxis("Horizontal");
+        }
+        else
         {
             transform.position += transform.forward * moveSpeed * Input.GetAxis("Vertical");
             transform.position += transform.right * moveSpeed * Input.GetAxis("Horizontal");
         }
- 
+
         if (Input.GetKey("space"))
         {
             transform.position += transform.up * moveSpeed * 0.07f;

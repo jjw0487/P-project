@@ -1,6 +1,5 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -96,7 +95,7 @@ namespace CritiasFoliage
 
                 speedTreeData.m_BillboardMaterial = billboardMaterialBatch;
             }
-            
+
             // Set the material universal data
             billboardMaterialBatch.SetTexture("_MainTex", speedTreeData.m_BillboardRenderer.sharedMaterial.GetTexture("_MainTex"));
             billboardMaterialBatch.SetTexture("_BumpMap", speedTreeData.m_BillboardRenderer.sharedMaterial.GetTexture("_BumpMap"));
@@ -134,16 +133,16 @@ namespace CritiasFoliage
             }
         }
 
-		// TODO: Replace the system quad
-		public static int[] m_SystemQuadTriangles = new int[] { 0, 1, 2, 1, 0, 3 };
-		public static Vector3[] m_SystemQuadVertices = new Vector3[] { new Vector3(-0.5f, -0.5f, 0.0f), new Vector3(0.5f, 0.5f, 0.0f), new Vector3(0.5f, -0.5f, 0.0f), new Vector3(-0.5f, 0.5f, 0.0f) };
-		public static Vector3[] m_SystemQuadNormals = new Vector3[] { new Vector3(0.0f, 0.0f, -1.0f), new Vector3(0.0f, 0.0f, -1.0f), new Vector3(0.0f, 0.0f, -1.0f), new Vector3(0.0f, 0.0f, -1.0f) };
-		public static Vector4[] m_SystemQuadTangents = new Vector4[] { new Vector4(1.0f, 0.0f, 0.0f, -1.0f), new Vector4(1.0f, 0.0f, 0.0f, -1.0f), new Vector4(1.0f, 0.0f, 0.0f, -1.0f), new Vector4(1.0f, 0.0f, 0.0f, -1.0f) };
-		
+        // TODO: Replace the system quad
+        public static int[] m_SystemQuadTriangles = new int[] { 0, 1, 2, 1, 0, 3 };
+        public static Vector3[] m_SystemQuadVertices = new Vector3[] { new Vector3(-0.5f, -0.5f, 0.0f), new Vector3(0.5f, 0.5f, 0.0f), new Vector3(0.5f, -0.5f, 0.0f), new Vector3(-0.5f, 0.5f, 0.0f) };
+        public static Vector3[] m_SystemQuadNormals = new Vector3[] { new Vector3(0.0f, 0.0f, -1.0f), new Vector3(0.0f, 0.0f, -1.0f), new Vector3(0.0f, 0.0f, -1.0f), new Vector3(0.0f, 0.0f, -1.0f) };
+        public static Vector4[] m_SystemQuadTangents = new Vector4[] { new Vector4(1.0f, 0.0f, 0.0f, -1.0f), new Vector4(1.0f, 0.0f, 0.0f, -1.0f), new Vector4(1.0f, 0.0f, 0.0f, -1.0f), new Vector4(1.0f, 0.0f, 0.0f, -1.0f) };
+
         public static void GenerateBillboards(Bounds bounds, FoliageCell cell, GameObject owner, List<FoliageInstance> trees, FoliageType type, bool addLodGroup, float screenFadeSize, bool animatedCrossFade)
         {
             int[] originalTriangles = m_SystemQuadTriangles;
-            
+
             GameObject meshObj = new GameObject();
 
             // Mark object as static
@@ -173,7 +172,7 @@ namespace CritiasFoliage
             var data = type.m_RuntimeData.m_SpeedTreeData;
 
             Vector3 worldScale = new Vector3(data.m_Size.x, data.m_Size.y, data.m_Size.x);
-            
+
             // Set material
             MeshRenderer rend = meshObj.AddComponent<MeshRenderer>();
             rend.sharedMaterial = GenerateBillboardMaterial(type.m_RuntimeData.m_SpeedTreeData);
@@ -189,13 +188,13 @@ namespace CritiasFoliage
             List<Vector4> m_TempQuadTangents = new List<Vector4>();
             List<Vector3> m_TempQuadNormals = new List<Vector3>();
             List<int> m_TempQuadIndices = new List<int>();
-            
+
             for (int treeIndex = 0; treeIndex < trees.Count; treeIndex++)
             {
                 Vector3 position = trees[treeIndex].m_Position;
                 Vector3 scale = trees[treeIndex].m_Scale;
                 float rot = trees[treeIndex].m_Rotation.eulerAngles.y * Mathf.Deg2Rad;
-                
+
                 // Offset world position, by the grounding factor
                 Vector3 instancePos = position;
 
@@ -205,7 +204,7 @@ namespace CritiasFoliage
                 // Scale by the world scale too so that we don't have to do an extra multip
                 Vector3 instanceScale = scale;
                 instanceScale.Scale(worldScale);
-                
+
                 // Add the world and scale data
                 for (int index = 0; index < 4; index++)
                 {
@@ -251,7 +250,7 @@ namespace CritiasFoliage
 
             // Set the mesh
             filter.mesh = treeMesh;
-            
+
             if (addLodGroup)
             {
                 // Add the mesh' lod group

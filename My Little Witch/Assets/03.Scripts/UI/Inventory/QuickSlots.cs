@@ -1,13 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.UIElements;
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class QuickSlots : Slots
 {
-    
+
     public override void AddItem(Item _item, int _count)
     {
         if (orgSprite == null) { orgSprite = GetComponentInChildren<Image>().sprite; }
@@ -23,7 +19,7 @@ public class QuickSlots : Slots
 
     public void UseQuickSlotItem()
     {
-        
+
         if (item != null)
         {
             print("사용");
@@ -58,7 +54,7 @@ public class QuickSlots : Slots
     { // 다른 슬롯 위치에 놓였을 때
         SceneData.Inst.Inven.quickSlotManager.StartQuickSlot(); //퀵슬롯 스타트 코루틴 실행
 
-        if (DragImage.Inst.dragSlot.item.myItem.orgData.itemType == ItemData.ItemType.Consumable) 
+        if (DragImage.Inst.dragSlot.item.myItem.orgData.itemType == ItemData.ItemType.Consumable)
         {
             if (DragImage.Inst.dragSlot != null) { ChangeSlot(); }
         }
@@ -74,7 +70,7 @@ public class QuickSlots : Slots
     {
         SceneData.Inst.myPlayer.OnUI = true;
     }
-    
+
     public override void OnPointerExit(PointerEventData eventData)
     {
         SceneData.Inst.myPlayer.OnUI = false;

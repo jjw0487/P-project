@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Circular : ProjectileMover
 {
     public SkillData skillData;
-    private Vector3 offset; 
+    private Vector3 offset;
 
     protected override void Start()
     {
@@ -39,9 +37,9 @@ public class Circular : ProjectileMover
 
     protected override void OnCollisionEnter(Collision collision)
     {
-        
+
         rb.constraints = RigidbodyConstraints.FreezeAll;
-        if(collision.gameObject.layer == LayerMask.NameToLayer("Monster") && !collision.gameObject.GetComponentInParent<Monster>().isDead)
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Monster") && !collision.gameObject.GetComponentInParent<Monster>().isDead)
         {
             Collider[] hitColliders = Physics.OverlapSphere(this.transform.position, skillData.overlapRadius);
             foreach (Collider col in hitColliders)

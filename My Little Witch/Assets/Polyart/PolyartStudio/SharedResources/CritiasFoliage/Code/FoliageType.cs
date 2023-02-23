@@ -1,6 +1,5 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -59,7 +58,7 @@ namespace CritiasFoliage
     /**
      * Mode of rendering for this foliage type.
      */
-     [System.Serializable]
+    [System.Serializable]
     public enum EFoliageRenderType
     {
         /**
@@ -138,7 +137,7 @@ namespace CritiasFoliage
         public float m_MaxDistance;
 
         // Maximum distance before the last LOD is loaded
-        public float m_LODTransition ;
+        public float m_LODTransition;
 
         // If it casts shadows. Defaults to false for grass
         public bool m_CastShadow;
@@ -218,7 +217,7 @@ namespace CritiasFoliage
             {
                 m_Type = value;
 
-                switch(m_Type)
+                switch (m_Type)
                 {
                     case EFoliageType.OTHER_GRASS:
                     case EFoliageType.SPEEDTREE_GRASS:
@@ -240,7 +239,7 @@ namespace CritiasFoliage
                     m_IsSpeedTreeType = false;
 
                 // Also check that we are compatible with the render type
-                if(m_RenderType == EFoliageRenderType.INSTANCED_INDIRECT && m_IsGrassType == false)
+                if (m_RenderType == EFoliageRenderType.INSTANCED_INDIRECT && m_IsGrassType == false)
                 {
                     FoliageLog.w("Changed render type from 'INSTANCED_INDIRECT' to 'INSTANCED' since we changed a type!");
                     RenderType = EFoliageRenderType.INSTANCED;
@@ -289,7 +288,7 @@ namespace CritiasFoliage
         }
 
         // Prefab linked to this foliage type
-        public GameObject m_Prefab;       
+        public GameObject m_Prefab;
 
         // Render info for the foliage type
         public FoliageTypeRenderInfo m_RenderInfo;
@@ -304,7 +303,7 @@ namespace CritiasFoliage
 
         // The painting data
 #if UNITY_EDITOR
-        public FoliageTypePaintInfo m_PaintInfo;        
+        public FoliageTypePaintInfo m_PaintInfo;
 #endif
 
         private bool m_RuntimeDataCreated = false;
@@ -315,7 +314,7 @@ namespace CritiasFoliage
             set
             {
                 FoliageLog.Assert(m_RuntimeDataCreated == false, "Must not create foliage runtime data twice!");
-                m_RuntimeDataCreated = true;                
+                m_RuntimeDataCreated = true;
             }
         }
 
@@ -344,16 +343,16 @@ namespace CritiasFoliage
                 }
 
                 // Update the hue variation
-                if(m_IsGrassType)
+                if (m_IsGrassType)
                 {
                     m_RuntimeData.m_LODDataGrass.m_Material.SetColor("_HueVariation", m_RenderInfo.m_Hue);
                     m_RuntimeData.m_LODDataGrass.m_Material.SetColor("_Color", m_RenderInfo.m_Color);
                 }
                 else
                 {
-                    for(int i = 0; i < m_RuntimeData.m_LODDataTree.Length; i++)
+                    for (int i = 0; i < m_RuntimeData.m_LODDataTree.Length; i++)
                     {
-                        for(int m = 0; m < m_RuntimeData.m_LODDataTree[i].m_Materials.Length; m++)
+                        for (int m = 0; m < m_RuntimeData.m_LODDataTree[i].m_Materials.Length; m++)
                             m_RuntimeData.m_LODDataTree[i].m_Materials[m].SetColor("_Color", m_RenderInfo.m_Color);
                     }
                 }
@@ -367,7 +366,7 @@ namespace CritiasFoliage
 
                 FoliageTypeUtilities.UpdateDistancesLOD(m_RuntimeData.m_LODDataTree, lods, m_RenderInfo.m_MaxDistance, m_RenderInfo.m_LODTransition, IsSpeedTreeType);
             }
-        }        
+        }
 
         public void CopyBlock()
         {
@@ -403,7 +402,7 @@ namespace CritiasFoliage
             // Init the SpeedTree data
             if (type.IsSpeedTreeType)
             {
-                if(runtime.m_SpeedTreeData == null)
+                if (runtime.m_SpeedTreeData == null)
                     runtime.m_SpeedTreeData = new FoliageTypeSpeedTreeData();
             }
 
@@ -449,9 +448,9 @@ namespace CritiasFoliage
                         if (lods[i].renderers[0].gameObject.GetComponent<BillboardRenderer>() != null)
                         {
                             // Extract the billboard data                            
-                            var speedData  = runtime.m_SpeedTreeData;
+                            var speedData = runtime.m_SpeedTreeData;
                             FoliageWindTreeUtilities.ExtractBillboardData(lods[i].renderers[0].gameObject.GetComponent<BillboardRenderer>(), speedData);
-                            
+
                             continue;
                         }
 
@@ -553,10 +552,10 @@ namespace CritiasFoliage
         public static void BuildDataRuntime(FoliagePainter painter, FoliageType type, Transform attachmentPoint)
         {
             FoliageLog.Assert(type.IsRuntimeInitialized == false, "Runtime data already initialized!");
-            
+
             // Everyone has MPB's
             type.m_RuntimeData.m_TypeMPB = new MaterialPropertyBlock();
-            
+
             if (type.IsSpeedTreeType)
             {
                 // Create the glued mesh
@@ -566,7 +565,7 @@ namespace CritiasFoliage
                 // Get the lod and instnatiade the one with the least instructions                
                 LOD[] lods = type.m_Prefab.GetComponent<LODGroup>().GetLODs();
 
-                for(int i = lods.Length - 1; i >= 0; i--)
+                for (int i = lods.Length - 1; i >= 0; i--)
                 {
                     if (lods[i].renderers[0].GetComponent<BillboardRenderer>() != null)
                         continue;
@@ -587,7 +586,7 @@ namespace CritiasFoliage
 
                 // Set the invisible null shader, we only need the wind
                 Material[] mats = speedData.m_SpeedTreeWindObjectMesh.materials;
-                for(int i = 0; i < mats.Length; i++)
+                for (int i = 0; i < mats.Length; i++)
                     mats[i].shader = nullShader;
 
                 // Attach the wind object. Ensures that we are enabled.
@@ -604,7 +603,7 @@ namespace CritiasFoliage
                 b.Expand(4.5f);
 
                 m.mesh.bounds = b;
-                speedData.m_SpeedTreeWindObject.GetComponentInChildren<MeshFilter>().mesh = m.mesh;                
+                speedData.m_SpeedTreeWindObject.GetComponentInChildren<MeshFilter>().mesh = m.mesh;
             }
 
             // Not used here, since at edit time we already created the materials
@@ -654,7 +653,7 @@ namespace CritiasFoliage
             // We did initialize
             type.IsRuntimeInitialized = true;
         }
-        
+
         /**
          * Update the LOD min/max distances for an object.
          * 
@@ -663,7 +662,7 @@ namespace CritiasFoliage
          *          and we will skip it in case that we have one
          */
         public static void UpdateDistancesLOD(FoliageTypeLODTree[] treeLods, LOD[] groupLods, float maxDistance, float lodDistance, bool isSpeedTree)
-        {            
+        {
             if (groupLods != null && groupLods.Length > 0)
             {
                 FoliageLog.Assert(groupLods.Length >= treeLods.Length, "Must have same or more lods than the tree lods!");
@@ -676,15 +675,15 @@ namespace CritiasFoliage
 
                     FoliageTypeLODTree lodTree = treeLods[i];
                     LOD lodGroupCurrent = groupLods[i];
-                    if (i == treeLods.Length-1)
+                    if (i == treeLods.Length - 1)
                     {
                         lodTree.m_EndDistance = maxDistance;
                     }
                     else
                     {
-                        lodTree.m_EndDistance = ((1.0f - lodGroupCurrent.screenRelativeTransitionHeight) * maxDistance/3);
+                        lodTree.m_EndDistance = ((1.0f - lodGroupCurrent.screenRelativeTransitionHeight) * maxDistance / 3);
                     }
-                    
+
                 }
             }
             else

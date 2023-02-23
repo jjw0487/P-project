@@ -56,14 +56,14 @@ public class Item : MonoBehaviour
         {
             if (SceneData.Inst.Inven.slots[i].GetComponent<Slots>().item == null) // slot에 item 정보가 null이라면
             {
-                for(int n = 0; n < SceneData.Inst.Inven.slots.Length; ++n) // item 위치를 임의로 옮겼을지도 모르니 한 번 더 검사
+                for (int n = 0; n < SceneData.Inst.Inven.slots.Length; ++n) // item 위치를 임의로 옮겼을지도 모르니 한 번 더 검사
                 {
-                    if(SceneData.Inst.Inven.slots[n].GetComponent<Slots>().item != null) // item 정보가 null이 아니라면
+                    if (SceneData.Inst.Inven.slots[n].GetComponent<Slots>().item != null) // item 정보가 null이 아니라면
                     {
                         if (SceneData.Inst.Inven.slots[n].GetComponent<Slots>().item.myItem.orgData.name == myItem.orgData.name)
-                            //이름이 같은지 조건검사
+                        //이름이 같은지 조건검사
                         {
-                            moveOn = true; 
+                            moveOn = true;
                             this.transform.position = new Vector3(999f, 999f, 999f);
                             if (count != 0) { SceneData.Inst.Inven.slots[n].GetComponent<Slots>().AddCount(count); }
                             else { SceneData.Inst.Inven.slots[n].GetComponent<Slots>().AddCount(curNumber); }
@@ -73,7 +73,7 @@ public class Item : MonoBehaviour
                         }
                     }
                 }
-                if(!moveOn) // 위에 조건에 안걸렸을 때 실행
+                if (!moveOn) // 위에 조건에 안걸렸을 때 실행
                 {
                     this.transform.SetParent(SceneData.Inst.Inven.slots[i]); // 부모로 빈 슬롯
                     this.transform.position = new Vector3(999f, 999f, 999f); // 게임 화면에서 보이지 않도록 임의의 포지션에 위치시켜볼까?

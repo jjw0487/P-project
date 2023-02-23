@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StrayCat : Npc
@@ -9,7 +7,7 @@ public class StrayCat : Npc
         if ((layerMask & 1 << other.gameObject.layer) != 0)
         {
             SceneData.Inst.talkSign.SetBool("IsOpen", true);
-          
+
             //Quaternion dir = Quaternion.LookRotation((other.transform.position - this.transform.position).normalized);
             //transform.rotation = Quaternion.Euler(0f, dir.eulerAngles.y, 0f);
         }

@@ -44,7 +44,7 @@ public class AnimEvent : MonoBehaviour
     }
     public void OnBossAttack3()
     {
-       demon.DemonAtk3();
+        demon.DemonAtk3();
     }
 
     public void OnTrailRendererEnter()

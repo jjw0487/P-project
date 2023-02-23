@@ -1,7 +1,5 @@
 using Unity.Mathematics;
 using UnityEngine;
-using static UnityEditor.Progress;
-using static UnityEditor.Timeline.Actions.MenuPriority;
 
 public class Inventory : PointerCheck
 {
@@ -58,7 +56,7 @@ public class Inventory : PointerCheck
         {
             if (slotData[i].item == null)
             {
-                GameObject obj = Instantiate(itemData[_itemId].obj, new Vector3(999f,999f,999f), quaternion.identity);
+                GameObject obj = Instantiate(itemData[_itemId].obj, new Vector3(999f, 999f, 999f), quaternion.identity);
                 obj.transform.SetParent(SceneData.Inst.ItemPool);
                 slotData[i].SetLoadedItem(obj.GetComponent<Item>(), _count);
                 return;

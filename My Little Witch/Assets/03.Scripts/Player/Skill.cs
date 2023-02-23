@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Skill : MonoBehaviour
 {
@@ -27,7 +26,7 @@ public class Skill : MonoBehaviour
             skillSetArray[0].PerformSkill();
             myPlayer.curAnim[0].SetInteger("SkillNum", 0);
 
-            
+
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2) && canSkill && skillSetArray[1].myData != null)

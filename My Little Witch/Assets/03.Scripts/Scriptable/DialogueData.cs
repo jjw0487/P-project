@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "DialogueData", menuName = "ScriptableObject/DialogueData", order = 6)]
@@ -11,7 +9,7 @@ public class DialogueData : ScriptableObject
     public int npcId;
     public string npcName;
     public string questName;
-    [TextArea(3,10)]
+    [TextArea(3, 10)]
     public string[] contents;
 
     [Header("Selective")]

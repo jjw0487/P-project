@@ -39,11 +39,11 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         if (skillBook.skillPoint <= 0 || this.myData.level >= 5)
         {
             lvUpBtn.interactable = false;
-            
+
         }
         else lvUpBtn.interactable = true;
 
-        if(this.myData.level >= 5)
+        if (this.myData.level >= 5)
         {
             skillBook.tabList.Remove(this); //레벨 5가 되면 더이상 함수실행 안되도록 제거 해 준다.
         }
@@ -92,9 +92,9 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         {
             for (int i = 0; i < SceneData.Inst.mySkill.skillSetArray.Length; ++i) // 슬롯 갯수만큼 반복
             {
-                if (SceneData.Inst.mySkill.skillSetArray[i].myData == null) 
+                if (SceneData.Inst.mySkill.skillSetArray[i].myData == null)
                 {
-                    for(int n = 0; n < SceneData.Inst.mySkill.skillSetArray.Length; ++n)
+                    for (int n = 0; n < SceneData.Inst.mySkill.skillSetArray.Length; ++n)
                     {
                         if (SceneData.Inst.mySkill.skillSetArray[n].myData != null &&
                             SceneData.Inst.mySkill.skillSetArray[n].myData.triggerName == myData.triggerName)

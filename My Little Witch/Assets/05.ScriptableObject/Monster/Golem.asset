@@ -17,12 +17,13 @@ MonoBehaviour:
   ATK: 40
   DP: 10
   StrikingDist: 2
-  AgentSpeed: 3
+  AgentSpeed: 4
   AgentStopDist: 1
   AttackRadius: 1
   AttackSpeed: 3
   EXP: 100
   DropItems:
+  - {fileID: 11400000, guid: 84a23cbd15c6b1543b578228684e2791, type: 2}
   - {fileID: 11400000, guid: 02673d5deb0cf9e469b19ff1e3b4eaf5, type: 2}
   Currency: 25
   HPlocalScale: {x: 2, y: 2, z: 2}

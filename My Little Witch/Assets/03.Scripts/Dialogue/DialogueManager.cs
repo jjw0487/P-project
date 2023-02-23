@@ -1,13 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using Unity.VisualScripting;
-using Unity.VisualScripting.FullSerializer.Internal;
 using UnityEngine;
-using UnityEngine.Networking.Types;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using static UnityEditor.Progress;
 
 
 public class DialogueManager : MonoBehaviour
@@ -29,7 +22,7 @@ public class DialogueManager : MonoBehaviour
         sentences = new Queue<string>();
         camAnimator = Camera.main.transform.parent.GetComponent<Animator>();
     }
-    
+
     public void DM_StartDialogue(DialogueData _curData, DialogueTrigger _curTrigger = null)
     {
         //
@@ -38,7 +31,7 @@ public class DialogueManager : MonoBehaviour
         //
         camAnimator.SetBool("IsInteracting", true);
         SceneData.Inst.talkSign.SetBool("IsOpen", false);
-        
+
         animator.SetBool("IsOpen", true);
         sentences.Clear(); // 처음 읽기전에 이전 컨텐츠를 클리어
         nameText.text = curData.npcName;
@@ -51,7 +44,7 @@ public class DialogueManager : MonoBehaviour
 
     public void DM_DisplayNextSentence()
     {
-        if(sentences.Count == 0)
+        if (sentences.Count == 0)
         {
             DM_EndDialogue();
             return;
@@ -76,7 +69,7 @@ public class DialogueManager : MonoBehaviour
             animator.SetBool("IsOpen", false); // 패널 닫음
             camAnimator.SetBool("IsInteracting", false); // 카메라 원복
         }
-        else if(curData.type == DialogueData.Type.SavePoint)
+        else if (curData.type == DialogueData.Type.SavePoint)
         {
             askAWill[1].SetActive(true); //저장할지 물음
         }
@@ -104,7 +97,7 @@ public class DialogueManager : MonoBehaviour
             DM_GetPlayerReward(); //대화 종료 후 보상 지급
             curTrigger.progress += 1;
             SceneData.Inst.questManager.QM_TurnMarkOff(curData.npcId);
-            if(curData.questRewardData.type == QuestData.QuestType.Delivery)
+            if (curData.questRewardData.type == QuestData.QuestType.Delivery)
             {
                 DM_TakeOverQuestItem();
             }
@@ -125,7 +118,7 @@ public class DialogueManager : MonoBehaviour
                 if (SceneData.Inst.Inven.slots[i].GetComponent<Slots>().item.myItem.orgData.name == curData.questRewardData.goalKeyword)
                 //이름이 같은지 조건검사
                 {
-                    if(SceneData.Inst.Inven.slots[i].GetComponent<Slots>().item.curNumber == 1)
+                    if (SceneData.Inst.Inven.slots[i].GetComponent<Slots>().item.curNumber == 1)
                     {
                         if (SceneData.Inst.Inven.slots[i].GetComponent<Slots>().item.gameObject != null) Destroy(SceneData.Inst.Inven.slots[i].GetComponent<Slots>().item.gameObject);
                         SceneData.Inst.Inven.slots[i].GetComponent<Slots>().ClearSlot(); // 1개라면 제거하고 리턴
@@ -151,9 +144,9 @@ public class DialogueManager : MonoBehaviour
             GameObject obj = Instantiate(curData.questRewardData.reward);
             obj.GetComponent<Item>().GetItem();
         }
-        
 
-        if(questBook.content.GetChild(0).GetComponent<QuestTab>().questData.questIndex == curData.questRewardData.questIndex) //퀘스트북에서 조건검사해서 퀘스트탭 오브젝트 삭제
+
+        if (questBook.content.GetChild(0).GetComponent<QuestTab>().questData.questIndex == curData.questRewardData.questIndex) //퀘스트북에서 조건검사해서 퀘스트탭 오브젝트 삭제
         {
             questBook.content.GetChild(0).GetComponent<QuestTab>().QT_DestroyQuestTab(questBook.content.GetChild(0).GetComponent<QuestTab>());
             return;// 0번 배열에 있다면 바로 지우고 반복문없이 리턴
@@ -170,14 +163,14 @@ public class DialogueManager : MonoBehaviour
             }
         }
     }
-    
+
 
     public void IfAccepted()
     {
         curTrigger.progress += 1; // 진행도를 1 올림
 
-        if (curData.questObj != null) 
-        { 
+        if (curData.questObj != null)
+        {
             GameObject obj = Instantiate(curData.questObj, questBook.content); // 퀘스트북에 퀘스트를 추가해줌
             SceneData.Inst.questManager.questInProgress.Add(obj.GetComponent<QuestTab>()); // 퀘스트북 '진행중' 리스트에 추가
             SceneData.Inst.questManager.questIndex.Add(obj.GetComponent<QuestTab>().questData.questIndex);
@@ -221,7 +214,7 @@ public class DialogueManager : MonoBehaviour
     IEnumerator DM_TypeSentence(string sentence)
     {
         dialogueText.text = "";
-        foreach(char letter in sentence.ToCharArray())
+        foreach (char letter in sentence.ToCharArray())
         {
             dialogueText.text += letter;
             yield return null;

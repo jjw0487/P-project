@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MonsterName: Kinght
   <HP>k__BackingField: 100
-  ATK: 10
+  ATK: 15
   DP: 2
   StrikingDist: 1.2
-  AgentSpeed: 2
+  AgentSpeed: 3
   AgentStopDist: 0.7
   AttackRadius: 0.5
   AttackSpeed: 4

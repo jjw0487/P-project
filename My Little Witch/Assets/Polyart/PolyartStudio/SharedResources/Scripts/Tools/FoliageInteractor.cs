@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Polyart
 {
 #if UNITY_EDITOR
-    using UnityEditor;
     [ExecuteInEditMode]
 #endif
 
@@ -14,7 +12,7 @@ namespace Polyart
         public float interactRadius = 2.0f;
         [Range(0f, 200f)]
         public float interactStrength = 10f;
-      
+
 
         void Update()
         {
@@ -23,7 +21,7 @@ namespace Polyart
             Shader.SetGlobalVector("_ActorPosition", this.transform.position);
 
         }
-    
-    
+
+
     }
 }

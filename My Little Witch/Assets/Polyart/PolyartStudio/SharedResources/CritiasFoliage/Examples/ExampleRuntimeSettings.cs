@@ -1,8 +1,6 @@
-﻿using System.Collections;
+﻿using CritiasFoliage;
 using System.Collections.Generic;
 using UnityEngine;
-
-using CritiasFoliage;
 
 public class ExampleRuntimeSettings : MonoBehaviour
 {
@@ -25,7 +23,7 @@ public class ExampleRuntimeSettings : MonoBehaviour
      */
     void OnGUI()
     {
-        if(m_Painter == null)
+        if (m_Painter == null)
         {
             Debug.LogError("Null painter, please set!");
             return;
@@ -45,9 +43,9 @@ public class ExampleRuntimeSettings : MonoBehaviour
 
             float posY = 80 * (i % 8);
 
-            if(i % 8 == 0)
+            if (i % 8 == 0)
                 XOffset++;
-            
+
             GUI.Label(new Rect(20 + XOffset * 220, posY, 200, 20), "Name: " + type.m_Name);
 
             // Distance
@@ -58,10 +56,10 @@ public class ExampleRuntimeSettings : MonoBehaviour
             // Shadow
             bool currentShadow = m_CachedRuntime.GetFoliageTypeCastShadow(type.m_Hash);
             bool shadow = GUI.Toggle(new Rect(20 + XOffset * 220, posY + 40, 100, 20), currentShadow, "Shadow");
-            
+
             if (Mathf.Abs(max - currentDistance) > Mathf.Epsilon)
                 m_CachedRuntime.SetFoliageTypeMaxDistance(type.m_Hash, max);
-            
+
             if (shadow != currentShadow)
                 m_CachedRuntime.SetFoliageTypeCastShadow(type.m_Hash, shadow);
         }

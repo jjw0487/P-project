@@ -11,7 +11,7 @@ public class ProjectileMover : MonoBehaviour
     protected Rigidbody rb;
     public GameObject[] Detached;
 
-    
+
 
     protected virtual void Start()
     {

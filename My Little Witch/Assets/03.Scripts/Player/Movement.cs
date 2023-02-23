@@ -1,7 +1,4 @@
-using System;
 using System.Collections;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using static CameraMovement;
 
@@ -15,8 +12,8 @@ public class Movement : CharacterProperty
     [SerializeField] protected UnityEngine.UI.Slider myStaminaSlider;
 
     [Header("Ray")]
-    public Camera mainCamera; 
-    protected Vector3 movePoint; 
+    public Camera mainCamera;
+    protected Vector3 movePoint;
     protected Transform normAtkTarget;
     [SerializeField] private GameObject[] normAtkNums;
 
@@ -27,7 +24,7 @@ public class Movement : CharacterProperty
     [SerializeField] protected float C_rotSpeed = 10f;
     [SerializeField] protected LayerMask layer;
     protected Quaternion orgCamRot = Quaternion.identity;
-    
+
     //private bool run;
     protected bool canRun = true;
     public bool stun = false; // �ܺ����� �ʿ�
@@ -38,7 +35,7 @@ public class Movement : CharacterProperty
     private Vector3 dir = Vector3.zero;
     [SerializeField] protected float B_Speed = 10f;
     [SerializeField] protected float B_RotSpeed = 3f;
-    [SerializeField] protected float B_AddFloatPower = 0.2f; 
+    [SerializeField] protected float B_AddFloatPower = 0.2f;
     [SerializeField] protected float B_restrictedHeight = 1000f; // 최대높이 제한
     [SerializeField] protected GameObject orgDashEffect;
     [SerializeField] protected CameraMovement followCam;
@@ -111,7 +108,7 @@ public class Movement : CharacterProperty
                 }
                 break;
             case ONWHAT.Broom:
-    
+
                 break;
             case ONWHAT.Dead:
                 break;
@@ -129,7 +126,7 @@ public class Movement : CharacterProperty
         StackNumCheck(coolStacks, coolStacks + 1);
         StartCoroutine(StackingCoolStacks(5f));
         myAgent.updateRotation = false; // navAgent 기본제공 로테이션 기능 false
-        
+
     }
 
     protected virtual void Update()
@@ -144,10 +141,10 @@ public class Movement : CharacterProperty
         if (onWhat == ONWHAT.Broom)
         {
             B_Movement();
-            B_DashnHeight(); 
+            B_DashnHeight();
         }
     }
-  
+
     ////////////////////////////      UI       ///////////////////////////////////////////
     public void GetInteraction(Transform lookAt)
     {
@@ -174,7 +171,7 @@ public class Movement : CharacterProperty
         {
             RaycastHit hit;
             if (Physics.Raycast(this.transform.localPosition + (Vector3.up * 0.2f), Vector3.down, out hit, 0.4f, layer))
-           
+
             {
                 ground = true;
             }
@@ -200,7 +197,7 @@ public class Movement : CharacterProperty
 
     public void SwitchingCharacter() // broom button
     {
-        if(ground)
+        if (ground)
         {
             if (ONWHAT.Broom != onWhat)
             {
@@ -215,7 +212,7 @@ public class Movement : CharacterProperty
                 followCam.ChangeState(CAMTYPE.OnStreet);
             }
         }
-        
+
     }
 
     /////////////////////////////////Character/////////////////////////////////////////////////
@@ -225,7 +222,7 @@ public class Movement : CharacterProperty
         if (onWhat == ONWHAT.Street)
         {
             if (curAnim[0] != null) curAnim[0].SetBool("IsWalking", false);
-            if(myAgent.enabled) myAgent.SetDestination(transform.position);
+            if (myAgent.enabled) myAgent.SetDestination(transform.position);
             // 씬 이동할 때 애니메이션 꺼져있는걸 방지 위해
         }
     }
@@ -255,9 +252,9 @@ public class Movement : CharacterProperty
 
         if (Input.GetMouseButtonDown(0))
         {
-            
+
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
-            Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);            
+            Debug.DrawRay(ray.origin, ray.direction * 10f, Color.red, 1f);
             RaycastHit hitData;
             if (Physics.Raycast(ray, out hitData, 100f, 1 << LayerMask.NameToLayer("Monster")) && coolStacks > 0)
             {
@@ -344,7 +341,7 @@ public class Movement : CharacterProperty
     {
         GameObject obj = Instantiate(normAtkData.Effect, myRightHand.position, transform.rotation);
         obj.GetComponent<Target>().SetTarget(normAtkTarget, new Vector3(0f, 0.5f, 0f));
-        normalAttack.CoolTime(normAtkData.coolTime[normAtkData.level-1]);
+        normalAttack.CoolTime(normAtkData.coolTime[normAtkData.level - 1]);
     }
     void Running()
     {
@@ -438,40 +435,40 @@ public class Movement : CharacterProperty
         //transform.forward = Vector3.Lerp(transform.forward, dir, B_RotSpeed * Time.deltaTime);
 
 
-        
 
-/*
-        if (dir.z < 0)
-        {
-            if (dir.x < 0)//left
-            {
-                curAnim[1].SetBool("IsTurningLeft", true);
-            }
-            if (dir.x > 0) //right
-            {
-                curAnim[1].SetBool("IsTurningRight", true);
 
-            }
-        }
+        /*
+                if (dir.z < 0)
+                {
+                    if (dir.x < 0)//left
+                    {
+                        curAnim[1].SetBool("IsTurningLeft", true);
+                    }
+                    if (dir.x > 0) //right
+                    {
+                        curAnim[1].SetBool("IsTurningRight", true);
 
-        if (dir.z > 0)
-        {
+                    }
+                }
 
-            if (dir.x < 0)//left
-            {
-                curAnim[1].SetBool("IsTurningRight", true);
-            }
-            if (dir.x > 0) //right
-            {
-                curAnim[1].SetBool("IsTurningLeft", true);
-            }
-        }
+                if (dir.z > 0)
+                {
 
-        if (dir.x == 0)//Idle
-        {
-            curAnim[1].SetBool("IsTurningLeft", false);
-            curAnim[1].SetBool("IsTurningRight", false);
-        }*/
+                    if (dir.x < 0)//left
+                    {
+                        curAnim[1].SetBool("IsTurningRight", true);
+                    }
+                    if (dir.x > 0) //right
+                    {
+                        curAnim[1].SetBool("IsTurningLeft", true);
+                    }
+                }
+
+                if (dir.x == 0)//Idle
+                {
+                    curAnim[1].SetBool("IsTurningLeft", false);
+                    curAnim[1].SetBool("IsTurningRight", false);
+                }*/
 
     }
     void B_DashnHeight()

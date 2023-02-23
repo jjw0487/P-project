@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: Fox
   m_EditorClassIdentifier: 
   MonsterName: Fox
-  <HP>k__BackingField: 20
+  <HP>k__BackingField: 30
   ATK: 5
   DP: 1
   StrikingDist: 1
-  AgentSpeed: 2
+  AgentSpeed: 3
   AgentStopDist: 0.5
   AttackRadius: 1
   AttackSpeed: 3
   EXP: 5
   DropItems:
-  - {fileID: 11400000, guid: 48611bdc6adf76448bff90a4a09c694a, type: 2}
+  - {fileID: 11400000, guid: da8858fb541db9144a156a6b50db373d, type: 2}
   - {fileID: 11400000, guid: 84a23cbd15c6b1543b578228684e2791, type: 2}
   Currency: 3
   HPlocalScale: {x: 0.4, y: 0.4, z: 0.4}

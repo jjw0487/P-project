@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 [CreateAssetMenu(fileName = "QuestData", menuName = "ScriptableObject/QuestData", order = 5)]
 
@@ -13,7 +10,7 @@ public class QuestData : ScriptableObject
     public int questIndex;
     public string questName;
     public int npcId;
-    
+
     [TextArea(3, 10)]
     public string contents;
     //public GameObject questObj; // 퀘스트북에 들어갈 object
@@ -28,8 +25,8 @@ public class QuestData : ScriptableObject
     [SerializeField]
     private int GoalNumber; // 퀘스트 최종 성공 reach값
     public int goalNumber { get { return GoalNumber; } }
-  
-    [SerializeField] 
+
+    [SerializeField]
     private int RestrictedLV; // 퀘스트의 레벨제한
     public int restrictedLV { get { return RestrictedLV; } }
 

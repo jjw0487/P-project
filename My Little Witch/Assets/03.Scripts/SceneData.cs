@@ -1,5 +1,5 @@
-using UnityEngine;
 using System;
+using UnityEngine;
 
 public class SceneData : MonoBehaviour
 {
@@ -37,7 +37,7 @@ public class SceneData : MonoBehaviour
 
         if (FindObjectOfType<QuestManager>()) { questManager = FindObjectOfType<QuestManager>(); }
         else { questManager = null; }
-        
+
     }
 
 }

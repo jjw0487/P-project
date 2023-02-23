@@ -1,7 +1,6 @@
-using UnityEngine;
 using System.IO; // the namespace we use whenever we want to work with files on our operationg system. => when creating or opening
 using System.Runtime.Serialization.Formatters.Binary;
-using Unity.VisualScripting.FullSerializer;
+using UnityEngine;
 
 public static class SaveSystem
 {
@@ -23,7 +22,7 @@ public static class SaveSystem
     public static SaveData LoadPlayer()
     {
         string path = Application.persistentDataPath + "/player.chase";
-        if(File.Exists(path))
+        if (File.Exists(path))
         {
             BinaryFormatter formatter = new BinaryFormatter();
             FileStream stream = new FileStream(path, FileMode.Open);

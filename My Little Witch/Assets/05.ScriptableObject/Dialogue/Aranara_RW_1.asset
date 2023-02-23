@@ -17,6 +17,6 @@ MonoBehaviour:
   npcName: "\uC544\uB780\uB098\uB77C"
   questName: 
   contents:
-  - "\uBCF4\uC0C1"
+  - "\uC218\uACE0\uD588\uC5B4!"
   questObj: {fileID: 224346229844717324, guid: e368ef467e94fc94283ad4cfb3246a90, type: 3}
   questRewardData: {fileID: 11400000, guid: 47127a7fd6b3cf840ab81d57a4595bbd, type: 2}

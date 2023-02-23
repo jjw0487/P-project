@@ -13,17 +13,17 @@ MonoBehaviour:
   m_Name: FallGuy
   m_EditorClassIdentifier: 
   MonsterName: Fallguy
-  <HP>k__BackingField: 30
-  ATK: 8
+  <HP>k__BackingField: 50
+  ATK: 10
   DP: 2
   StrikingDist: 1
-  AgentSpeed: 2
+  AgentSpeed: 3.5
   AgentStopDist: 0.5
   AttackRadius: 0.5
   AttackSpeed: 4
   EXP: 10
   DropItems:
-  - {fileID: 11400000, guid: 48611bdc6adf76448bff90a4a09c694a, type: 2}
+  - {fileID: 11400000, guid: 40d228c45a7c54b4eafea64a0a839c75, type: 2}
   - {fileID: 11400000, guid: 84a23cbd15c6b1543b578228684e2791, type: 2}
   Currency: 6
   HPlocalScale: {x: 0.6, y: 0.6, z: 0.6}

@@ -17,9 +17,9 @@ public class PracticeDelegate : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       /* if (Input.GetKeyDown(KeyCode.Space))
-        {
-            onInputSpace.Invoke();
-        }*/
+        /* if (Input.GetKeyDown(KeyCode.Space))
+         {
+             onInputSpace.Invoke();
+         }*/
     }
 }

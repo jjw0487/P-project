@@ -33,7 +33,7 @@ public class Tower : MonoBehaviour
         while (myEnemy != null)
         {
             // 3차원 회전을 간단하게 처리하는 방법
-            Quaternion rot = Quaternion.LookRotation((myEnemy.transform.position + new Vector3(0f,1f,0f) - myArrowStand.position).normalized);
+            Quaternion rot = Quaternion.LookRotation((myEnemy.transform.position + new Vector3(0f, 1f, 0f) - myArrowStand.position).normalized);
             myNeck.rotation = Quaternion.Slerp(myNeck.rotation, rot, Time.deltaTime * 10f);
             yield return null;
         }

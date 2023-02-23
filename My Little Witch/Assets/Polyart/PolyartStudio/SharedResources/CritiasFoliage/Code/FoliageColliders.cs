@@ -1,6 +1,5 @@
 ﻿/** Copyright (c) Lazu Ioan-Bogdan */
 
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -30,15 +29,15 @@ namespace CritiasFoliage
         // Foliage collision settings
         public FoliageCollisionSettings m_Settings;
 
-        private Vector3 m_LastPosition;        
+        private Vector3 m_LastPosition;
         private GameObject m_ColliderHolder;
 
         private FoliageDataRuntime m_FoliageData;
-        private Dictionary<int, FoliageType> m_FoliageTypes = new Dictionary<int, FoliageType>();        
+        private Dictionary<int, FoliageType> m_FoliageTypes = new Dictionary<int, FoliageType>();
 
         void Start()
         {
-            if (!m_Settings.m_WatchedTransform) m_Settings.m_WatchedTransform = Camera.main.transform;            
+            if (!m_Settings.m_WatchedTransform) m_Settings.m_WatchedTransform = Camera.main.transform;
 
             m_LastPosition = m_Settings.m_WatchedTransform.position;
             m_ColliderHolder = new GameObject("FoliageSystemColliderHolder");
@@ -51,7 +50,7 @@ namespace CritiasFoliage
 
             // Init the types
             m_FoliageTypes.Clear();
-            foreach (FoliageType type in foliageTypes)             
+            foreach (FoliageType type in foliageTypes)
                 m_FoliageTypes.Add(type.m_Hash, type);
         }
 
@@ -113,22 +112,22 @@ namespace CritiasFoliage
                         if (distanceSqr <= collDistSqr)
                             ProcessCell(data, collDistSqr);
                     }
-                });              
+                });
             }
 
 #if UNITY_EDITOR
-            if(Time.frameCount % 300 == 0)
+            if (Time.frameCount % 300 == 0)
             {
                 FoliageLog.i("Issued colliders: " + m_DataIssuedActiveColliders);
             }
 #endif
         }
-        
+
         private void ProcessCell(FoliageCellDataRuntime cell, float colliderDistSqr)
         {
             for (int foliageType = 0; foliageType < cell.m_TypeHashLocationsRuntime.Length; foliageType++)
             {
-				int foliageTypeKey = cell.m_TypeHashLocationsRuntime[foliageType].Key;
+                int foliageTypeKey = cell.m_TypeHashLocationsRuntime[foliageType].Key;
                 FoliageType type = m_FoliageTypes[foliageTypeKey];
 
                 if (type.m_EnableCollision == false)
@@ -140,7 +139,7 @@ namespace CritiasFoliage
                 float x, y, z;
                 float dist;
 
-                for(int i = 0; i < batches.Length; i++)
+                for (int i = 0; i < batches.Length; i++)
                 {
                     Vector3 pos = batches[i].m_Position;
 
@@ -150,7 +149,7 @@ namespace CritiasFoliage
 
                     dist = x * x + y * y + z * z;
 
-                    if(dist <= colliderDistSqr)
+                    if (dist <= colliderDistSqr)
                     {
                         GameObject collider = GetColliderForPrototype(hash);
 
@@ -203,7 +202,7 @@ namespace CritiasFoliage
                     // Create the collider prototype and remove all it's mesh renderers and stuff
                     GameObject colliderPrototype = Instantiate(data.m_Prefab, m_ColliderHolder.transform);
                     colliderPrototype.name = "ColliderPrototype_" + data.m_Prefab.name;
-                    					
+
                     // Clear the lod group
                     LODGroup lod = colliderPrototype.GetComponent<LODGroup>();
                     if (lod) DestroyImmediate(lod);
@@ -227,7 +226,7 @@ namespace CritiasFoliage
                             DestroyImmediate(components[i]);
                         }
                     }
-                    
+
                     // Deactivate it
                     colliderPrototype.SetActive(false);
 

@@ -17,7 +17,9 @@ MonoBehaviour:
   npcName: "\uC544\uB780\uB098\uB77C"
   questName: Fox Hunting
   contents:
-  - "\uC5EC\uC6B0\uC0AC\uB0E5 \uD574\uBCF4\uC790"
-  - "\uBE68\uB9AC\uAC00"
+  - "\uC774\uC81C \uD55C \uBC88 \uBC14\uAE65\uC5D0 \uB098\uAC00 \uBAAC\uC2A4\uD130\uB97C
+    \uC0AC\uB0E5 \uD574 \uBCFC\uAE4C?"
+  - "\uC131\uBB38\uC744 \uC9C0\uB098 \uBC14\uAE65\uC5D0 \uB098\uAC00 \n\uC5EC\uC6B0\uB97C
+    5\uB9C8\uB9AC \uC18C\uD0D5 \uD574 \uC624\uBA74 \uB3FC!"
   questObj: {fileID: 224346229844717324, guid: e368ef467e94fc94283ad4cfb3246a90, type: 3}
   questRewardData: {fileID: 0}
