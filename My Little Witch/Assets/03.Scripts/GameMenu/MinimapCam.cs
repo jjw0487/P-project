@@ -8,11 +8,11 @@ public class MinimapCam : MonoBehaviour
     private void Start()
     {
         if (myTarget == null) { 
-        myTarget = FindObjectOfType<Player>().transform;
+        myTarget = FindObjectOfType<Player>()?.transform;
         }
     }
     private void Update()
     {
-        transform.position = myTarget.transform.position;
+        if(myTarget != null)transform.position = myTarget.transform.position;
     }
 }

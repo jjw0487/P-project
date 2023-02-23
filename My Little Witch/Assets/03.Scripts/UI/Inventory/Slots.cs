@@ -51,6 +51,15 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         img.sprite = _item.myItem.orgData.sprite;
     }
 
+    public void SetLoadedItem(Item _item, int _count)
+    {
+        item = _item;
+        img.sprite = _item.myItem.orgData.sprite;
+        item.curNumber = _count;
+        if (count != null) count.text = item.curNumber.ToString();
+
+    }
+
     public void AddCount(int howmany)
     {
         itemCount += howmany;
@@ -302,6 +311,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     {
         item = null;
         itemCount = 0;
+        if (orgSprite == null) { orgSprite = GetComponent<Image>().sprite; }
         img.sprite = orgSprite;
         count.text = "";
     }

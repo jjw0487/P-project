@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEditor;
@@ -20,6 +21,8 @@ public class SaveData
     public int[] items;
     public int[] equipmentItems;
 
+    public int indexer;
+
     //skill
     public int[] skillLevel;
 
@@ -29,6 +32,7 @@ public class SaveData
     //quest
     public int[] questIndex;
     public int[] npcProgress;
+
      
     public SaveData(Player _player, Inventory _inventory, InteractableUIManager _gold, QuestManager _quest, SkillTab[] _skillTab)
     {
@@ -37,7 +41,6 @@ public class SaveData
         //클래스를 선언할 때 생성자를 구현하지 않아도 컴파일러가 자동으로 생성하지만 그럼에도 생성자를 직접 구현하는 이유는
         //객체의 필드를 원하는 값으로 초기화하려고 할 때 적합한 장소가 생성자이기 때문
         #endregion
-
 
         #region player ->
         level = _player.Level;
@@ -48,11 +51,11 @@ public class SaveData
         position[2] = _player.transform.position.z;
         #endregion
 
-
-
         #region Inventory ->
 
-        existItemCount = 1;
+        indexer = 0;//인덱서 초기화
+        existItemCount = 0;
+
         for (int i = 0; i < _inventory.slotData.Length; i++)
         {
             if (_inventory.slotData[i].item != null)
@@ -64,24 +67,29 @@ public class SaveData
         items = new int[existItemCount];
         itemCount = new int[existItemCount];
 
+        Debug.Log(items.Length);
+
         for (int i = 0; i < _inventory.slotData.Length; i++) // 아이템 배치를 띄엄띄엄 해 놨을 수 도  있으므로 다 검사 해야한다.
         {
             if(_inventory.slotData[i].item != null)
             {
-                Debug.Log("아이템");
-                items[i] = _inventory.slotData[i].item.myItem.orgData.itemId;
-                
-            }
-        }
-        for(int i = 0; i < _inventory.slotData.Length; i++)
-        {
-            if (_inventory.slotData[i].item != null)
-            {
-                itemCount[i] = _inventory.slotData[i].item.curNumber;
+                items[indexer] = _inventory.slotData[i].item.myItem.orgData.itemId;
+                indexer++;
             }
         }
 
-        existItemCount = 1; //다시 0으로 초기화
+        indexer = 0; //인덱서 초기화
+
+        for(int i = 0; i < _inventory.slotData.Length; i++)
+        {
+            if (_inventory.slotData[i].item != null)
+            {  
+                itemCount[indexer] = _inventory.slotData[i].item.curNumber;
+                indexer++;
+            }
+        }
+
+        existItemCount = 0; //다시 0으로 초기화
 
         for (int i = 0; i < _inventory.equipSlots.Length; i++)
         {
@@ -93,16 +101,17 @@ public class SaveData
 
 
         equipmentItems = new int[existItemCount];
+        indexer = 0;//인덱서 초기화
 
         for (int i = 0; i < _inventory.equipSlots.Length; i++)
         {
             if (_inventory.equipSlots[i].item != null)
             {
-                equipmentItems[i] = _inventory.equipSlots[i].item.myItem.orgData.itemId;
+                equipmentItems[indexer] = _inventory.equipSlots[i].item.myItem.orgData.itemId;
+                indexer++;
             }
         }
         #endregion
-
 
         #region Quest ->
         _quest.n = 0;

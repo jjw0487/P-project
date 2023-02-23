@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 using static UnityEditor.Progress;
 using static UnityEditor.Timeline.Actions.MenuPriority;
@@ -7,7 +8,7 @@ public class Inventory : PointerCheck
     public Transform[] slots;
     public Slots[] slotData;
     public EquipmentSlots[] equipSlots;
-    public GameObject[] usePanel;
+    public GameObject[] usePanel; // 1.싱글아이템 2.중복아이템 3.버리는아이템(싱글) 4.버리는아이템(중복) 5.상점구입 
     public GameObject floatingItemNotice;
     public Transform eventNotice;
     public TMPro.TMP_Text itemExplnation; // 인벤토리 내에 아이템 설명 란
@@ -38,7 +39,7 @@ public class Inventory : PointerCheck
 
     }
 
-    public void LoadItemData(int itemId, int count)
+    /*public void LoadItemData(int itemId, int count)
     {
         for(int i = 0; i < slotData.Length; i++)
         {
@@ -48,15 +49,32 @@ public class Inventory : PointerCheck
                 return;
             }
         }
+    }*/
+
+
+    public void LoadItemData(int _itemId, int _count)
+    {
+        for (int i = 0; i < slotData.Length; i++)
+        {
+            if (slotData[i].item == null)
+            {
+                GameObject obj = Instantiate(itemData[_itemId].obj, new Vector3(999f,999f,999f), quaternion.identity);
+                obj.transform.SetParent(SceneData.Inst.ItemPool);
+                slotData[i].SetLoadedItem(obj.GetComponent<Item>(), _count);
+                return;
+            }
+        }
     }
 
-    public void LoadEquipmentItemData(int itemId)
+    public void LoadEquipmentItemData(int _itemId)
     {
         for (int i = 0; i < equipSlots.Length; i++)
         {
             if (equipSlots[i].item == null)
             {
-                equipSlots[i].ChangeSlotByCliicking(itemData[itemId].obj.GetComponent<Item>());
+                GameObject obj = Instantiate(itemData[_itemId].obj, new Vector3(999f, 999f, 999f), quaternion.identity);
+                obj.transform.SetParent(SceneData.Inst.ItemPool);
+                equipSlots[i].ChangeSlotByCliicking(obj.GetComponent<Item>());
                 return;
             }
         }

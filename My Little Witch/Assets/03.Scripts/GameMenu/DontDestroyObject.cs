@@ -83,7 +83,6 @@ public class DontDestroyObject : MonoBehaviour
                 camRot.rotation = Quaternion.Euler(30f, 0f, 0f);
                 SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
                 SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
-
             }
            
         }
@@ -95,7 +94,7 @@ public class DontDestroyObject : MonoBehaviour
             camRot.rotation = Quaternion.Euler(30f, 45f, 0f);
 
             SceneData.Inst.talkSign.SetBool("IsOpen", false);  // press f key
-            SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
+            //SceneData.Inst.myPlayer.myAgent.enabled = true; // 위치값 변동 후에 켜준다.
             SceneData.Inst.questManager = null; // 던전에서는 퀘스트 상호작용 없음
         }
     }
