@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemType: 1
   itemName: Bread
-  explanation: "\uAC13 \uAD6C\uC6CC\uC9C4 \uBE75, \uBA39\uC74C\uC9C1 \uC2A4\uB7EC\uC6CC
-    \uBCF4\uC778\uB2E4."
+  explanation: "[Quest Item]\n\n\uAC13 \uAD6C\uC6CC\uC9C4 \uBE75, \uBA39\uC74C\uC9C1
+    \uC2A4\uB7EC\uC6CC \uBCF4\uC778\uB2E4.\n"
   sprite: {fileID: 21300000, guid: 91e1f01feaa94ea48927d292edb2ab60, type: 3}
   Obj: {fileID: 4947706533103860154, guid: b180f6d9fd6b49144bda16393e2cee50, type: 3}
   Count: 1

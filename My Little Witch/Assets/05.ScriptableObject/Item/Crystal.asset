@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: Crystal
   explanation: "\uD76C\uADC0\uD55C \uAD11\uC11D, \uBE44\uC2FC \uAC00\uACA9\uC5D0
     \n\uD310\uB9E4\uD560 \uC218 \uC788\uC744 \uAC83 \uAC19\uB2E4."
-  sprite: {fileID: 21300000, guid: 7d1571044ce3d9f49954bc2cbf6d55fe, type: 3}
+  sprite: {fileID: 21300000, guid: 2d3e58f022cd88645b6eadec88693e2d, type: 3}
   Obj: {fileID: 4951020221388243100, guid: 19e9bc8a685d3404fa980ab12df83f23, type: 3}
   Count: 1
   ValueType: 0

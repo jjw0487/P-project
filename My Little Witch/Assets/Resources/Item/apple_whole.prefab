@@ -99,9 +99,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   myItem:
-    orgData: {fileID: 11400000, guid: 48611bdc6adf76448bff90a4a09c694a, type: 2}
-    curNumber: 1
+    orgData: {fileID: 11400000, guid: da8858fb541db9144a156a6b50db373d, type: 2}
   contents: []
+  curNumber: 0
 --- !u!135 &4803039712051785467
 SphereCollider:
   m_ObjectHideFlags: 0
