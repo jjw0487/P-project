@@ -37,20 +37,7 @@ public class Inventory : PointerCheck
 
     }
 
-    /*public void LoadItemData(int itemId, int count)
-    {
-        for(int i = 0; i < slotData.Length; i++)
-        {
-            if (slotData[i].item == null)
-            {
-                slotData[i].AddItem(itemData[itemId].obj.GetComponent<Item>(), count);
-                return;
-            }
-        }
-    }*/
-
-
-    public void LoadItemData(int _itemId, int _count)
+    public void LoadItemData(int _itemId, int _count) // 세이브로드
     {
         for (int i = 0; i < slotData.Length; i++)
         {
@@ -64,7 +51,7 @@ public class Inventory : PointerCheck
         }
     }
 
-    public void LoadEquipmentItemData(int _itemId)
+    public void LoadEquipmentItemData(int _itemId) // 세이브로드
     {
         for (int i = 0; i < equipSlots.Length; i++)
         {

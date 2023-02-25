@@ -8,7 +8,6 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     [SerializeField] protected Image img;
     //private Image previousImg;
     public TMPro.TMP_Text count;
-    protected int itemCount = 0;
     protected Sprite orgSprite;
 
     private bool isDone = false;
@@ -18,34 +17,36 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         if (GetComponent<Item>() != null) // 아이템을 놓고 실험할 경우
         {
             item = GetComponentInChildren<Item>();
-            itemCount = GetComponentInChildren<Item>().curNumber;
         }
     }
-    /*public void ShowingSprite()
-    {
-        img.sprite = GetComponentInChildren<Item>().myItem.orgData.sprite; // 사진파일을 표현
-        count.text = GetComponentInChildren<Item>().myItem.curNumber.ToString(); // 수량 인트를 스트링으로
-        itemCount = GetComponentInChildren<Item>().myItem.curNumber; // 스크립트 안에서 사용 할 수량 확인
-        item = GetComponentInChildren<Item>();
-    }*/
     public void FloatNotice(string itemName)
     {
         GameObject obj = Instantiate(SceneData.Inst.Inven.floatingItemNotice, SceneData.Inst.Inven.eventNotice);
         //SceneData.Inst.Inven.floatingItemNotice.GetComponent<NotificationController>().GetText(itemName);
         obj.GetComponent<NotificationController>().GetText(itemName);
     }
+    
+
     public virtual void AddItem(Item _item, int _count)
     {
         if (orgSprite == null) { orgSprite = GetComponent<Image>().sprite; }
         // 기존 이미지를 둬서 슬롯이 clear 될 때 붙여주자
-
         item = _item;
-        if (_item.myItem.orgData.name == item.myItem.orgData.name)
-        {
-            AddCount(_count);
-        }
+        item.curNumber = _item.curNumber;
+        count.text = item.curNumber.ToString();
         img.sprite = _item.myItem.orgData.sprite;
     }
+
+    protected virtual void AddItemByDragging(Item _item)
+    {
+        if (orgSprite == null) { orgSprite = GetComponent<Image>().sprite; }
+        // 기존 이미지를 둬서 슬롯이 clear 될 때 붙여주자
+        item = _item;
+        item.curNumber = _item.curNumber;
+        count.text = item.curNumber.ToString();
+        img.sprite = item.myItem.orgData.sprite;
+    }
+
 
     public void SetLoadedItem(Item _item, int _count)
     {
@@ -58,8 +59,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
 
     public void AddCount(int howmany)
     {
-        itemCount += howmany;
-        item.curNumber = itemCount;
+
+        item.curNumber += howmany;
         if (count != null) count.text = item.curNumber.ToString();
     }
 
@@ -71,10 +72,10 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             {
                 if (item.myItem.orgData.itemType == ItemData.ItemType.Consumable)
                 {
-                    if (itemCount > 1)
+                    if (item.curNumber > 1)
                     {
                         SceneData.Inst.Inven.usePanel[1].SetActive(true);
-                        SceneData.Inst.Inven.usePanel[1].GetComponent<ItemAmountReturn>().GetItemInfo(this, itemCount);
+                        SceneData.Inst.Inven.usePanel[1].GetComponent<ItemAmountReturn>().GetItemInfo(this, item.curNumber);
                     }
                     else
                     {
@@ -121,23 +122,24 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
     public void UseItems(int howmany)
     {
         SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value * howmany);
-        itemCount -= howmany;
-        if (itemCount == 0) { if (item.gameObject != null) { Destroy(item.gameObject); } ClearSlot(); }
+        item.curNumber -= howmany;
+        if (item.curNumber == 0) { if (item.gameObject != null) { /**/ ClearSlot(); } }
         else
         {
-            item.curNumber = itemCount;
             count.text = item.curNumber.ToString();
         }
     }
 
     public void UseSingleItem()
     {
-        print("사용");
         if (item.myItem.orgData.itemType == ItemData.ItemType.Consumable)
         {
             SceneData.Inst.myPlayer.GetItemValue(item.myItem.orgData.valueType, item.myItem.orgData.value);
-            if (item.gameObject != null) Destroy(item.gameObject);
-            ClearSlot();
+            if (item.gameObject != null)
+            {
+/**/
+                ClearSlot();
+            }
         }
         else if (item.myItem.orgData.itemType == ItemData.ItemType.Interactable)
         {//보물상자는 한 개 씩 열도록 구분(single, plural)을 두지 않을거라 이렇게 설정
@@ -146,11 +148,11 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             {
                 item.GetItemFromInteractableItems(item.contents[i]);
             }
-            itemCount -= 1;
-            if (itemCount == 0) { Destroy(item.gameObject); ClearSlot(); }
+            item.curNumber -= 1;
+
+            if (item.curNumber == 0) { /*Destroy(item.gameObject);*/ ClearSlot(); }
             else
             {
-                item.curNumber = itemCount;
                 count.text = item.curNumber.ToString();
             }
 
@@ -163,6 +165,7 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         {
             DragImage.Inst.dragSlot = this;
             DragImage.Inst.DragSetImage(img);
+            DragImage.Inst.dragSlot.item.curNumber = item.curNumber;
             DragImage.Inst.transform.position = eventData.position;
         }
     }
@@ -186,6 +189,71 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         }
 
     }
+
+    public virtual void OnDrop(PointerEventData eventData)
+    { // 다른 슬롯 위치에 놓였을 때
+
+        if (DragImage.Inst.dragSlot != null) { ChangeSlot(); }
+    }
+
+    protected virtual void ChangeSlot()
+    {
+        if (item != null) 
+        {
+            Item temp = item; // 아이템을 담을 공간을 만들고
+            AddItemByDragging(DragImage.Inst.dragSlot.item);
+            DragImage.Inst.dragSlot.AddItemByDragging(temp);
+        }
+        else
+        {
+
+            AddItemByDragging(DragImage.Inst.dragSlot.item);
+            DragImage.Inst.dragSlot.ClearSlot();
+        }
+/*
+        Item temp = item; // 아이템을 담을 공간을 만들고
+        int tempItemCount = itemCount;
+        AddItem(DragImage.Inst.dragSlot.item, DragImage.Inst.dragSlot.itemCount);
+
+        if (temp != null)
+        {
+            DragImage.Inst.dragSlot.AddItem(temp, tempItemCount);
+        }
+        else
+        {
+            DragImage.Inst.dragSlot.ClearSlot();
+        }*/
+
+
+
+    }
+
+    public virtual void ClearSlot()
+    {
+        //if(item != null) item.curNumber = 0;
+        item = null;
+        if (orgSprite == null) { orgSprite = GetComponent<Image>().sprite; }
+        img.sprite = orgSprite;
+        count.text = "";
+    }
+
+    public virtual void OnPointerEnter(PointerEventData eventData) // 마우스가 아이템 위에 있을 때
+    {
+        if (item != null)
+        {
+            SceneData.Inst.Inven.itemExplnation.text = item.myItem.orgData.explanation;
+
+        }
+    }
+
+    public virtual void OnPointerExit(PointerEventData eventData)
+    {
+        if (item != null)
+        {
+            SceneData.Inst.Inven.itemExplnation.text = "";
+        }
+    }
+
 
     public void ThrowAwaySingleItem()
     {
@@ -221,8 +289,8 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             isDone = false;
             for (int i = 0; i < SceneData.Inst.ItemPool.childCount; i++)
             {
-                if (SceneData.Inst.ItemPool.GetChild(i).GetComponent<Item>().myItem.orgData.itemName
-                    == item.myItem.orgData.itemName)
+                if (SceneData.Inst.ItemPool.GetChild(i).GetComponent<Item>().myItem.orgData.itemId
+                    == item.myItem.orgData.itemId)
                 {
                     SceneData.Inst.ItemPool.GetChild(i).transform.position = SceneData.Inst.myPlayer.transform.position + new Vector3(0f, 1f, 0.5f);
                     SceneData.Inst.ItemPool.GetChild(i).GetComponent<Item>().curNumber = howmany;
@@ -245,12 +313,12 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             obj.transform.SetParent(SceneData.Inst.ItemPool);
         }
 
-        itemCount -= howmany;
+        item.curNumber -= howmany;
 
-        if (itemCount == 0) { ClearSlot(); }
+        if (item.curNumber == 0) { ClearSlot(); }
         else
         {
-            item.curNumber = itemCount;
+
             count.text = item.curNumber.ToString();
         }
     }
@@ -261,10 +329,10 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         {
             if (item.myItem.orgData.itemType == ItemData.ItemType.Consumable)
             {
-                if (itemCount > 1)
+                if (item.curNumber > 1)
                 {
                     SceneData.Inst.Inven.usePanel[3].SetActive(true);
-                    SceneData.Inst.Inven.usePanel[3].GetComponent<ItemAmountReturn>().GetItemInfo(this, itemCount);
+                    SceneData.Inst.Inven.usePanel[3].GetComponent<ItemAmountReturn>().GetItemInfo(this, item.curNumber);
                 }
                 else
                 {
@@ -279,53 +347,6 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
             }
 
             // 매터리얼 타입은 반응 안하도록
-        }
-    }
-    public virtual void OnDrop(PointerEventData eventData)
-    { // 다른 슬롯 위치에 놓였을 때
-
-        if (DragImage.Inst.dragSlot != null) { ChangeSlot(); }
-    }
-
-    protected virtual void ChangeSlot()
-    {
-        Item temp = item; // 아이템을 담을 공간을 만들고
-        int tempItemCount = itemCount;
-        AddItem(DragImage.Inst.dragSlot.item, DragImage.Inst.dragSlot.itemCount);
-
-        if (temp != null)
-        {
-            DragImage.Inst.dragSlot.AddItem(temp, tempItemCount);
-        }
-        else
-        {
-            DragImage.Inst.dragSlot.ClearSlot();
-        }
-    }
-
-    public virtual void ClearSlot()
-    {
-        item = null;
-        itemCount = 0;
-        if (orgSprite == null) { orgSprite = GetComponent<Image>().sprite; }
-        img.sprite = orgSprite;
-        count.text = "";
-    }
-
-    public virtual void OnPointerEnter(PointerEventData eventData) // 마우스가 아이템 위에 있을 때
-    {
-        if (item != null)
-        {
-            SceneData.Inst.Inven.itemExplnation.text = item.myItem.orgData.explanation;
-
-        }
-    }
-
-    public virtual void OnPointerExit(PointerEventData eventData)
-    {
-        if (item != null)
-        {
-            SceneData.Inst.Inven.itemExplnation.text = "";
         }
     }
 }

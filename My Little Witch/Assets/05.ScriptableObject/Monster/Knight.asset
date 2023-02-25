@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Knight
   m_EditorClassIdentifier: 
   MonsterName: Kinght
-  <HP>k__BackingField: 100
-  ATK: 15
-  DP: 2
+  <HP>k__BackingField: 150
+  ATK: 25
+  DP: 5
   StrikingDist: 1.2
   AgentSpeed: 3
   AgentStopDist: 0.7

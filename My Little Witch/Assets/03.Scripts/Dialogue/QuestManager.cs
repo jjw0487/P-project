@@ -36,7 +36,6 @@ public class QuestManager : MonoBehaviour
         n++;
     }
 
-
     public void QM_GetPlayerLevel(int lv)
     {
         for (int i = 0; i < quests.Length; i++)
@@ -70,6 +69,7 @@ public class QuestManager : MonoBehaviour
             {
                 npc[npcId].minimapPin[0].SetActive(true); // 미니맵 핀 false는 <DialogueManager->EndDialogue()>에서
                 npc[npcId].progress = i;
+                if (eventNotice == null) { eventNotice = GameObject.FindGameObjectWithTag("EventNotice").transform; }
                 GameObject obj = Instantiate(floatingQuestNotice, eventNotice);
                 // 다이얼로그에서 퀘스트 리스트에 담아 저장, 로드 할 때 진행중인 퀘스트만 꺼내주자
                 break;

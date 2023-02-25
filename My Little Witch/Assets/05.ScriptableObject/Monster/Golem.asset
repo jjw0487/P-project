@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Golem
   m_EditorClassIdentifier: 
   MonsterName: Golem
-  <HP>k__BackingField: 300
-  ATK: 40
+  <HP>k__BackingField: 400
+  ATK: 50
   DP: 10
   StrikingDist: 2
   AgentSpeed: 4

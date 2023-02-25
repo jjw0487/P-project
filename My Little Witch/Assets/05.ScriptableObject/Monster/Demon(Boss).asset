@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Demon(Boss)
   m_EditorClassIdentifier: 
   MonsterName: Demon
-  <HP>k__BackingField: 700
-  ATK: 50
+  <HP>k__BackingField: 1000
+  ATK: 60
   DP: 15
   StrikingDist: 3
   AgentSpeed: 5

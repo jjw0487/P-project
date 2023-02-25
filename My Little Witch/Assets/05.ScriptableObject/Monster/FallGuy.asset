@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: FallGuy
   m_EditorClassIdentifier: 
   MonsterName: Fallguy
-  <HP>k__BackingField: 50
-  ATK: 10
-  DP: 2
+  <HP>k__BackingField: 90
+  ATK: 15
+  DP: 3
   StrikingDist: 1
   AgentSpeed: 3.5
   AgentStopDist: 0.5

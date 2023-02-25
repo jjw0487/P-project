@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,6 @@ public struct PlayerStat
 
 public class Player : Movement
 {
-
     [SerializeField]
     private int ValueType;
     public int valueType { get { return ValueType; } }
@@ -26,10 +26,12 @@ public class Player : Movement
     [SerializeField]
     private int level; // 데이터 저장할 때 setter를 private로 만들어주자
     public int Level { get { return level; } } // 게터 <- 참조 대상
+
     [SerializeField]
     private float curHP; // 세터
     public float CurHP { get { return curHP; } } // 게터 <- 참조 대상
     [SerializeField] private float maxHP;
+
     [SerializeField]
     private float curMP; // 세터
     public float CurMP { get { return curMP; } } // 게터, 스킬셋에서 참조
@@ -38,10 +40,22 @@ public class Player : Movement
     [SerializeField]
     private float sp;
     public float SP { get { return sp; } } // 스킬셋에서 데미지 계산 시 사용
-    private float addedSP;
 
+    [SerializeField]
+    private float addedSP;
+    public float AddedSP { get { return addedSP; } }
+
+    [SerializeField]
+    private float addedDP;
+    public float AddedDP { get { return addedDP; } }
+
+    [SerializeField]
+    private float dp;
+    public float DP { get { return dp; } }
 
     public Coroutine handleSlider; // skill에서 참조
+
+    private float dmg;
 
     [Header("UI")]
     [SerializeField] private Slider hPBar;
@@ -63,19 +77,30 @@ public class Player : Movement
         SaveData data = SaveSystem.LoadPlayer();
 
         #region PLAYER DATA
+       
+        //데이터
         level = data.level;
         curHP = data.hp;
+        sp = data.addedStat[0];
+        dp = data.addedStat[1];
+
+        //포지션
         Vector3 position;
         position.x = data.position[0];
         position.y = data.position[1];
         position.z = data.position[2];
         this.transform.position = position;
         myAgent.SetDestination(this.transform.position);
+
+        //데이터
         SetStatus();
         SetStatusWindow();
         #endregion
 
         #region QUEST DATA
+
+        SceneData.Inst.questManager.n = 0;
+
         for (int i = 0; i < data.questIndex.Length; i++)
         {
             SceneData.Inst.questManager.QM_LoadSavedQuest(data.questIndex[i]);
@@ -105,6 +130,9 @@ public class Player : Movement
         #endregion
 
         #region SKILL DATA
+
+        SceneData.Inst.interactableUIManager.skillBookData.LoadSkillPoint(data.skillPoint);
+
         for (int i = 0; i < SceneData.Inst.interactableUIManager.skillBookData.tabs.Length; i++)
         {
             SceneData.Inst.interactableUIManager.skillBookData.tabs[i].LoadSkillLevel(data.skillLevel[i]);
@@ -114,8 +142,6 @@ public class Player : Movement
         #region GOLD
         SceneData.Inst.interactableUIManager.LoadGold(data.gold);
         #endregion
-
-
     }
 
     protected override void Start()
@@ -145,19 +171,20 @@ public class Player : Movement
         playerStatus[0].text = level.ToString();
         playerStatus[1].text = curExp.ToString();
         playerStatus[2].text = sp.ToString();
-        //방어력 아직 없음 playerStatus[3].text = 
+        playerStatus[3].text = dp.ToString();
         playerStatus[4].text = charStat.orgData.HP[level - 1].ToString();
         playerStatus[5].text = charStat.orgData.MP[level - 1].ToString();
 
         //playerAddedStatus
         playerAddedStatus[2].text = "+" + addedSP.ToString();
-        //방어력 아직 없음 playerAddedStatus[3].text = 
+        playerAddedStatus[3].text = "+" + addedDP.ToString();
         //playerAddedStatus[4].text = charStat.orgData.HP[level - 1].ToString();
         //playerAddedStatus[5].text = charStat.orgData.MP[level - 1].ToString();
     }
     public void SetStatus()
     {
         sp = charStat.orgData.SP[level - 1] + addedSP;
+        dp = charStat.orgData.DP[level - 1];
         curHP = charStat.orgData.HP[level - 1];
         maxHP = charStat.orgData.HP[level - 1];
         curMP = charStat.orgData.MP[level - 1];
@@ -165,8 +192,9 @@ public class Player : Movement
         curExp = charStat.orgData.EXP[level - 1];
     }
 
-    public void OnDmg(float dmg)
+    public void OnDmg(float _dmg)
     {
+        dmg = _dmg - dp;
         HandleHP(dmg, 0f);
         StartCoroutine(Stunned(0.7f));
         curAnim[2].SetTrigger("GetHit");

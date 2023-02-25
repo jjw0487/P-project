@@ -6,6 +6,8 @@ public class SaveData
     public float hp;
     public float[] position; //플레이어 마지막 위치
 
+    public float[] addedStat;
+
     //inventory
     public int existItemCount;
     public int[] itemCount;
@@ -14,6 +16,7 @@ public class SaveData
     public int indexer;
 
     //skill
+    public int skillPoint;
     public int[] skillLevel;
 
     //gold
@@ -39,6 +42,10 @@ public class SaveData
         position[0] = _player.transform.position.x;
         position[1] = _player.transform.position.y;
         position[2] = _player.transform.position.z;
+
+        addedStat = new float[2]; //현재 sp 와 dp
+        addedStat[0] = _player.AddedSP;
+        addedStat[1] = _player.AddedDP;
         #endregion
 
         #region Inventory ->
@@ -129,9 +136,10 @@ public class SaveData
 
         #region Skill ->
         skillLevel = new int[8];
+        skillPoint = _skillTab[0].skillBook.skillPoint;
         for (int i = 0; i < _skillTab.Length; i++)
         {
-            skillLevel[i] = _skillTab[i].curLevel;
+            skillLevel[i] = _skillTab[i].myData.level;
         }
         #endregion
 

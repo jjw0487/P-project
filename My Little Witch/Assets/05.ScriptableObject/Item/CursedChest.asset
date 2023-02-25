@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: CursedChest
   explanation: "\uC5B4\uB5A4 \uBB3C\uAC74\uC774 \uB4E4\uC5B4\uC788\uC744\uC9C0 \uC544\uBB34\uB3C4
     \uBAA8\uB978\uB2E4."
-  sprite: {fileID: 21300000, guid: cc5428806c3747a4cb4b5a7b426a8597, type: 3}
+  sprite: {fileID: 21300000, guid: 1ed948f94a3f1524b84607aa8bcd2590, type: 3}
   Obj: {fileID: 3893533120355240627, guid: b773f56eb752f5044be928f4049125ef, type: 3}
   Count: 1
   ValueType: 0

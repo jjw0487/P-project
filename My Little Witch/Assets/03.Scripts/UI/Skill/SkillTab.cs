@@ -13,6 +13,7 @@ public class SkillTab : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 
     private void Start()
     {
+        myData.level = 1; //일단 게임 시작 때 초기화
         curLevel = myData.level;
         curLv.text = myData.level.ToString();
         if (skillBook.skillPoint <= 0 || this.myData.level >= 5)

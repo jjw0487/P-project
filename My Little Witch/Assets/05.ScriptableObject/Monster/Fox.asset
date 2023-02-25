@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: Fox
   m_EditorClassIdentifier: 
   MonsterName: Fox
-  <HP>k__BackingField: 30
-  ATK: 5
+  <HP>k__BackingField: 50
+  ATK: 10
   DP: 1
   StrikingDist: 1
   AgentSpeed: 3

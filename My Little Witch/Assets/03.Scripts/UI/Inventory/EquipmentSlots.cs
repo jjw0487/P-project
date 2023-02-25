@@ -3,7 +3,7 @@ public class EquipmentSlots : Slots
     protected override void ChangeSlot()
     {
         Item temp = item; // 아이템을 담을 공간을 만들고
-        int tempItemCount = itemCount;
+        int tempItemCount = item.curNumber;
         //AddItem(DragImage.Inst.dragSlot.item, DragImage.Inst.dragSlot.itemCount);
 
         if (temp != null)
@@ -27,7 +27,7 @@ public class EquipmentSlots : Slots
     public override void ClearSlot()
     {
         item = null;
-        itemCount = 0;
+        if(item != null) item.curNumber = 0;
         img.sprite = orgSprite;
     }
 }

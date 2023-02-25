@@ -25,9 +25,33 @@ public class SkillBook : PointerCheck
         tabList.Add(tabs[2]);
     }
 
+    public void LoadSkillPoint(int savedPoint)
+    {
+        skillPoint = savedPoint;
+        point.text = skillPoint.ToString();
+
+
+        if (skillPoint <= 0)
+        {
+            for (int i = 0; i < tabList.Count; ++i)
+            {
+                tabList[i].GetRestOfSkillPoint();
+            }
+        }
+    }
+
+
+
     public void CalculateSkillPoint(int num)
     {
         skillPoint += num;
+        if(skillPoint <= 0)
+        {
+            for (int i = 0; i < tabList.Count; ++i)
+            {
+                tabList[i].GetRestOfSkillPoint();
+            }
+        }
         point.text = skillPoint.ToString();
     }
 

@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: GoldChest
   explanation: "\uC88B\uC740 \uBCF4\uBB3C\uC774 \uB4E4\uC5B4\uC788\uC744 \uAC83 \uB9CC
     \uAC19\uB2E4."
-  sprite: {fileID: 21300000, guid: cc5428806c3747a4cb4b5a7b426a8597, type: 3}
+  sprite: {fileID: 21300000, guid: 1ed948f94a3f1524b84607aa8bcd2590, type: 3}
   Obj: {fileID: 1487593569942193769, guid: dd282998fa71c634393734d15484a96d, type: 3}
   Count: 1
   ValueType: 0

@@ -15,7 +15,7 @@ MonoBehaviour:
   itemType: 2
   itemName: SilverChest
   explanation: "\uB808\uBCA8\uC5C5\uC5D0 \uB530\uB978 \uBCF4\uC0C1\uD488\uC774 \uB4E4\uC5B4\uC788\uB2E4."
-  sprite: {fileID: 21300000, guid: cc5428806c3747a4cb4b5a7b426a8597, type: 3}
+  sprite: {fileID: 21300000, guid: 1ed948f94a3f1524b84607aa8bcd2590, type: 3}
   Obj: {fileID: 4571764902643027460, guid: 04fb8bd44d12a5242b84d347afc76394, type: 3}
   Count: 1
   ValueType: 0

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 public class QuickSlots : Slots
 {
 
-    public override void AddItem(Item _item, int _count)
+    /*public override void AddItem(Item _item, int _count)
     {
         if (orgSprite == null) { orgSprite = GetComponentInChildren<Image>().sprite; }
         // 기존 이미지를 둬서 슬롯이 clear 될 때 붙여주자
@@ -14,8 +14,16 @@ public class QuickSlots : Slots
             AddCount(_count);
         }
         img.sprite = _item.myItem.orgData.sprite;
+    }*/
+    protected override void AddItemByDragging(Item _item)
+    {
+        if (orgSprite == null) { orgSprite = GetComponentInChildren<Image>().sprite; }
+        // 기존 이미지를 둬서 슬롯이 clear 될 때 붙여주자
+        item = _item;
+        item.curNumber = _item.curNumber;
+        count.text = item.curNumber.ToString();
+        img.sprite = item.myItem.orgData.sprite;
     }
-
 
     public void UseQuickSlotItem()
     {
@@ -37,6 +45,8 @@ public class QuickSlots : Slots
             }
         }
     }
+
+
 
     public override void OnPointerClick(PointerEventData eventData)
     {
@@ -60,6 +70,12 @@ public class QuickSlots : Slots
         }
         else return; //소모품 이외에는 리턴
     }
+
+
+
+
+
+
     public override void OnEndDrag(PointerEventData eventData)
     {
         DragImage.Inst.SetColor(0);
