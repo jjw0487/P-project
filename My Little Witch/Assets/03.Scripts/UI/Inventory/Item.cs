@@ -106,6 +106,7 @@ public class Item : MonoBehaviour
     public void GetItem(int count = 0)
     {
 
+        print(count);
         for (int n = 0; n < invenSlots.Length; ++n) // item 위치를 임의로 옮겼을지도 모르니 한 번 더 검사
         {
             if (invenSlots[n].item != null) // item 정보가 null이 아니라면

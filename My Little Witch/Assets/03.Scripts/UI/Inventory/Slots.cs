@@ -35,6 +35,9 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         item.curNumber = _item.curNumber;
         count.text = item.curNumber.ToString();
         img.sprite = _item.myItem.orgData.sprite;
+
+        if(_count > 1) { item.curNumber += _count -1; count.text = item.curNumber.ToString(); } 
+        //처음 갖는 아이템 상점에서 여러 개 구입 하였을 때
     }
 
     protected virtual void AddItemByDragging(Item _item)
