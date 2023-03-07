@@ -321,7 +321,6 @@ public class Slots : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDr
         if (item.curNumber == 0) { ClearSlot(); }
         else
         {
-
             count.text = item.curNumber.ToString();
         }
     }
